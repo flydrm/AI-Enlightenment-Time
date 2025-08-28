@@ -168,8 +168,36 @@ class StoryPlayerViewModel @Inject constructor(
      * 跳转到指定进度
      */
     fun seekTo(progress: Float) {
-        _playbackProgress.value = progress.coerceIn(0f, 1f)
-        // TODO: 实现音频跳转
+        val validProgress = progress.coerceIn(0f, 1f)
+        _playbackProgress.value = validProgress
+        
+        // 如果正在播放，则需要重新开始播放
+        if (_playerState.value is PlayerState.Playing) {
+            // 停止当前播放
+            pause()
+            
+            // 计算新的播放位置
+            val currentStory = _story.value ?: return
+            val currentChapter = currentStory.chapters.getOrNull(_currentChapterIndex.value) ?: return
+            
+            // 根据进度重新播放
+            viewModelScope.launch {
+                delay(100) // 短暂延迟确保之前的播放已停止
+                
+                // 如果进度接近结束（95%以上），直接跳到下一章
+                if (validProgress >= 0.95f) {
+                    nextChapter()
+                } else {
+                    // 否则从当前位置继续播放
+                    play()
+                    // 设置播放进度起始点
+                    _playbackProgress.value = validProgress
+                }
+            }
+        } else {
+            // 如果没有播放，只更新进度显示
+            _playbackProgress.value = validProgress
+        }
     }
     
     /**
@@ -177,6 +205,50 @@ class StoryPlayerViewModel @Inject constructor(
      */
     fun toggleAutoPlay() {
         _isAutoPlay.value = !_isAutoPlay.value
+    }
+    
+    /**
+     * 处理故事选择
+     */
+    fun handleChoice(choice: String) {
+        viewModelScope.launch {
+            try {
+                val currentStory = _story.value ?: return@launch
+                
+                // 暂停当前播放
+                pause()
+                
+                _playerState.value = PlayerState.Loading
+                
+                // 使用AI服务继续故事
+                val newChapter = aiService.storyGenerator.continueStory(
+                    storyId = currentStory.id,
+                    userChoice = choice
+                )
+                
+                // 添加新章节到故事中
+                val updatedChapters = currentStory.chapters.toMutableList()
+                updatedChapters.add(
+                    Chapter(
+                        content = newChapter.content,
+                        choices = newChapter.choices,
+                        imageUrl = newChapter.imageUrl
+                    )
+                )
+                
+                _story.value = currentStory.copy(chapters = updatedChapters)
+                
+                // 跳转到新章节
+                _currentChapterIndex.value = updatedChapters.size - 1
+                
+                // 开始播放新章节
+                play()
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to handle choice", e)
+                _playerState.value = PlayerState.Error("处理选择失败：${e.message}")
+            }
+        }
     }
     
     /**
