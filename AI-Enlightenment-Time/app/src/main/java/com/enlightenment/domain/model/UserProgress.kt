@@ -9,7 +9,9 @@ data class UserProgress(
     val lastActiveDate: Long = System.currentTimeMillis(),
     val favoriteCategories: List<StoryCategory> = emptyList(),
     val completedStoryIds: Set<String> = emptySet(),
-    val unlockedAchievements: Set<String> = emptySet()
+    val unlockedAchievements: Set<String> = emptySet(),
+    val totalPoints: Int = 0,
+    val totalReadingMinutes: Int = 0
 )
 
 data class DailyProgress(

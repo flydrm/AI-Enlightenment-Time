@@ -19,7 +19,9 @@ data class UserProgressEntity(
     val lastActiveDate: Long,
     val favoriteCategories: List<StoryCategory>,
     val completedStoryIds: Set<String>,
-    val unlockedAchievements: Set<String>
+    val unlockedAchievements: Set<String>,
+    val totalPoints: Int = 0,
+    val totalReadingMinutes: Int = 0
 ) {
     fun toDomainModel(): UserProgress {
         return UserProgress(
@@ -31,7 +33,9 @@ data class UserProgressEntity(
             lastActiveDate = lastActiveDate,
             favoriteCategories = favoriteCategories,
             completedStoryIds = completedStoryIds,
-            unlockedAchievements = unlockedAchievements
+            unlockedAchievements = unlockedAchievements,
+            totalPoints = totalPoints,
+            totalReadingMinutes = totalReadingMinutes
         )
     }
     
@@ -46,7 +50,9 @@ data class UserProgressEntity(
                 lastActiveDate = progress.lastActiveDate,
                 favoriteCategories = progress.favoriteCategories,
                 completedStoryIds = progress.completedStoryIds,
-                unlockedAchievements = progress.unlockedAchievements
+                unlockedAchievements = progress.unlockedAchievements,
+                totalPoints = progress.totalPoints,
+                totalReadingMinutes = progress.totalReadingMinutes
             )
         }
     }

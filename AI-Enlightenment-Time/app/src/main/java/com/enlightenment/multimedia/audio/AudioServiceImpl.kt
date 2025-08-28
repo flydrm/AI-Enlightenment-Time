@@ -206,7 +206,7 @@ class AudioServiceImpl @Inject constructor() : AudioService {
                         sum += abs(buffer[i].toFloat())
                     }
                     val amplitude = (sum / readSize) / Short.MAX_VALUE.toFloat()
-                    emit(amplitude.coerceIn(0f, 1f))
+                    emit(amplitude.coerceIn(0.0f, 1.0f))
                 }
             } else {
                 emit(0f)

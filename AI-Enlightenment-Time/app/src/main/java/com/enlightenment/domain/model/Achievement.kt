@@ -9,7 +9,8 @@ data class Achievement(
     val currentCount: Int = 0,
     val isUnlocked: Boolean = false,
     val unlockedAt: Long? = null,
-    val category: AchievementCategory
+    val category: AchievementCategory,
+    val points: Int = 0
 )
 
 enum class AchievementCategory(val displayName: String) {
