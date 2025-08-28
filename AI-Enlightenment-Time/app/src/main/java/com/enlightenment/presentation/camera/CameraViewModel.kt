@@ -10,19 +10,16 @@ import androidx.lifecycle.viewModelScope
 import com.enlightenment.ai.service.AIService
 import com.enlightenment.data.preference.UserPreferences
 import com.enlightenment.multimedia.camera.*
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
 
 /**
  * 相机界面ViewModel
  */
-@HiltViewModel
-class CameraViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+
+class CameraViewModel constructor(
+    private val context: Context,
     private val cameraService: CameraService,
     private val aiService: AIService,
     private val userPreferences: UserPreferences

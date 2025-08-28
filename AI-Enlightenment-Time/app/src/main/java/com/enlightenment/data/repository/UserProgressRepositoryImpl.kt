@@ -14,11 +14,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class UserProgressRepositoryImpl @Inject constructor(
+
+class UserProgressRepositoryImpl constructor(
     private val userProgressDao: UserProgressDao,
     private val dailyProgressDao: DailyProgressDao
 ) : UserProgressRepository {

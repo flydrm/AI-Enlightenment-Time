@@ -4,15 +4,13 @@ import com.enlightenment.data.network.api.*
 import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 内容重排序服务
  * 使用BGE-reranker对搜索结果进行重排序，确保最相关的内容排在前面
  */
-@Singleton
-class ContentRerankingService @Inject constructor(
+
+class ContentRerankingService constructor(
     private val bgeRerankerApi: BGERerankerApi,
     private val secureStorage: SecureStorage
 ) {

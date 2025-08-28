@@ -4,9 +4,8 @@ import com.enlightenment.domain.model.AgeGroup
 import com.enlightenment.domain.model.Story
 import com.enlightenment.domain.model.StoryCategory
 import com.enlightenment.domain.repository.StoryRepository
-import javax.inject.Inject
 
-class GenerateStoryUseCase @Inject constructor(
+class GenerateStoryUseCase constructor(
     private val storyRepository: StoryRepository
 ) {
     suspend operator fun invoke(

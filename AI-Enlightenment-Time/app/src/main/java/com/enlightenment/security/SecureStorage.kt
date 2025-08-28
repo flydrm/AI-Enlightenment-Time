@@ -3,17 +3,14 @@ package com.enlightenment.security
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 安全存储服务
  * 使用Android加密共享首选项存储敏感数据
  */
-@Singleton
-class SecureStorage @Inject constructor(
-    @ApplicationContext private val context: Context
+
+class SecureStorage constructor(
+    private val context: Context
 ) {
     
     companion object {

@@ -9,18 +9,15 @@ import com.enlightenment.ai.service.AIService
 import com.enlightenment.domain.model.Story as DomainStory
 import com.enlightenment.domain.usecase.story.GetStoryByIdUseCase
 import com.enlightenment.multimedia.audio.AudioService
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import javax.inject.Inject
 
 /**
  * 故事播放器ViewModel
  */
-@HiltViewModel
-class StoryPlayerViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+
+class StoryPlayerViewModel constructor(
+    private val context: Context,
     private val getStoryByIdUseCase: GetStoryByIdUseCase,
     private val audioService: AudioService,
     private val aiService: AIService

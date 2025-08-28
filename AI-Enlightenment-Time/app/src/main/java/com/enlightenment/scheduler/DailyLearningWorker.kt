@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.enlightenment.MainActivity
@@ -17,17 +16,15 @@ import com.enlightenment.data.preference.UserPreferences
 import com.enlightenment.domain.usecase.GenerateStoryUseCase
 import com.enlightenment.security.AuditLogger
 import com.enlightenment.security.UserAction
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
 
 /**
  * 每日学习提醒工作器
  */
-@HiltWorker
-class DailyLearningWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
+
+class DailyLearningWorker  constructor(
+    appContext: Context,
+    workerParams: WorkerParameters,
     private val userPreferences: UserPreferences,
     private val generateStoryUseCase: GenerateStoryUseCase,
     private val auditLogger: AuditLogger

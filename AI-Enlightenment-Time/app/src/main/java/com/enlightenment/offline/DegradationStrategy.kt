@@ -5,16 +5,14 @@ import com.enlightenment.ai.model.VoiceType
 import com.enlightenment.domain.model.Story
 import com.enlightenment.domain.model.StoryCategory
 import kotlinx.coroutines.delay
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.random.Random
 
 /**
  * 降级策略管理器
  * 当AI服务不可用时提供降级方案
  */
-@Singleton
-class DegradationStrategy @Inject constructor(
+
+class DegradationStrategy constructor(
     private val offlineManager: OfflineManager
 ) {
     

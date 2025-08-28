@@ -12,9 +12,8 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.enlightenment.presentation.navigation.AppNavigation
 import com.enlightenment.presentation.ui.theme.EnlightenmentTheme
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
 class MainActivity : ComponentActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {

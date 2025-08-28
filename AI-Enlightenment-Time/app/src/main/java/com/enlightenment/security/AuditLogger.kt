@@ -3,23 +3,20 @@ package com.enlightenment.security
 import android.content.Context
 import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.data.local.entity.AuditLogEntity
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.Date
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 审计日志记录器
  * 记录所有重要操作，用于安全审计和问题追踪
  */
-@Singleton
-class AuditLogger @Inject constructor(
-    @ApplicationContext private val context: Context,
+
+class AuditLogger constructor(
+    private val context: Context,
     private val database: AppDatabase,
     private val secureStorage: SecureStorage
 ) {

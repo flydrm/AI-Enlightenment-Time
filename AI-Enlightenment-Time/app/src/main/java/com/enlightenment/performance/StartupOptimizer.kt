@@ -3,18 +3,15 @@ package com.enlightenment.performance
 import android.content.Context
 import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.offline.OfflineManager
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 启动优化器
  * 使用 App Startup 库优化应用启动性能
  */
-@Singleton
-class StartupOptimizer @Inject constructor(
-    @ApplicationContext private val context: Context
+
+class StartupOptimizer constructor(
+    private val context: Context
 ) {
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     

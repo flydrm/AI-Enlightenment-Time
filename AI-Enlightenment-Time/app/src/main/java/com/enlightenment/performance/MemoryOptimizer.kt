@@ -9,15 +9,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 内存优化管理器
  * 负责监控和优化应用内存使用
  */
-@Singleton
-class MemoryOptimizer @Inject constructor(
+
+class MemoryOptimizer constructor(
     private val context: Context
 ) {
     private val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager

@@ -5,14 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.enlightenment.domain.repository.DailyProgressRepository
 import com.enlightenment.domain.repository.UserProgressRepository
 import com.enlightenment.domain.usecase.GenerateReportUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import javax.inject.Inject
 
-@HiltViewModel
-class LearningReportViewModel @Inject constructor(
+
+class LearningReportViewModel constructor(
     private val userProgressRepository: UserProgressRepository,
     private val dailyProgressRepository: DailyProgressRepository,
     private val generateReportUseCase: GenerateReportUseCase

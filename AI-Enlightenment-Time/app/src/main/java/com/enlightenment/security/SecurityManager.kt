@@ -12,15 +12,13 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 安全管理器
  * 负责数据加密、解密、安全存储等功能
  */
-@Singleton
-class SecurityManager @Inject constructor(
+
+class SecurityManager constructor(
     private val context: Context
 ) {
     companion object {

@@ -2,9 +2,8 @@ package com.enlightenment.domain.usecase
 
 import com.enlightenment.domain.repository.StoryRepository
 import com.enlightenment.domain.repository.UserProgressRepository
-import javax.inject.Inject
 
-class CompleteStoryUseCase @Inject constructor(
+class CompleteStoryUseCase constructor(
     private val storyRepository: StoryRepository,
     private val progressRepository: UserProgressRepository
 ) {

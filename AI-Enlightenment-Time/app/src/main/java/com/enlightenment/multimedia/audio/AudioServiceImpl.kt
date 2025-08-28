@@ -10,15 +10,13 @@ import androidx.core.content.ContextCompat
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.nio.ByteBuffer
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.abs
 
 /**
  * 音频服务实现
  */
-@Singleton
-class AudioServiceImpl @Inject constructor() : AudioService {
+
+class AudioServiceImpl constructor() : AudioService {
     
     companion object {
         private const val TAG = "AudioService"

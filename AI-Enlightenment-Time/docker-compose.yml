@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  android-build:
+    image: cimg/android:2024.01
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+      - gradle-cache:/root/.gradle
+    environment:
+      - GRADLE_OPTS=-Xmx2048m -Dorg.gradle.daemon=false
+      - ANDROID_HOME=/home/circleci/android-sdk
+    command: |
+      bash -c "
+        # 使用Java 11
+        export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+        export PATH=$$JAVA_HOME/bin:$$PATH
+        
+        # 检查Java版本
+        java -version
+        
+        # 给gradlew执行权限
+        chmod +x ./gradlew
+        
+        # 清理并编译
+        ./gradlew clean
+        ./gradlew assembleDebug --stacktrace
+      "
+
+volumes:
+  gradle-cache:

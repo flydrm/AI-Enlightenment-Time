@@ -7,19 +7,16 @@ import androidx.lifecycle.viewModelScope
 import com.enlightenment.ai.service.AIService
 import com.enlightenment.multimedia.audio.AudioService
 import com.enlightenment.multimedia.audio.RecordingState
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
-import javax.inject.Inject
 
 /**
  * 语音对话ViewModel
  */
-@HiltViewModel
-class VoiceViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+
+class VoiceViewModel constructor(
+    private val context: Context,
     private val audioService: AudioService,
     private val aiService: AIService
 ) : ViewModel() {

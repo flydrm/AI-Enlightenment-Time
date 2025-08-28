@@ -18,16 +18,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 /**
  * 相机服务实现
  */
-@Singleton
-class CameraServiceImpl @Inject constructor() : CameraService {
+
+class CameraServiceImpl constructor() : CameraService {
     
     companion object {
         private const val TAG = "CameraService"

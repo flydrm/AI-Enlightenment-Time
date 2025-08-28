@@ -11,15 +11,13 @@ import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 通义千问图像识别模型实现
  * 使用Qwen3-Embedding-8B进行图像向量化和理解
  */
-@Singleton
-class QwenImageRecognitionModel @Inject constructor(
+
+class QwenImageRecognitionModel constructor(
     private val qwenApi: QwenApi,
     private val secureStorage: SecureStorage
 ) : ImageRecognitionModel {

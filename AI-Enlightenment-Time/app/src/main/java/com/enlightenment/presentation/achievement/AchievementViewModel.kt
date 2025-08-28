@@ -9,16 +9,14 @@ import com.enlightenment.domain.achievement.AchievementProgress
 import com.enlightenment.domain.model.Achievement
 import com.enlightenment.security.AuditLogger
 import com.enlightenment.security.UserAction
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * 成就界面视图模型
  */
-@HiltViewModel
-class AchievementViewModel @Inject constructor(
+
+class AchievementViewModel constructor(
     private val achievementManager: AchievementManager,
     private val userPreferences: UserPreferences,
     private val auditLogger: AuditLogger

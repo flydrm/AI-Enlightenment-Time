@@ -10,15 +10,13 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.FileOutputStream
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * OpenAI语音识别模型实现
  * 使用Whisper模型进行高质量的语音转文本
  */
-@Singleton
-class OpenAISpeechRecognitionModel @Inject constructor(
+
+class OpenAISpeechRecognitionModel constructor(
     private val openAIApi: OpenAIApi,
     private val secureStorage: SecureStorage
 ) : SpeechRecognitionModel {

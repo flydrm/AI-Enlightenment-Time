@@ -5,15 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.enlightenment.domain.repository.SettingsRepository
 import com.enlightenment.domain.usecase.BackupDataUseCase
 import com.enlightenment.domain.usecase.ClearCacheUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
+
+class SettingsViewModel constructor(
     private val settingsRepository: SettingsRepository,
     private val backupDataUseCase: BackupDataUseCase,
     private val clearCacheUseCase: ClearCacheUseCase

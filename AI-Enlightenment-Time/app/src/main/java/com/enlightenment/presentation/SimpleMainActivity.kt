@@ -10,12 +10,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * 简化版MainActivity，用于测试编译问题
  */
-@AndroidEntryPoint
+
 class SimpleMainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

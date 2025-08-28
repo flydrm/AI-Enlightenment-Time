@@ -9,15 +9,13 @@ import com.enlightenment.data.network.api.ImageGenerationRequest
 import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 图像生成服务实现
  * 使用 grok-4-imageGen 模型生成图像
  */
-@Singleton
-class ImageGenerationServiceImpl @Inject constructor(
+
+class ImageGenerationServiceImpl constructor(
     private val configManager: AIConfigManager,
     private val grokImageApi: GrokImageApi,
     private val secureStorage: SecureStorage

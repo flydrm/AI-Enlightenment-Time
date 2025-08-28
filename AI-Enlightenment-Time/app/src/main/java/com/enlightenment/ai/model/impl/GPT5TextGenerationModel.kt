@@ -5,14 +5,12 @@ import com.enlightenment.data.network.api.*
 import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * GPT-5-PRO文本生成模型实现
  */
-@Singleton
-class GPT5TextGenerationModel @Inject constructor(
+
+class GPT5TextGenerationModel constructor(
     private val openAIApi: OpenAIApi,
     private val secureStorage: SecureStorage
 ) : TextGenerationModel {

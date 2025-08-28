@@ -5,14 +5,12 @@ import com.enlightenment.data.network.api.*
 import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Gemini文本生成模型实现
  */
-@Singleton
-class GeminiTextGenerationModel @Inject constructor(
+
+class GeminiTextGenerationModel constructor(
     private val geminiApi: GeminiApi,
     private val secureStorage: SecureStorage
 ) : TextGenerationModel {

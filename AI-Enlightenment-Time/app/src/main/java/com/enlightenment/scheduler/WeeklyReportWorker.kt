@@ -1,15 +1,12 @@
 package com.enlightenment.scheduler
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.data.preference.UserPreferences
 import com.enlightenment.security.AuditLogger
 import com.enlightenment.security.DataMaskingService
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,10 +15,10 @@ import java.util.*
  * 每周进度报告工作器
  * 生成并发送每周学习报告给家长
  */
-@HiltWorker
-class WeeklyReportWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
+
+class WeeklyReportWorker  constructor(
+    appContext: Context,
+    workerParams: WorkerParameters,
     private val database: AppDatabase,
     private val userPreferences: UserPreferences,
     private val auditLogger: AuditLogger,

@@ -9,7 +9,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.security.KeyStore
@@ -17,17 +16,15 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
-import javax.inject.Inject
-import javax.inject.Singleton
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "ai_config")
 
 /**
  * AI配置管理实现
  */
-@Singleton
-class AIConfigManagerImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+
+class AIConfigManagerImpl constructor(
+    private val context: Context
 ) : AIConfigManager {
 
     private val keyAlias = "AIEnlightenmentKeyAlias"

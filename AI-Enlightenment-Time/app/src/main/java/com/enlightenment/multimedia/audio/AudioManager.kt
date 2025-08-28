@@ -16,8 +16,6 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -25,8 +23,8 @@ import kotlin.coroutines.resumeWithException
  * 音频管理器
  * 负责音频播放、录音、文字转语音等功能
  */
-@Singleton
-class AudioManager @Inject constructor(
+
+class AudioManager constructor(
     private val context: Context
 ) {
     private var mediaPlayer: MediaPlayer? = null

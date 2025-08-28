@@ -5,29 +5,23 @@ import com.enlightenment.data.network.api.*
 import com.enlightenment.data.network.interceptor.ApiKeyInterceptor
 import com.enlightenment.data.network.interceptor.RetryInterceptor
 import com.enlightenment.security.SecureStorage
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
-import javax.inject.Singleton
 
 /**
  * 网络依赖注入模块
  */
-@Module
-@InstallIn(SingletonComponent::class)
+
+
 object NetworkModule {
     
-    @Provides
-    @Singleton
+    
+    
     fun provideHttpClient(): HttpClient = HttpClient()
     
     /**
      * Gemini API
      */
-    @Provides
-    @Singleton
+    
+    
     @Named("GeminiOkHttp")
     fun provideGeminiOkHttpClient(
         httpClient: HttpClient,
@@ -41,8 +35,8 @@ object NetworkModule {
         )
     }
     
-    @Provides
-    @Singleton
+    
+    
     fun provideGeminiApi(
         httpClient: HttpClient,
         @Named("GeminiOkHttp") okHttpClient: okhttp3.OkHttpClient
@@ -57,8 +51,8 @@ object NetworkModule {
     /**
      * OpenAI API (GPT-5)
      */
-    @Provides
-    @Singleton
+    
+    
     @Named("OpenAIOkHttp")
     fun provideOpenAIOkHttpClient(
         httpClient: HttpClient,
@@ -74,8 +68,8 @@ object NetworkModule {
         )
     }
     
-    @Provides
-    @Singleton
+    
+    
     fun provideOpenAIApi(
         httpClient: HttpClient,
         @Named("OpenAIOkHttp") okHttpClient: okhttp3.OkHttpClient
@@ -90,8 +84,8 @@ object NetworkModule {
     /**
      * Grok Image API
      */
-    @Provides
-    @Singleton
+    
+    
     @Named("GrokOkHttp")
     fun provideGrokOkHttpClient(
         httpClient: HttpClient,
@@ -107,8 +101,8 @@ object NetworkModule {
         )
     }
     
-    @Provides
-    @Singleton
+    
+    
     fun provideGrokImageApi(
         httpClient: HttpClient,
         @Named("GrokOkHttp") okHttpClient: okhttp3.OkHttpClient
@@ -123,8 +117,8 @@ object NetworkModule {
     /**
      * Qwen API
      */
-    @Provides
-    @Singleton
+    
+    
     @Named("QwenOkHttp")
     fun provideQwenOkHttpClient(
         httpClient: HttpClient,
@@ -140,8 +134,8 @@ object NetworkModule {
         )
     }
     
-    @Provides
-    @Singleton
+    
+    
     fun provideQwenApi(
         httpClient: HttpClient,
         @Named("QwenOkHttp") okHttpClient: okhttp3.OkHttpClient
@@ -156,8 +150,8 @@ object NetworkModule {
     /**
      * BGE Reranker API
      */
-    @Provides
-    @Singleton
+    
+    
     @Named("BGEOkHttp")
     fun provideBGEOkHttpClient(
         httpClient: HttpClient,
@@ -173,8 +167,8 @@ object NetworkModule {
         )
     }
     
-    @Provides
-    @Singleton
+    
+    
     fun provideBGERerankerApi(
         httpClient: HttpClient,
         @Named("BGEOkHttp") okHttpClient: okhttp3.OkHttpClient

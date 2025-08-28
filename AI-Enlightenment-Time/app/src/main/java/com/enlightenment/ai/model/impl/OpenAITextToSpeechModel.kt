@@ -11,13 +11,11 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import javax.inject.Inject
-import javax.inject.Named
 
 /**
  * OpenAI TTS 模型实现
  */
-class OpenAITextToSpeechModel @Inject constructor(
+class OpenAITextToSpeechModel constructor(
     private val openAIApi: OpenAIApi,
     @Named("OPENAI_API_KEY") private val apiKey: String?
 ) : TextToSpeechModel {

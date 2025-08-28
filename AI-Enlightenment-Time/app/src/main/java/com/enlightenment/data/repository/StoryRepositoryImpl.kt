@@ -9,11 +9,9 @@ import com.enlightenment.domain.model.StoryCategory
 import com.enlightenment.domain.repository.StoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class StoryRepositoryImpl @Inject constructor(
+
+class StoryRepositoryImpl constructor(
     private val storyDao: StoryDao,
     private val aiService: AIService
 ) : StoryRepository {

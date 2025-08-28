@@ -6,14 +6,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * HTTP客户端配置
  */
-@Singleton
-class HttpClient @Inject constructor() {
+
+class HttpClient constructor() {
     
     companion object {
         private const val DEFAULT_TIMEOUT = 30L // 秒

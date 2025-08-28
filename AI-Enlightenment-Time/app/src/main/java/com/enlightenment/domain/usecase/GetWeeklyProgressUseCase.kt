@@ -5,10 +5,9 @@ import com.enlightenment.domain.model.DailyProgress
 import com.enlightenment.domain.repository.UserProgressRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 import java.util.Calendar
 
-class GetWeeklyProgressUseCase @Inject constructor(
+class GetWeeklyProgressUseCase constructor(
     private val userProgressRepository: UserProgressRepository
 ) {
     suspend operator fun invoke(): Result<WeeklyProgress> {

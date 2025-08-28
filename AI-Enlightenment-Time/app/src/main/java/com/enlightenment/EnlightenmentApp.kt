@@ -4,15 +4,13 @@ import android.app.Application
 import com.enlightenment.performance.StartupOptimizer
 import com.enlightenment.performance.MemoryOptimizer
 import com.enlightenment.performance.PerformanceMonitor
-import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
 
-@HiltAndroidApp
+
 class EnlightenmentApp : Application() {
     
-    @Inject lateinit var startupOptimizer: StartupOptimizer
-    @Inject lateinit var memoryOptimizer: MemoryOptimizer
-    @Inject lateinit var performanceMonitor: PerformanceMonitor
+    lateinit var startupOptimizer: StartupOptimizer
+    lateinit var memoryOptimizer: MemoryOptimizer
+    lateinit var performanceMonitor: PerformanceMonitor
 
     override fun onCreate() {
         super.onCreate()

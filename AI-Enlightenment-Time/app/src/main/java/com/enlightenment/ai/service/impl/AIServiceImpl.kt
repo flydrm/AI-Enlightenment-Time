@@ -9,14 +9,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * AI服务实现
  */
-@Singleton
-class AIServiceImpl @Inject constructor(
+
+class AIServiceImpl constructor(
     private val textGenerationModel: TextGenerationModel,
     private val imageRecognitionModel: ImageRecognitionModel,
     private val speechRecognitionModel: SpeechRecognitionModel,

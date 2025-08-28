@@ -9,20 +9,17 @@ import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.data.local.entity.StoryEntity
 import com.enlightenment.domain.model.Story
 import com.enlightenment.security.AuditLogger
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 离线模式管理器
  * 负责管理应用的离线功能和网络状态监控
  */
-@Singleton
-class OfflineManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+
+class OfflineManager constructor(
+    private val context: Context,
     private val database: AppDatabase,
     private val auditLogger: AuditLogger
 ) {

@@ -13,8 +13,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -22,8 +20,8 @@ import kotlin.coroutines.resumeWithException
  * 相机管理器
  * 负责相机的初始化、预览、拍照等功能
  */
-@Singleton
-class CameraManager @Inject constructor(
+
+class CameraManager constructor(
     private val context: Context
 ) {
     private var camera: Camera? = null

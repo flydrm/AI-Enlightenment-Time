@@ -7,13 +7,11 @@ import com.enlightenment.domain.model.Story
 import com.enlightenment.domain.model.StoryCategory
 import com.enlightenment.domain.usecase.GenerateStoryUseCase
 import com.enlightenment.domain.repository.StoryRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class StoryViewModel @Inject constructor(
+
+class StoryViewModel constructor(
     private val generateStoryUseCase: GenerateStoryUseCase,
     private val storyRepository: StoryRepository
 ) : ViewModel() {

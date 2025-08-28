@@ -1,14 +1,12 @@
 package com.enlightenment.security
 
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 数据脱敏服务
  * 用于保护敏感信息，确保儿童隐私安全
  */
-@Singleton
-class DataMaskingService @Inject constructor() {
+
+class DataMaskingService constructor() {
     
     /**
      * 脱敏儿童姓名

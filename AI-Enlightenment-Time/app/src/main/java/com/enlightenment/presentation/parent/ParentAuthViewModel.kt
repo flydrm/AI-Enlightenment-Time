@@ -7,20 +7,18 @@ import com.enlightenment.security.SecureStorage
 import com.enlightenment.security.SecurityEvent
 import com.enlightenment.security.SecuritySeverity
 import com.enlightenment.security.UserAction
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlin.random.Random
 
 /**
  * 家长认证视图模型
  */
-@HiltViewModel
-class ParentAuthViewModel @Inject constructor(
+
+class ParentAuthViewModel constructor(
     private val secureStorage: SecureStorage,
     private val auditLogger: AuditLogger
 ) : ViewModel() {

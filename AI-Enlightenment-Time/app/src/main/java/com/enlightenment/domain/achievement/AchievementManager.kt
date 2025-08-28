@@ -8,15 +8,13 @@ import com.enlightenment.security.UserAction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 成就系统管理器
  * 负责成就的解锁、进度追踪和奖励发放
  */
-@Singleton
-class AchievementManager @Inject constructor(
+
+class AchievementManager constructor(
     private val database: AppDatabase,
     private val userPreferences: UserPreferences,
     private val auditLogger: AuditLogger

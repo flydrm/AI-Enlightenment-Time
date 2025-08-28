@@ -6,14 +6,12 @@ import com.enlightenment.data.network.api.Content
 import com.enlightenment.data.network.api.Part
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Service for interacting with Gemini AI model
  */
-@Singleton
-class GeminiService @Inject constructor(
+
+class GeminiService constructor(
     private val geminiApi: GeminiApi
 ) {
     

@@ -6,15 +6,13 @@ import com.enlightenment.domain.repository.AchievementRepository
 import com.enlightenment.domain.repository.UserProgressRepository
 import com.enlightenment.domain.usecase.GetDailyProgressUseCase
 import com.enlightenment.domain.usecase.GetWeeklyProgressUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 
-@HiltViewModel
-class ParentDashboardViewModel @Inject constructor(
+
+class ParentDashboardViewModel constructor(
     private val userProgressRepository: UserProgressRepository,
     private val achievementRepository: AchievementRepository,
     private val getDailyProgressUseCase: GetDailyProgressUseCase,

@@ -8,16 +8,14 @@ import androidx.annotation.MainThread
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.system.measureTimeMillis
 
 /**
  * 性能监控器
  * 监控应用性能指标并提供优化建议
  */
-@Singleton
-class PerformanceMonitor @Inject constructor(
+
+class PerformanceMonitor constructor(
     private val memoryOptimizer: MemoryOptimizer
 ) {
     companion object {
