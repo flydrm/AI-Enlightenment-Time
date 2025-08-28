@@ -5,6 +5,8 @@ import com.enlightenment.data.local.entity.StoryEntity
 import com.enlightenment.domain.model.StoryCategory
 import kotlinx.coroutines.flow.Flow
 
+
+
 @Dao
 interface StoryDao {
     @Query("SELECT * FROM stories ORDER BY createdAt DESC")

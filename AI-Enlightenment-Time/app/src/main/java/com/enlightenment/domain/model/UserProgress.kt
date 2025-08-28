@@ -1,5 +1,6 @@
 package com.enlightenment.domain.model
 
+
 data class UserProgress(
     val userId: String,
     val totalStoriesCompleted: Int = 0,
@@ -13,7 +14,6 @@ data class UserProgress(
     val totalPoints: Int = 0,
     val totalReadingMinutes: Int = 0
 )
-
 data class DailyProgress(
     val date: Long,
     val storiesCompleted: Int = 0,

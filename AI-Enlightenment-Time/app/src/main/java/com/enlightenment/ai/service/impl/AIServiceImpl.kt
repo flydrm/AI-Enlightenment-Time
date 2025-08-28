@@ -1,20 +1,21 @@
 package com.enlightenment.ai.service.impl
 
-import com.enlightenment.ai.service.*
-import com.enlightenment.ai.model.*
 import com.enlightenment.ai.config.AIConfigManager
+import com.enlightenment.ai.model.*
+import com.enlightenment.ai.service.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
+
+
 
 /**
  * AI服务实现
  */
-
-class AIServiceImpl constructor(
+class AIServiceImpl(
     private val textGenerationModel: TextGenerationModel,
     private val imageRecognitionModel: ImageRecognitionModel,
     private val speechRecognitionModel: SpeechRecognitionModel,
@@ -66,7 +67,6 @@ class AIServiceImpl constructor(
         textToSpeechModel.release()
     }
 }
-
 /**
  * 故事生成服务实现
  */
@@ -104,12 +104,12 @@ class StoryGenerationServiceImpl(
             id = generateStoryId(),
             title = title,
             content = storyContent,
-            chapters = parseChapters(storyContent),
+            chapters = parseStorys(storyContent),
             imageUrl = imageUrl
         )
     }
     
-    override suspend fun continueStory(storyId: String, userChoice: String): StoryChapter {
+    override suspend fun continueStory(storyId: String, userChoice: String): StoryStory {
         val prompt = "继续这个故事，基于用户的选择：$userChoice"
         val continuation = textGenerationModel.generateText(
             prompt = prompt,
@@ -117,8 +117,8 @@ class StoryGenerationServiceImpl(
             temperature = 0.8f
         )
         
-        return StoryChapter(
-            id = generateChapterId(),
+        return StoryStory(
+            id = generateStoryId(),
             content = continuation,
             choices = extractChoices(continuation)
         )
@@ -166,11 +166,11 @@ class StoryGenerationServiceImpl(
         return content.lines().firstOrNull()?.take(20) ?: "精彩故事"
     }
     
-    private fun parseChapters(content: String): List<StoryChapter> {
+    private fun parseStorys(content: String): List<StoryStory> {
         // 简单实现：将内容分段作为章节
         val paragraphs = content.split("\n\n").filter { it.isNotBlank() }
         return paragraphs.mapIndexed { index, paragraph ->
-            StoryChapter(
+            StoryStory(
                 id = "chapter_$index",
                 content = paragraph,
                 choices = if (index < paragraphs.size - 1) {
@@ -188,9 +188,8 @@ class StoryGenerationServiceImpl(
     }
     
     private fun generateStoryId(): String = "story_${System.currentTimeMillis()}"
-    private fun generateChapterId(): String = "chapter_${System.currentTimeMillis()}"
+    private fun generateStoryId(): String = "chapter_${System.currentTimeMillis()}"
 }
-
 /**
  * 图像识别服务实现
  */
@@ -243,7 +242,6 @@ class ImageRecognitionServiceImpl(
         return messages.random()
     }
 }
-
 /**
  * 语音服务实现
  */

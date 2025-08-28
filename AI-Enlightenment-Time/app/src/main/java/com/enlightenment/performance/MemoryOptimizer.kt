@@ -5,17 +5,18 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.collection.LruCache
+import java.lang.ref.WeakReference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.ref.WeakReference
+
+
 
 /**
  * 内存优化管理器
  * 负责监控和优化应用内存使用
  */
-
-class MemoryOptimizer constructor(
+class MemoryOptimizer(
     private val context: Context
 ) {
     private val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -206,7 +207,6 @@ class MemoryOptimizer constructor(
         }
     }
 }
-
 /**
  * 内存状态信息
  */

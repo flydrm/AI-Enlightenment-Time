@@ -8,20 +8,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.center
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
 import kotlin.math.*
+import kotlinx.coroutines.delay
+
+
 
 /**
  * 增强版小熊猫动画组件
@@ -98,12 +102,10 @@ fun EnhancedAnimatedPanda(
         }
     }
 }
-
 /**
  * 小熊猫心情
  */
 // PandaMood已在单独文件中定义
-
 /**
  * 绘制小熊猫
  */
@@ -326,7 +328,6 @@ private fun DrawScope.drawPanda(
         )
     )
 }
-
 /**
  * 对话气泡
  */
@@ -344,7 +345,7 @@ private fun SpeechBubble(
         Text(
             text = text,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.typography.bodyMedium,
             textAlign = TextAlign.Center
         )
     }

@@ -4,6 +4,8 @@ import androidx.room.*
 import com.enlightenment.data.local.entity.DailyProgressEntity
 import kotlinx.coroutines.flow.Flow
 
+
+
 /**
  * 每日进度数据访问对象
  */

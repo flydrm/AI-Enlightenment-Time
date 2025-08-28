@@ -13,12 +13,13 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
+
+
 /**
  * 安全管理器
  * 负责数据加密、解密、安全存储等功能
  */
-
-class SecurityManager constructor(
+class SecurityManager(
     private val context: Context
 ) {
     companion object {
@@ -127,7 +128,7 @@ class SecurityManager constructor(
      * 获取安全存储的数据
      */
     fun getSecureData(key: String): String? {
-        return encryptedSharedPreferences.getString(key, null)
+        return encryptedSharedPreferences.getString(key, null) ?: ""
     }
     
     /**

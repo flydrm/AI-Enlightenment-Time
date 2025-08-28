@@ -4,6 +4,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.ui.unit.dp
 
+
+
 // Rounded shapes for child-friendly design
 val RoundedShapes = Shapes(
     extraSmall = RoundedCornerShape(8.dp),
@@ -12,7 +14,6 @@ val RoundedShapes = Shapes(
     large = RoundedCornerShape(24.dp),
     extraLarge = RoundedCornerShape(32.dp)
 )
-
 // Custom shapes for specific components
 val ButtonShape = RoundedCornerShape(32.dp)
 val CardShape = RoundedCornerShape(24.dp)

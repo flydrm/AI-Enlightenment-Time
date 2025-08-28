@@ -3,19 +3,20 @@ package com.enlightenment.security
 import android.content.Context
 import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.data.local.entity.AuditLogEntity
+import java.util.Date
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import java.util.Date
+import kotlinx.coroutines.SupervisorJob
+
+
 
 /**
  * 审计日志记录器
  * 记录所有重要操作，用于安全审计和问题追踪
  */
-
-class AuditLogger constructor(
+class AuditLogger(
     private val context: Context,
     private val database: AppDatabase,
     private val secureStorage: SecureStorage
@@ -234,7 +235,6 @@ class AuditLogger constructor(
         return header + rows
     }
 }
-
 /**
  * 审计类别
  */
@@ -246,7 +246,6 @@ enum class AuditCategory {
     ERROR,          // 错误
     SYSTEM          // 系统事件
 }
-
 /**
  * 用户操作
  */
@@ -282,7 +281,6 @@ enum class UserAction {
     ACHIEVEMENT_UNLOCKED,
     ACHIEVEMENT_VIEWED
 }
-
 /**
  * 安全事件
  */
@@ -294,7 +292,6 @@ enum class SecurityEvent {
     DATA_ENCRYPTION_ERROR,
     PERMISSION_CHANGE
 }
-
 /**
  * 安全严重程度
  */
@@ -304,7 +301,6 @@ enum class SecuritySeverity {
     ERROR,
     CRITICAL
 }
-
 /**
  * 数据类型
  */
@@ -316,7 +312,6 @@ enum class DataType {
     SETTINGS,
     API_KEY
 }
-
 /**
  * 数据操作
  */
@@ -326,7 +321,6 @@ enum class DataOperation {
     UPDATE,
     DELETE
 }
-
 /**
  * 导出格式
  */

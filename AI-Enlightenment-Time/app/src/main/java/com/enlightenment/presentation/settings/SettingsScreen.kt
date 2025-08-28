@@ -1,25 +1,32 @@
 package com.enlightenment.presentation.settings
 
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.enlightenment.presentation.ui.theme.Typography
+
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     navController: NavController,
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel = remember { HomeViewModel() }
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var showResetDialog by remember { mutableStateOf(false) }
@@ -32,7 +39,7 @@ fun SettingsScreen(
                 title = { 
                     Text(
                         "设置",
-                        style = Typography.headlineMedium
+                        style = MaterialTheme.typography.typography.headlineMedium
                     )
                 },
                 navigationIcon = {
@@ -314,7 +321,6 @@ fun SettingsScreen(
         }
     }
 }
-
 @Composable
 fun SettingsSection(
     title: String,
@@ -327,7 +333,7 @@ fun SettingsSection(
     ) {
         Text(
             text = title,
-            style = Typography.titleMedium,
+            style = MaterialTheme.typography.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -345,7 +351,6 @@ fun SettingsSection(
         }
     }
 }
-
 @Composable
 fun SettingsItem(
     icon: ImageVector,
@@ -373,11 +378,11 @@ fun SettingsItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = Typography.bodyLarge
+                style = MaterialTheme.typography.typography.bodyLarge
             )
             Text(
                 text = subtitle,
-                style = Typography.bodySmall,
+                style = MaterialTheme.typography.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -389,7 +394,6 @@ fun SettingsItem(
         )
     }
 }
-
 @Composable
 fun SettingsItemSwitch(
     icon: ImageVector,
@@ -415,11 +419,11 @@ fun SettingsItemSwitch(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = Typography.bodyLarge
+                style = MaterialTheme.typography.typography.bodyLarge
             )
             Text(
                 text = subtitle,
-                style = Typography.bodySmall,
+                style = MaterialTheme.typography.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -430,7 +434,6 @@ fun SettingsItemSwitch(
         )
     }
 }
-
 @Composable
 fun DailyTimeDialog(
     currentMinutes: Int,
@@ -456,7 +459,7 @@ fun DailyTimeDialog(
                 
                 Text(
                     text = "$selectedMinutes 分钟",
-                    style = Typography.titleMedium,
+                    style = MaterialTheme.typography.typography.titleMedium,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
@@ -473,7 +476,6 @@ fun DailyTimeDialog(
         }
     )
 }
-
 @Composable
 fun ReminderTimeDialog(
     currentTime: String,

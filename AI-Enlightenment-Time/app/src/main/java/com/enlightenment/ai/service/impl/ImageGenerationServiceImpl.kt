@@ -10,12 +10,13 @@ import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+
+
 /**
  * 图像生成服务实现
  * 使用 grok-4-imageGen 模型生成图像
  */
-
-class ImageGenerationServiceImpl constructor(
+class ImageGenerationServiceImpl(
     private val configManager: AIConfigManager,
     private val grokImageApi: GrokImageApi,
     private val secureStorage: SecureStorage

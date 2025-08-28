@@ -11,11 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
-/**
- * 简化版MainActivity，用于测试编译问题
- */
 
-class SimpleMainActivity : ComponentActivity() {
+
+/**
+ * 简化版MainActivityNoHilt，用于测试编译问题
+ */
+class SimpleMainActivityNoHilt : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

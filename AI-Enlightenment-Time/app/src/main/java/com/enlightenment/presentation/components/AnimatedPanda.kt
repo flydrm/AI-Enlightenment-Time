@@ -4,15 +4,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
+
+
 
 // PandaMood已在单独文件中定义
-
 @Composable
 fun AnimatedPanda(
     mood: PandaMood = PandaMood.HAPPY,
@@ -29,9 +31,10 @@ fun AnimatedPanda(
             text = when (mood) {
                 PandaMood.HAPPY -> "🐼"
                 PandaMood.EXCITED -> "🎉"
-                PandaMood.CURIOUS -> "🤔"
-                PandaMood.SLEEPY -> "😴"
-                PandaMood.PROUD -> "🌟"
+                PandaMood.THINKING -> "🤔"
+                PandaMood.SLEEPING -> "😴"
+                PandaMood.WAVING -> "👋"
+                PandaMood.SURPRISED -> "😲"
             },
             style = MaterialTheme.typography.displayLarge
         )

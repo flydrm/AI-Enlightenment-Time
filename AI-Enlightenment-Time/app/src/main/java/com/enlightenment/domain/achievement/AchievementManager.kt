@@ -5,16 +5,17 @@ import com.enlightenment.data.preference.UserPreferences
 import com.enlightenment.domain.model.Achievement
 import com.enlightenment.security.AuditLogger
 import com.enlightenment.security.UserAction
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.Flow
+
+
 
 /**
  * 成就系统管理器
  * 负责成就的解锁、进度追踪和奖励发放
  */
-
-class AchievementManager constructor(
+class AchievementManager(
     private val database: AppDatabase,
     private val userPreferences: UserPreferences,
     private val auditLogger: AuditLogger
@@ -319,12 +320,10 @@ class AchievementManager constructor(
         return categories.size == com.enlightenment.domain.model.StoryCategory.values().size
     }
 }
-
 /**
  * 成就类别
  */
 // 使用 com.enlightenment.domain.model.AchievementCategory
-
 /**
  * 成就要求
  */
@@ -339,7 +338,6 @@ sealed class AchievementRequirement {
     object NightOwl : AchievementRequirement()
     object AllCategories : AchievementRequirement()
 }
-
 /**
  * 成就触发器
  */
@@ -350,7 +348,6 @@ enum class AchievementTrigger {
     SESSION_STARTED,
     DAILY_CHECK
 }
-
 /**
  * 成就进度
  */

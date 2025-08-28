@@ -5,37 +5,34 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+
+
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "ai_config")
-
 /**
  * AI配置管理实现
  */
-
-class AIConfigManagerImpl constructor(
+class AIConfigManagerImpl(
     private val context: Context
 ) : AIConfigManager {
-
     private val keyAlias = "AIEnlightenmentKeyAlias"
     private val androidKeyStore = "AndroidKeyStore"
     private val transformation = "AES/GCM/NoPadding"
     private val healthStatusMap = mutableMapOf<AIModelType, ModelHealthStatus>()
-
     init {
         generateKey()
     }
-
     override suspend fun updateConfig(
         modelType: AIModelType,
         appKey: String?,
@@ -78,7 +75,6 @@ class AIConfigManagerImpl constructor(
             Result.failure(e)
         }
     }
-
     override suspend fun getConfig(modelType: AIModelType): ModelConfig? {
         val currentEnv = getCurrentEnvironment()
         val preferences = context.dataStore.data.first()
@@ -106,7 +102,6 @@ class AIConfigManagerImpl constructor(
             null
         }
     }
-
     override suspend fun testConnection(modelType: AIModelType): Result<ModelHealthStatus> {
         return try {
             val config = getConfig(modelType) 
@@ -131,7 +126,6 @@ class AIConfigManagerImpl constructor(
             Result.failure(e)
         }
     }
-
     override suspend fun switchEnvironment(environment: Environment): Result<Unit> {
         return try {
             context.dataStore.edit { preferences ->
@@ -142,7 +136,6 @@ class AIConfigManagerImpl constructor(
             Result.failure(e)
         }
     }
-
     override suspend fun getCurrentEnvironment(): Environment {
         val envName = context.dataStore.data
             .map { preferences -> preferences[AIConfigKeys.CURRENT_ENVIRONMENT] }
@@ -150,7 +143,6 @@ class AIConfigManagerImpl constructor(
         
         return envName?.let { Environment.valueOf(it) } ?: Environment.PRODUCTION
     }
-
     override suspend fun getHealthStatus(modelType: AIModelType): ModelHealthStatus {
         return healthStatusMap[modelType] ?: ModelHealthStatus(
             modelType = modelType,
@@ -162,7 +154,6 @@ class AIConfigManagerImpl constructor(
             inCircuitBreaker = false
         )
     }
-
     override suspend fun updateHealthStatus(
         modelType: AIModelType,
         isSuccess: Boolean,
@@ -196,7 +187,6 @@ class AIConfigManagerImpl constructor(
         
         healthStatusMap[modelType] = updatedStatus
     }
-
     override suspend fun getHealthyModelsForCapability(capability: ModelCapability): List<AIModelType> {
         val modelsWithCapability = ModelCapabilityMapping.getModelsForCapability(capability)
         val currentEnv = getCurrentEnvironment()
@@ -210,16 +200,13 @@ class AIConfigManagerImpl constructor(
             !healthStatus.inCircuitBreaker
         }.sortedByDescending { getHealthStatus(it).successRate }
     }
-
     override suspend fun clearAllConfigs() {
         context.dataStore.edit { preferences ->
             preferences.clear()
         }
         healthStatusMap.clear()
     }
-
     // 私有辅助方法
-
     private fun generateKey() {
         val keyStore = KeyStore.getInstance(androidKeyStore)
         keyStore.load(null)
@@ -242,13 +229,11 @@ class AIConfigManagerImpl constructor(
             keyGenerator.generateKey()
         }
     }
-
     private fun getSecretKey(): SecretKey {
         val keyStore = KeyStore.getInstance(androidKeyStore)
         keyStore.load(null)
         return keyStore.getKey(keyAlias, null) as SecretKey
     }
-
     private fun encryptData(data: String): String {
         val cipher = Cipher.getInstance(transformation)
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
@@ -263,7 +248,6 @@ class AIConfigManagerImpl constructor(
         
         return Base64.encodeToString(combined, Base64.DEFAULT)
     }
-
     private fun decryptData(encryptedData: String): String {
         val combined = Base64.decode(encryptedData, Base64.DEFAULT)
         
@@ -280,7 +264,6 @@ class AIConfigManagerImpl constructor(
         val decrypted = cipher.doFinal(encrypted)
         return String(decrypted)
     }
-
     private suspend fun getWhitelist(): List<String> {
         val whitelistStr = context.dataStore.data
             .map { preferences -> preferences[AIConfigKeys.DOMAIN_WHITELIST] }
@@ -288,7 +271,6 @@ class AIConfigManagerImpl constructor(
         
         return whitelistStr?.split(",")?.map { it.trim() } ?: emptyList()
     }
-
     private fun logConfigChange(
         modelType: AIModelType,
         keyChanged: Boolean,

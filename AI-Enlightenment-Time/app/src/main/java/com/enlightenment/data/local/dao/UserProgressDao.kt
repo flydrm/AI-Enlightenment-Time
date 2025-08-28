@@ -4,6 +4,8 @@ import androidx.room.*
 import com.enlightenment.data.local.entity.UserProgressEntity
 import kotlinx.coroutines.flow.Flow
 
+
+
 @Dao
 interface UserProgressDao {
     @Query("SELECT * FROM user_progress WHERE userId = :userId")

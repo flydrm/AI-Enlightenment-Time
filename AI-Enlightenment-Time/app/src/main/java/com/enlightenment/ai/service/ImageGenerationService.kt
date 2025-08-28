@@ -1,5 +1,6 @@
 package com.enlightenment.ai.service
 
+
 /**
  * 图像生成服务接口
  */
@@ -40,7 +41,6 @@ interface ImageGenerationService {
         characterDescription: String
     ): String?
 }
-
 /**
  * 图像风格枚举
  */

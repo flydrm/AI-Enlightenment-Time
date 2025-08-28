@@ -5,17 +5,18 @@ import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.MainThread
+import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlin.system.measureTimeMillis
+
+
 
 /**
  * 性能监控器
  * 监控应用性能指标并提供优化建议
  */
-
-class PerformanceMonitor constructor(
+class PerformanceMonitor(
     private val memoryOptimizer: MemoryOptimizer
 ) {
     companion object {
@@ -203,7 +204,6 @@ class PerformanceMonitor constructor(
         }
     }
 }
-
 /**
  * 性能指标数据类
  */
@@ -217,7 +217,6 @@ data class PerformanceMetrics(
     val isLowMemory: Boolean = false,
     val slowMethods: List<SlowMethod> = emptyList()
 )
-
 data class SlowMethod(
     val name: String,
     val duration: Long

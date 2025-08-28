@@ -1,12 +1,14 @@
 package com.enlightenment.domain.repository
 
-import com.enlightenment.domain.model.UserProgress
-import com.enlightenment.domain.model.DailyProgress
 import com.enlightenment.domain.model.Achievement
+import com.enlightenment.domain.model.DailyProgress
+import com.enlightenment.domain.model.UserProgress
 import kotlinx.coroutines.flow.Flow
 
+
+
 interface UserProgressRepository {
-    suspend fun getUserProgress(): Flow<UserProgress>
+    suspend fun getUserProgress("default_user"): Flow<UserProgress>
     
     suspend fun updateProgress(progress: UserProgress)
     

@@ -5,11 +5,11 @@ import com.enlightenment.multimedia.audio.AudioServiceImpl
 import com.enlightenment.multimedia.camera.CameraService
 import com.enlightenment.multimedia.camera.CameraServiceImpl
 
+
+
 /**
  * 多媒体服务依赖注入模块
  */
-
-
 abstract class MultimediaModule {
     
     @Binds

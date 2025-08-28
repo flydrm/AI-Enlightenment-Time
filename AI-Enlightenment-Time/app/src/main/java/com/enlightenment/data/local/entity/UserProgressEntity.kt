@@ -7,6 +7,8 @@ import com.enlightenment.data.local.converter.Converters
 import com.enlightenment.domain.model.StoryCategory
 import com.enlightenment.domain.model.UserProgress
 
+
+
 @Entity(tableName = "user_progress")
 @TypeConverters(Converters::class)
 data class UserProgressEntity(

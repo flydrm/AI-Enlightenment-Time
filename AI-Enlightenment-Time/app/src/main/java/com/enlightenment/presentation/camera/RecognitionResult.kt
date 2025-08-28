@@ -2,6 +2,8 @@ package com.enlightenment.presentation.camera
 
 import com.enlightenment.ai.model.RecognitionResult as AIRecognitionResult
 
+
+
 /**
  * 相机识别结果
  */

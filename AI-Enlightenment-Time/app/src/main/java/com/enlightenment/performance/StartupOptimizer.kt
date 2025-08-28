@@ -5,12 +5,13 @@ import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.offline.OfflineManager
 import kotlinx.coroutines.*
 
+
+
 /**
  * 启动优化器
  * 使用 App Startup 库优化应用启动性能
  */
-
-class StartupOptimizer constructor(
+class StartupOptimizer(
     private val context: Context
 ) {
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
@@ -122,5 +123,4 @@ class StartupOptimizer constructor(
         // 清理各种内存缓存
     }
 }
-
 // StartupInitializer 已移除，因为使用Hilt进行依赖注入

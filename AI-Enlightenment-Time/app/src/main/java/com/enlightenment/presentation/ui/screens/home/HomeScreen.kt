@@ -7,14 +7,16 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.enlightenment.presentation.navigation.Screen
 import com.enlightenment.presentation.ui.components.FeatureCard
@@ -22,10 +24,12 @@ import com.enlightenment.presentation.ui.components.PandaMascot
 import com.enlightenment.presentation.ui.components.StoryCard
 import com.enlightenment.presentation.ui.theme.*
 
+
+
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = remember { HomeViewModel() }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
@@ -44,7 +48,6 @@ fun HomeScreen(
         onFeatureClick = viewModel::onFeatureClick
     )
 }
-
 @Composable
 private fun HomeContent(
     uiState: HomeUiState,
@@ -132,8 +135,8 @@ private fun HomeContent(
             }
         }
         
-        // Loading indicator
-        if (uiState.isLoading) {
+        // "Loading" indicator
+        if (uiState.is"Loading") {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center),
                 color = PrimaryRed
@@ -141,7 +144,6 @@ private fun HomeContent(
         }
     }
 }
-
 @Composable
 private fun HomeHeader(
     greeting: String,
@@ -157,7 +159,7 @@ private fun HomeHeader(
         Column {
             Text(
                 text = greeting,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold
             )
@@ -166,7 +168,7 @@ private fun HomeHeader(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "🔥 连续学习 $streak 天",
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
@@ -186,7 +188,6 @@ private fun HomeHeader(
         }
     }
 }
-
 @Composable
 private fun RecentStoriesSection(
     stories: List<Story>,
@@ -195,7 +196,7 @@ private fun RecentStoriesSection(
     Column {
         Text(
             text = "最近的故事",
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(bottom = 8.dp)
         )

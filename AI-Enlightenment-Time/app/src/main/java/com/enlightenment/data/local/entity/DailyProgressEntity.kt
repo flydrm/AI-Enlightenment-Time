@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.enlightenment.domain.model.DailyProgress
 
+
+
 /**
  * 每日进度数据实体
  */

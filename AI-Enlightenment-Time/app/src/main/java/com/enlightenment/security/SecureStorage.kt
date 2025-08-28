@@ -4,12 +4,13 @@ import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
+
+
 /**
  * 安全存储服务
  * 使用Android加密共享首选项存储敏感数据
  */
-
-class SecureStorage constructor(
+class SecureStorage(
     private val context: Context
 ) {
     
@@ -61,7 +62,7 @@ class SecureStorage constructor(
             AIService.QWEN -> KEY_QWEN_API
             AIService.BGE -> KEY_BGE_API
         }
-        return encryptedPrefs.getString(key, null)
+        return encryptedPrefs.getString(key, null) ?: ""
     }
     
     // 便捷方法
@@ -84,7 +85,7 @@ class SecureStorage constructor(
      * 验证家长PIN码
      */
     fun verifyParentPin(pin: String): Boolean {
-        val storedHash = encryptedPrefs.getString(KEY_PARENT_PIN, null) ?: return false
+        val storedHash = encryptedPrefs.getString(KEY_PARENT_PIN, null) ?: "" ?: return false
         return hashPin(pin) == storedHash
     }
     
@@ -100,7 +101,7 @@ class SecureStorage constructor(
      * 获取儿童档案信息
      */
     fun getChildProfile(): ChildProfile? {
-        val json = encryptedPrefs.getString(KEY_CHILD_PROFILE, null) ?: return null
+        val json = encryptedPrefs.getString(KEY_CHILD_PROFILE, null) ?: "" ?: return null
         return ChildProfile.fromJson(json)
     }
     
@@ -128,7 +129,6 @@ class SecureStorage constructor(
         return hash.fold("") { str, byte -> str + "%02x".format(byte) }
     }
 }
-
 /**
  * AI服务枚举
  */
@@ -139,7 +139,6 @@ enum class AIService {
     QWEN,
     BGE
 }
-
 /**
  * 儿童档案
  */
@@ -175,7 +174,6 @@ data class ChildProfile(
         }
     }
 }
-
 /**
  * 家长控制设置
  */
@@ -186,7 +184,6 @@ data class ParentalControls(
     val allowCameraAccess: Boolean = true,
     val requirePinForSettings: Boolean = true
 )
-
 /**
  * 内容过滤级别
  */

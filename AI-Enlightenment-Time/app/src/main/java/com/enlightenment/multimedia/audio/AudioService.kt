@@ -7,6 +7,8 @@ import android.media.MediaRecorder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
+
+
 /**
  * 音频服务接口
  */
@@ -51,7 +53,6 @@ interface AudioService {
      */
     fun release()
 }
-
 /**
  * 录音状态
  */
@@ -61,7 +62,6 @@ sealed class RecordingState {
     object Processing : RecordingState()
     data class Error(val message: String) : RecordingState()
 }
-
 /**
  * 音频数据
  */

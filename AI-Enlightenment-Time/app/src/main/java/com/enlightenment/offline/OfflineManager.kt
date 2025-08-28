@@ -9,16 +9,17 @@ import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.data.local.entity.StoryEntity
 import com.enlightenment.domain.model.Story
 import com.enlightenment.security.AuditLogger
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+
+
 
 /**
  * 离线模式管理器
  * 负责管理应用的离线功能和网络状态监控
  */
-
-class OfflineManager constructor(
+class OfflineManager(
     private val context: Context,
     private val database: AppDatabase,
     private val auditLogger: AuditLogger
@@ -309,7 +310,6 @@ class OfflineManager constructor(
         )
     }
 }
-
 /**
  * 网络状态
  */
@@ -319,7 +319,6 @@ enum class NetworkState {
     DISCONNECTED, // 已断开
     LIMITED       // 受限（如仅连接但无互联网）
 }
-
 /**
  * 离线模式
  */
@@ -328,7 +327,6 @@ enum class OfflineMode {
     PARTIAL,   // 部分离线（优先缓存）
     FULL       // 完全离线
 }
-
 /**
  * 离线内容统计
  */

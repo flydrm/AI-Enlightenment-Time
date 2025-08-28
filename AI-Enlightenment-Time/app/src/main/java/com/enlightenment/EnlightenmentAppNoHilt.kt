@@ -1,7 +1,10 @@
 package com.enlightenment
 
 import android.app.Application
+import com.enlightenment.BuildConfig
 import com.enlightenment.di.DIContainer
+
+
 
 /**
  * 不使用Hilt的Application类
@@ -22,12 +25,10 @@ class EnlightenmentAppNoHilt : Application() {
             DIContainer.performanceMonitor.startMonitoring()
         }
     }
-
     override fun onLowMemory() {
         super.onLowMemory()
         DIContainer.memoryOptimizer.onLowMemory()
     }
-
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
         DIContainer.memoryOptimizer.onTrimMemory(level)

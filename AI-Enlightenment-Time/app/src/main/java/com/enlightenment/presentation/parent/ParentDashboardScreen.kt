@@ -1,27 +1,34 @@
 package com.enlightenment.presentation.parent
 
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.enlightenment.presentation.ui.theme.Typography
+
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParentDashboardScreen(
     navController: NavController,
-    viewModel: ParentDashboardViewModel = hiltViewModel()
+    viewModel: ParentDashboardViewModel = remember { HomeViewModel() }
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
@@ -31,7 +38,7 @@ fun ParentDashboardScreen(
                 title = { 
                     Text(
                         "家长控制面板",
-                        style = Typography.headlineMedium
+                        style = MaterialTheme.typography.typography.headlineMedium
                     )
                 },
                 navigationIcon = {
@@ -99,7 +106,6 @@ fun ParentDashboardScreen(
         }
     }
 }
-
 @Composable
 fun LearningOverviewCard(
     totalLearningTime: Int,
@@ -115,7 +121,7 @@ fun LearningOverviewCard(
         ) {
             Text(
                 "学习概览",
-                style = Typography.titleLarge,
+                style = MaterialTheme.typography.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -146,7 +152,6 @@ fun LearningOverviewCard(
         }
     }
 }
-
 @Composable
 fun StatisticItem(
     value: String,
@@ -165,17 +170,16 @@ fun StatisticItem(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = value,
-            style = Typography.titleMedium,
+            style = MaterialTheme.typography.typography.titleMedium,
             fontWeight = FontWeight.Bold
         )
         Text(
             text = label,
-            style = Typography.bodySmall,
+            style = MaterialTheme.typography.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
-
 @Composable
 fun QuickActionsCard(
     onViewReport: () -> Unit,
@@ -192,7 +196,7 @@ fun QuickActionsCard(
         ) {
             Text(
                 "快速操作",
-                style = Typography.titleLarge,
+                style = MaterialTheme.typography.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -240,7 +244,6 @@ fun QuickActionsCard(
         }
     }
 }
-
 @Composable
 fun ActionButton(
     text: String,
@@ -262,7 +265,6 @@ fun ActionButton(
         Text(text)
     }
 }
-
 @Composable
 fun TodayActivityCard(
     activities: List<Activity>
@@ -276,7 +278,7 @@ fun TodayActivityCard(
         ) {
             Text(
                 "今日活动",
-                style = Typography.titleLarge,
+                style = MaterialTheme.typography.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -285,7 +287,7 @@ fun TodayActivityCard(
             if (activities.isEmpty()) {
                 Text(
                     "今天还没有学习活动",
-                    style = Typography.bodyMedium,
+                    style = MaterialTheme.typography.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             } else {
@@ -297,7 +299,6 @@ fun TodayActivityCard(
         }
     }
 }
-
 @Composable
 fun ActivityItem(activity: Activity) {
     Row(
@@ -324,24 +325,23 @@ fun ActivityItem(activity: Activity) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = activity.title,
-                style = Typography.bodyMedium,
+                style = MaterialTheme.typography.typography.bodyMedium,
                 fontWeight = FontWeight.Medium
             )
             Text(
                 text = activity.time,
-                style = Typography.bodySmall,
+                style = MaterialTheme.typography.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         
         Text(
             text = "${activity.duration}分钟",
-            style = Typography.bodySmall,
+            style = MaterialTheme.typography.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
-
 @Composable
 fun AchievementProgressCard(
     unlockedCount: Int,
@@ -362,13 +362,13 @@ fun AchievementProgressCard(
             ) {
                 Text(
                     "成就进度",
-                    style = Typography.titleLarge,
+                    style = MaterialTheme.typography.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
                 
                 Text(
                     "$unlockedCount / $totalCount",
-                    style = Typography.titleMedium,
+                    style = MaterialTheme.typography.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
@@ -387,13 +387,13 @@ fun AchievementProgressCard(
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     "最近解锁：",
-                    style = Typography.bodySmall,
+                    style = MaterialTheme.typography.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 recentAchievements.forEach { achievement ->
                     Text(
                         "• $achievement",
-                        style = Typography.bodySmall,
+                        style = MaterialTheme.typography.typography.bodySmall,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
                     )
                 }
@@ -401,7 +401,6 @@ fun AchievementProgressCard(
         }
     }
 }
-
 @Composable
 fun SecuritySettingsCard(
     onChangePin: () -> Unit,
@@ -416,7 +415,7 @@ fun SecuritySettingsCard(
         ) {
             Text(
                 "安全设置",
-                style = Typography.titleLarge,
+                style = MaterialTheme.typography.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -455,7 +454,6 @@ fun SecuritySettingsCard(
         }
     }
 }
-
 // 数据类
 data class Activity(
     val title: String,
@@ -463,7 +461,6 @@ data class Activity(
     val duration: Int,
     val type: ActivityType
 )
-
 enum class ActivityType {
     STORY,
     EXPLORATION,

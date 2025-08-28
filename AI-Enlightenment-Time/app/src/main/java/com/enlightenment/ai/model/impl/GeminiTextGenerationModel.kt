@@ -6,11 +6,12 @@ import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+
+
 /**
  * Gemini文本生成模型实现
  */
-
-class GeminiTextGenerationModel constructor(
+class GeminiTextGenerationModel(
     private val geminiApi: GeminiApi,
     private val secureStorage: SecureStorage
 ) : TextGenerationModel {
@@ -149,7 +150,6 @@ class GeminiTextGenerationModel constructor(
         return generateText(prompt, length, 0.8f)
     }
 }
-
 /**
  * 对话角色
  */
@@ -158,7 +158,6 @@ enum class ChatRole {
     MODEL,
     SYSTEM
 }
-
 /**
  * 对话轮次
  */
@@ -166,7 +165,6 @@ data class ChatTurn(
     val role: ChatRole,
     val message: String
 )
-
 /**
  * 自定义异常
  */

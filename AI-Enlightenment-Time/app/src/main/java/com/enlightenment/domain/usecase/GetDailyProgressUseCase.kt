@@ -2,10 +2,12 @@ package com.enlightenment.domain.usecase
 
 import com.enlightenment.domain.model.DailyProgress
 import com.enlightenment.domain.repository.UserProgressRepository
-import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
+import kotlinx.coroutines.flow.Flow
 
-class GetDailyProgressUseCase constructor(
+
+
+class GetDailyProgressUseCase(
     private val userProgressRepository: UserProgressRepository
 ) {
     suspend operator fun invoke(date: LocalDate): Result<DailyProgress> {

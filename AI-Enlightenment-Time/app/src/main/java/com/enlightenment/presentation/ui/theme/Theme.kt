@@ -2,14 +2,17 @@ package com.enlightenment.presentation.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+
+
 
 private val LightColorScheme = lightColorScheme(
     primary = PrimaryRed,
@@ -45,7 +48,6 @@ private val LightColorScheme = lightColorScheme(
     
     scrim = Color.Black.copy(alpha = 0.32f)
 )
-
 @Composable
 fun EnlightenmentTheme(
     darkTheme: Boolean = false, // Children's app typically doesn't need dark theme
@@ -62,7 +64,6 @@ fun EnlightenmentTheme(
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
         }
     }
-
     MaterialTheme(
         colorScheme = colorScheme,
         typography = ChildFriendlyTypography,

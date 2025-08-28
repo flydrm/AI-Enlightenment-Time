@@ -1,11 +1,15 @@
 package com.enlightenment.domain.model
 
+import java.util.Date
+
+
+
 data class WeeklyProgress(
-    val weekStart: Long,
-    val weekEnd: Long,
-    val dailyProgress: List<DailyProgress>,
-    val totalStoriesCompleted: Int,
-    val totalLearningMinutes: Int,
-    val averageStoriesPerDay: Double,
-    val streakDays: Int
+    val weekStart: Date = Date(),
+    val weekEnd: Date = Date(),
+    val dailyProgress: List<DailyProgress> = emptyList(),
+    val totalStoriesCompleted: Int = 0,
+    val totalLearningMinutes: Int = 0,
+    val averageStoriesPerDay: Float = 0f,
+    val streakDays: Int = 0
 )

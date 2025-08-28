@@ -2,6 +2,8 @@ package com.enlightenment.data.network.api
 
 import retrofit2.http.*
 
+
+
 /**
  * BAAI/bge-reranker-v2-m3 重排序API接口
  * 用于搜索结果重排序
@@ -32,7 +34,6 @@ interface BGERerankerApi {
         @Body request: BatchRerankRequest
     ): BatchRerankResponse
 }
-
 /**
  * 重排序请求
  */
@@ -43,7 +44,6 @@ data class RerankRequest(
     val topN: Int? = null,
     val returnDocuments: Boolean? = true
 )
-
 /**
  * 重排序响应
  */
@@ -51,7 +51,6 @@ data class RerankResponse(
     val results: List<RerankResult>,
     val meta: RerankMeta? = null
 )
-
 /**
  * 重排序结果
  */
@@ -60,7 +59,6 @@ data class RerankResult(
     val relevanceScore: Float,
     val document: String? = null
 )
-
 /**
  * 重排序元数据
  */
@@ -68,7 +66,6 @@ data class RerankMeta(
     val apiVersion: String,
     val billedUnits: Int? = null
 )
-
 /**
  * 批量重排序请求
  */
@@ -77,7 +74,6 @@ data class BatchRerankRequest(
     val queries: List<RerankQuery>,
     val returnDocuments: Boolean? = true
 )
-
 /**
  * 重排序查询
  */
@@ -87,7 +83,6 @@ data class RerankQuery(
     val documents: List<String>,
     val topN: Int? = null
 )
-
 /**
  * 批量重排序响应
  */
@@ -95,7 +90,6 @@ data class BatchRerankResponse(
     val results: List<BatchRerankResult>,
     val meta: RerankMeta? = null
 )
-
 /**
  * 批量重排序结果
  */
@@ -103,7 +97,6 @@ data class BatchRerankResult(
     val id: String,
     val results: List<RerankResult>
 )
-
 /**
  * 儿童内容重排序助手
  */

@@ -1,26 +1,30 @@
 package com.enlightenment.presentation.ui.screens.story
 
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
+import androidx.compose.material3.*
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.enlightenment.domain.model.AgeGroup
 import com.enlightenment.domain.model.Story
@@ -29,11 +33,15 @@ import com.enlightenment.presentation.navigation.Screen
 import com.enlightenment.presentation.ui.components.StoryCard
 import com.enlightenment.presentation.ui.theme.*
 
+
+
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoryScreen(
     navController: NavController,
-    viewModel: StoryViewModel = hiltViewModel()
+    viewModel: StoryViewModel = remember { HomeViewModel() }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
@@ -43,7 +51,7 @@ fun StoryScreen(
                 title = { 
                     Text(
                         "故事世界",
-                        style = MaterialTheme.typography.headlineMedium
+                        style = MaterialTheme.typography.typography.headlineMedium
                     )
                 },
                 navigationIcon = {
@@ -95,7 +103,7 @@ fun StoryScreen(
         )
     }
     
-    // Loading indicator
+    // "Loading" indicator
     if (uiState.isGenerating) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -115,14 +123,13 @@ fun StoryScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         "正在生成精彩故事...",
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.typography.bodyLarge
                     )
                 }
             }
         }
     }
 }
-
 @Composable
 private fun StoryContent(
     uiState: StoryUiState,
@@ -143,7 +150,7 @@ private fun StoryContent(
         item {
             Text(
                 "选择类别",
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -187,7 +194,7 @@ private fun StoryContent(
         item {
             Text(
                 "年龄段",
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -235,13 +242,13 @@ private fun StoryContent(
                     ) {
                         Text(
                             "还没有故事",
-                            style = MaterialTheme.typography.titleMedium,
+                            style = MaterialTheme.typography.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             "点击下方按钮生成新故事",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -264,7 +271,6 @@ private fun StoryContent(
         }
     }
 }
-
 @Composable
 private fun GeneratedStoryDialog(
     story: Story,
@@ -284,7 +290,7 @@ private fun GeneratedStoryDialog(
             Column {
                 Text(
                     story.title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
@@ -292,14 +298,14 @@ private fun GeneratedStoryDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     "${story.category.icon} ${story.category.displayName}",
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     "时长: ${story.duration / 60}分钟",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()

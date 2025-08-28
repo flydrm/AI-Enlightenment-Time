@@ -1,10 +1,12 @@
 package com.enlightenment.data.network.interceptor
 
+import java.io.IOException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.io.IOException
+
+
 
 /**
  * 重试拦截器

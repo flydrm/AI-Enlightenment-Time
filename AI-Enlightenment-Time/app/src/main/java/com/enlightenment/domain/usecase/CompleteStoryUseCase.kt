@@ -3,7 +3,9 @@ package com.enlightenment.domain.usecase
 import com.enlightenment.domain.repository.StoryRepository
 import com.enlightenment.domain.repository.UserProgressRepository
 
-class CompleteStoryUseCase constructor(
+
+
+class CompleteStoryUseCase(
     private val storyRepository: StoryRepository,
     private val progressRepository: UserProgressRepository
 ) {

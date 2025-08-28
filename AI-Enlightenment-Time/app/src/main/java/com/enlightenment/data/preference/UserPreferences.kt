@@ -4,18 +4,18 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
 import java.io.IOException
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_preferences")
-
 /**
  * 用户偏好设置管理器
  */
-
-class UserPreferences constructor(
+class UserPreferences(
     private val context: Context
 ) {
     

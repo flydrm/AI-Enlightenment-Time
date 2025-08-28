@@ -11,8 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+
+
 /**
- * 不使用Hilt的简单MainActivity
+ * 不使用Hilt的简单MainActivityNoHilt
  */
 class SimpleMainActivityNoHilt : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -5,17 +5,19 @@ import com.enlightenment.ai.model.VoiceConfig
 import com.enlightenment.ai.model.VoiceType
 import com.enlightenment.data.network.OpenAIApi
 import com.enlightenment.data.network.OpenAIApi.CreateSpeechRequest
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
-import java.io.IOException
+
+
 
 /**
  * OpenAI TTS 模型实现
  */
-class OpenAITextToSpeechModel constructor(
+class OpenAITextToSpeechModel(
     private val openAIApi: OpenAIApi,
     @Named("OPENAI_API_KEY") private val apiKey: String?
 ) : TextToSpeechModel {

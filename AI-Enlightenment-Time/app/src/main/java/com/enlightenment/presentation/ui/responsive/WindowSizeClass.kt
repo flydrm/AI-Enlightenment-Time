@@ -3,8 +3,10 @@ package com.enlightenment.presentation.ui.responsive
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
+
+
 
 /**
  * 窗口大小类别
@@ -15,7 +17,6 @@ enum class WindowSizeClass {
     MEDIUM,     // 平板竖屏或大手机横屏 (600dp - 840dp)
     EXPANDED    // 平板横屏或桌面 (> 840dp)
 }
-
 /**
  * 获取当前窗口大小类别
  */
@@ -28,7 +29,6 @@ fun rememberWindowSizeClass(): WindowSizeClass {
         getWindowSizeClass(screenWidth)
     }
 }
-
 /**
  * 根据宽度获取窗口大小类别
  */
@@ -39,7 +39,6 @@ fun getWindowSizeClass(width: Dp): WindowSizeClass {
         else -> WindowSizeClass.EXPANDED
     }
 }
-
 /**
  * 设备方向
  */
@@ -47,7 +46,6 @@ enum class DeviceOrientation {
     PORTRAIT,
     LANDSCAPE
 }
-
 /**
  * 获取设备方向
  */
@@ -61,7 +59,6 @@ fun rememberDeviceOrientation(): DeviceOrientation {
         }
     }
 }
-
 /**
  * 响应式尺寸数据类
  */
@@ -71,7 +68,6 @@ data class ResponsiveSizes(
     val screenWidthDp: Dp,
     val screenHeightDp: Dp
 )
-
 /**
  * 获取响应式尺寸信息
  */
@@ -90,7 +86,6 @@ fun rememberResponsiveSizes(): ResponsiveSizes {
         )
     }
 }
-
 /**
  * 响应式内边距
  */
@@ -113,7 +108,6 @@ object ResponsivePadding {
         }
     }
 }
-
 /**
  * 响应式网格列数
  */

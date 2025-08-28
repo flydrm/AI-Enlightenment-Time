@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
@@ -14,7 +15,8 @@ import com.enlightenment.presentation.navigation.AppNavigation
 import com.enlightenment.presentation.ui.theme.EnlightenmentTheme
 
 
-class MainActivity : ComponentActivity() {
+
+class MainActivityNoHilt : ComponentActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +36,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun EnlightenmentApp() {
     val navController = rememberNavController()

@@ -2,6 +2,8 @@ package com.enlightenment.data.network.api
 
 import retrofit2.http.*
 
+
+
 /**
  * 通义千问嵌入模型API接口
  * 用于图像向量化
@@ -42,7 +44,6 @@ interface QwenApi {
         @Body request: QwenImageUnderstandingRequest
     ): QwenImageUnderstandingResponse
 }
-
 /**
  * 嵌入请求
  */
@@ -51,21 +52,18 @@ data class QwenEmbeddingRequest(
     val input: QwenInput,
     val parameters: QwenEmbeddingParameters? = null
 )
-
 /**
  * 输入数据
  */
 data class QwenInput(
     val texts: List<String>
 )
-
 /**
  * 嵌入参数
  */
 data class QwenEmbeddingParameters(
     val textType: String? = "query" // query, document
 )
-
 /**
  * 嵌入响应
  */
@@ -74,14 +72,12 @@ data class QwenEmbeddingResponse(
     val usage: QwenUsage,
     val requestId: String
 )
-
 /**
  * 嵌入输出
  */
 data class QwenEmbeddingOutput(
     val embeddings: List<Embedding>
 )
-
 /**
  * 嵌入向量
  */
@@ -89,7 +85,6 @@ data class Embedding(
     val textIndex: Int,
     val embedding: List<Float>
 )
-
 /**
  * 多模态请求
  */
@@ -98,14 +93,12 @@ data class QwenMultimodalRequest(
     val input: QwenMultimodalInput,
     val parameters: QwenMultimodalParameters? = null
 )
-
 /**
  * 多模态输入
  */
 data class QwenMultimodalInput(
     val messages: List<QwenMessage>
 )
-
 /**
  * 消息
  */
@@ -113,7 +106,6 @@ data class QwenMessage(
     val role: String, // system, user, assistant
     val content: List<QwenContent>
 )
-
 /**
  * 内容
  */
@@ -121,7 +113,6 @@ sealed class QwenContent {
     data class TextContent(val text: String) : QwenContent()
     data class ImageContent(val image: String) : QwenContent() // base64 或 URL
 }
-
 /**
  * 多模态参数
  */
@@ -129,7 +120,6 @@ data class QwenMultimodalParameters(
     val seedId: Int? = null,
     val maxLength: Int? = null
 )
-
 /**
  * 多模态响应
  */
@@ -138,14 +128,12 @@ data class QwenMultimodalResponse(
     val usage: QwenUsage,
     val requestId: String
 )
-
 /**
  * 多模态输出
  */
 data class QwenMultimodalOutput(
     val choices: List<QwenChoice>
 )
-
 /**
  * 选择
  */
@@ -153,7 +141,6 @@ data class QwenChoice(
     val finishReason: String,
     val message: QwenMessage
 )
-
 /**
  * 使用统计
  */
@@ -162,7 +149,6 @@ data class QwenUsage(
     val outputTokens: Int? = null,
     val imageCount: Int? = null
 )
-
 /**
  * 图像理解请求
  */
@@ -197,7 +183,6 @@ data class QwenImageUnderstandingRequest(
             )
     }
 }
-
 /**
  * 图像参数
  */
@@ -205,7 +190,6 @@ data class QwenImageParameters(
     val maxLength: Int? = 1500,
     val temperature: Float? = 0.8f
 )
-
 /**
  * 图像理解响应
  */

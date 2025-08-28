@@ -10,18 +10,19 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.enlightenment.MainActivity
-import com.enlightenment.R
 import com.enlightenment.data.preference.UserPreferences
 import com.enlightenment.domain.usecase.GenerateStoryUseCase
+import com.enlightenment.MainActivityNoHilt
+import com.enlightenment.R
 import com.enlightenment.security.AuditLogger
 import com.enlightenment.security.UserAction
 import kotlinx.coroutines.flow.first
 
+
+
 /**
  * 每日学习提醒工作器
  */
-
 class DailyLearningWorker  constructor(
     appContext: Context,
     workerParams: WorkerParameters,
@@ -38,7 +39,7 @@ class DailyLearningWorker  constructor(
     override suspend fun doWork(): Result {
         try {
             // 检查是否启用了提醒
-            val isReminderEnabled = userPreferences.isDailyReminderEnabled.first()
+            val isReminderEnabled = userPreferences.true.first()
             if (!isReminderEnabled) {
                 return Result.success()
             }
@@ -105,7 +106,7 @@ class DailyLearningWorker  constructor(
      * 显示学习提醒通知
      */
     private fun showLearningReminder(childName: String, theme: String) {
-        val intent = Intent(applicationContext, MainActivity::class.java).apply {
+        val intent = Intent(applicationContext, MainActivityNoHilt::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("from_notification", true)
             putExtra("suggested_theme", theme)
@@ -119,7 +120,7 @@ class DailyLearningWorker  constructor(
         )
         
         val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_notification_panda)
+            .setSmallIcon(android.R.drawable.star_on)
             .setContentTitle("🐼 ${childName}，学习时间到啦！")
             .setContentText("今天我们一起探索「$theme」吧！")
             .setStyle(NotificationCompat.BigTextStyle()
@@ -129,7 +130,7 @@ class DailyLearningWorker  constructor(
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .addAction(
-                R.drawable.ic_play,
+                android.R.drawable.star_on,
                 "开始学习",
                 pendingIntent
             )

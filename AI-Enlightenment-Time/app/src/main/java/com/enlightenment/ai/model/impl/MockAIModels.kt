@@ -1,14 +1,16 @@
 package com.enlightenment.ai.model.impl
 
 import com.enlightenment.ai.model.*
-import kotlinx.coroutines.delay
 import kotlin.random.Random
+import kotlinx.coroutines.delay
+
+
 
 /**
  * 模拟的文本生成模型
  * 在实际应用中，这里会接入真实的AI API（如OpenAI、通义千问等）
  */
-class MockTextGenerationModel constructor() : TextGenerationModel {
+class MockTextGenerationModel() : TextGenerationModel {
     override val name: String = "MockTextGenerator"
     override val version: String = "1.0.0"
     
@@ -86,11 +88,10 @@ class MockTextGenerationModel constructor() : TextGenerationModel {
         """.trimIndent()
     }
 }
-
 /**
  * 模拟的图像识别模型
  */
-class MockImageRecognitionModel constructor() : ImageRecognitionModel {
+class MockImageRecognitionModel() : ImageRecognitionModel {
     override val name: String = "MockImageRecognizer"
     override val version: String = "1.0.0"
     
@@ -137,11 +138,10 @@ class MockImageRecognitionModel constructor() : ImageRecognitionModel {
         return mockResults.random()
     }
 }
-
 /**
  * 模拟的语音识别模型
  */
-class MockSpeechRecognitionModel constructor() : SpeechRecognitionModel {
+class MockSpeechRecognitionModel() : SpeechRecognitionModel {
     override val name: String = "MockSpeechRecognizer"
     override val version: String = "1.0.0"
     
@@ -172,11 +172,10 @@ class MockSpeechRecognitionModel constructor() : SpeechRecognitionModel {
         return mockTexts.random()
     }
 }
-
 /**
  * 模拟的语音合成模型
  */
-class MockTextToSpeechModel constructor() : TextToSpeechModel {
+class MockTextToSpeechModel() : TextToSpeechModel {
     override val name: String = "MockTTS"
     override val version: String = "1.0.0"
     

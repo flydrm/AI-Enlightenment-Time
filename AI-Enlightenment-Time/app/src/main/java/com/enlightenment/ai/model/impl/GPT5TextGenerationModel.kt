@@ -6,10 +6,11 @@ import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+
+
 /**
  * GPT-5-PRO文本生成模型实现
  */
-
 class GPT5TextGenerationModel constructor(
     private val openAIApi: OpenAIApi,
     private val secureStorage: SecureStorage
@@ -203,7 +204,6 @@ class GPT5TextGenerationModel constructor(
         """.trimIndent()
     }
 }
-
 /**
  * 内容类型
  */

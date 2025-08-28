@@ -5,12 +5,13 @@ import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+
+
 /**
  * 内容重排序服务
  * 使用BGE-reranker对搜索结果进行重排序，确保最相关的内容排在前面
  */
-
-class ContentRerankingService constructor(
+class ContentRerankingService(
     private val bgeRerankerApi: BGERerankerApi,
     private val secureStorage: SecureStorage
 ) {
@@ -162,7 +163,6 @@ class ContentRerankingService constructor(
         }
     }
 }
-
 /**
  * 故事信息
  */
@@ -184,7 +184,6 @@ data class StoryInfo(
         }
     }
 }
-
 /**
  * 搜索结果
  */
@@ -195,7 +194,6 @@ data class SearchResult(
     val type: ContentType,
     val score: Float = 0f
 )
-
 /**
  * 搜索上下文
  */
@@ -205,7 +203,6 @@ data class SearchContext(
     val preferSafeContent: Boolean = true,
     val language: String = "中文"
 )
-
 /**
  * 重排序查询
  */
@@ -215,7 +212,6 @@ data class RerankingQuery(
     val documents: List<String>,
     val topN: Int = 5
 )
-
 /**
  * 内容类型
  */

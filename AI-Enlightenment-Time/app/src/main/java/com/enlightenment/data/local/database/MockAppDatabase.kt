@@ -3,9 +3,11 @@ package com.enlightenment.data.local.database
 import android.content.Context
 import com.enlightenment.data.local.dao.*
 import com.enlightenment.data.local.entity.*
+import java.util.Date
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import java.util.Date
+
+
 
 /**
  * 模拟的数据库实现，用于解决编译问题
@@ -25,7 +27,6 @@ class MockAppDatabase {
         }
     }
 }
-
 /**
  * 模拟的AppDatabase实现
  */
@@ -40,7 +41,6 @@ class MockAppDatabaseImpl : AppDatabase() {
         // 模拟查询
     }
 }
-
 // 模拟的DAO实现
 class MockStoryDao : StoryDao {
     private val stories = mutableListOf<StoryEntity>()
@@ -86,7 +86,6 @@ class MockStoryDao : StoryDao {
         }
     }
 }
-
 class MockUserProgressDao : UserProgressDao {
     private val progressList = mutableListOf<UserProgressEntity>()
     
@@ -115,7 +114,7 @@ class MockUserProgressDao : UserProgressDao {
     
     override suspend fun updateTotalMinutesSpent(userId: String, minutes: Int) {
         getUserProgress(userId)?.let { progress ->
-            update(progress.copy(totalMinutesSpent = progress.totalMinutesSpent + minutes))
+            update(progress.copy(totalMinutesSpent = progress.totalMinutesSpent ?: 0 + minutes))
         }
     }
     
@@ -125,7 +124,6 @@ class MockUserProgressDao : UserProgressDao {
         }
     }
 }
-
 class MockDailyProgressDao : DailyProgressDao {
     private val dailyProgressList = mutableListOf<DailyProgressEntity>()
     
@@ -162,7 +160,6 @@ class MockDailyProgressDao : DailyProgressDao {
         ))
     }
 }
-
 class MockAuditLogDao : AuditLogDao {
     private val logs = mutableListOf<AuditLogEntity>()
     

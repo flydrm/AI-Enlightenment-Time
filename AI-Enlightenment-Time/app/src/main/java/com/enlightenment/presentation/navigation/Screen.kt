@@ -1,5 +1,6 @@
 package com.enlightenment.presentation.navigation
 
+
 sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Story : Screen("story")

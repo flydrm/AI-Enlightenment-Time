@@ -5,11 +5,11 @@ import com.enlightenment.performance.MemoryOptimizer
 import com.enlightenment.performance.PerformanceMonitor
 import com.enlightenment.performance.StartupOptimizer
 
+
+
 /**
  * 性能优化相关的依赖注入模块
  */
-
-
 object PerformanceModule {
     
     

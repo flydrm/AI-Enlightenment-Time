@@ -1,27 +1,35 @@
 package com.enlightenment.presentation.ui.screens.story
 
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.enlightenment.domain.model.Story
 import com.enlightenment.presentation.navigation.Screen
 import com.enlightenment.presentation.ui.responsive.*
+
+
+
+
 
 /**
  * 响应式故事列表界面
@@ -30,10 +38,10 @@ import com.enlightenment.presentation.ui.responsive.*
 @Composable
 fun ResponsiveStoryScreen(
     navController: NavController,
-    viewModel: StoryViewModel = hiltViewModel()
+    viewModel: StoryViewModel = remember { HomeViewModel() }
 ) {
     val stories by viewModel.stories.collectAsStateWithLifecycle()
-    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val is"Loading" by viewModel.is"Loading".collectAsStateWithLifecycle()
     val responsiveSizes = rememberResponsiveSizes()
     
     Scaffold(
@@ -60,7 +68,7 @@ fun ResponsiveStoryScreen(
                 .padding(paddingValues)
         ) {
             when {
-                isLoading -> {
+                is"Loading" -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -102,7 +110,6 @@ fun ResponsiveStoryScreen(
         }
     }
 }
-
 /**
  * 响应式顶部栏
  */
@@ -146,7 +153,6 @@ private fun ResponsiveStoryTopBar(
         }
     }
 }
-
 /**
  * 紧凑布局的故事列表
  */
@@ -167,7 +173,6 @@ private fun CompactStoryList(
         }
     }
 }
-
 /**
  * 中等布局的故事网格
  */
@@ -190,7 +195,6 @@ private fun MediumStoryGrid(
         }
     }
 }
-
 /**
  * 展开布局的故事布局
  */
@@ -227,7 +231,7 @@ private fun ExpandedStoryLayout(
         ) {
             Text(
                 text = "精选故事",
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
             
@@ -246,7 +250,6 @@ private fun ExpandedStoryLayout(
         }
     }
 }
-
 /**
  * 紧凑布局的故事卡片
  */
@@ -301,14 +304,14 @@ private fun CompactStoryCard(
             ) {
                 Text(
                     text = story.title,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 
                 Text(
                     text = story.content.take(100) + "...",
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -334,7 +337,6 @@ private fun CompactStoryCard(
         }
     }
 }
-
 /**
  * 中等布局的故事卡片
  */
@@ -384,14 +386,14 @@ private fun MediumStoryCard(
             ) {
                 Text(
                     text = story.title,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.typography.titleMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 
                 Text(
                     text = story.content.take(150) + "...",
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
@@ -417,7 +419,6 @@ private fun MediumStoryCard(
         }
     }
 }
-
 /**
  * 展开布局的故事列表项
  */
@@ -484,7 +485,6 @@ private fun ExpandedStoryListItem(
         )
     }
 }
-
 /**
  * 展开布局的故事卡片
  */
@@ -537,7 +537,7 @@ private fun ExpandedStoryCard(
             ) {
                 Text(
                     text = story.title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.typography.titleLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -570,7 +570,6 @@ private fun ExpandedStoryCard(
         }
     }
 }
-
 /**
  * 空状态
  */
@@ -601,7 +600,7 @@ private fun EmptyStoryState(
         
         Text(
             text = "让小熊猫为你创作一个精彩的故事吧！",
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         

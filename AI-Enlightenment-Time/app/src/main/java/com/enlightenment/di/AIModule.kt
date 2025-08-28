@@ -6,11 +6,11 @@ import com.enlightenment.ai.service.AIService
 import com.enlightenment.ai.service.impl.AIServiceImpl
 import com.enlightenment.BuildConfig
 
+
+
 /**
  * AI服务依赖注入模块
  */
-
-
 abstract class AIModule {
     
     @Binds

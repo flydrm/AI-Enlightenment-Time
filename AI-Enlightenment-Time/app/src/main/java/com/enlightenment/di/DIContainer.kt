@@ -7,7 +7,9 @@ import com.enlightenment.data.preference.UserPreferences
 import com.enlightenment.data.repository.StoryRepositoryImpl
 import com.enlightenment.data.repository.UserProgressRepositoryImpl
 import com.enlightenment.domain.repository.StoryRepository
+import com.enlightenment.domain.repository.AchievementRepository
 import com.enlightenment.domain.repository.UserProgressRepository
+import com.enlightenment.domain.repository.AchievementRepository
 import com.enlightenment.domain.usecase.*
 import com.enlightenment.multimedia.audio.AudioManager
 import com.enlightenment.multimedia.audio.AudioManagerImpl
@@ -20,6 +22,8 @@ import com.enlightenment.security.AuditLogger
 import com.enlightenment.security.SecureStorage
 import com.enlightenment.security.SecurityManager
 import com.enlightenment.security.SecurityManagerImpl
+
+
 
 /**
  * 手动依赖注入容器
@@ -109,3 +113,8 @@ object DIContainer {
         AuditLogger(applicationContext, database, secureStorage)
     }
 }
+
+    // 添加Achievement Repository
+    val achievementRepository: AchievementRepository by lazy {
+        AchievementRepositoryImpl()
+    }

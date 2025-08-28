@@ -5,7 +5,9 @@ import com.enlightenment.domain.model.Story
 import com.enlightenment.domain.model.StoryCategory
 import com.enlightenment.domain.repository.StoryRepository
 
-class GenerateStoryUseCase constructor(
+
+
+class GenerateStoryUseCase(
     private val storyRepository: StoryRepository
 ) {
     suspend operator fun invoke(

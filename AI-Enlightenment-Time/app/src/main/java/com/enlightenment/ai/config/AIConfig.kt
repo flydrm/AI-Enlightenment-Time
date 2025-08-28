@@ -2,6 +2,8 @@ package com.enlightenment.ai.config
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 
+
+
 /**
  * AI模型配置数据类
  */
@@ -12,7 +14,6 @@ data class ModelConfig(
     val environment: Environment = Environment.PRODUCTION,
     val updatedAt: Long = System.currentTimeMillis()
 )
-
 /**
  * 环境枚举
  */
@@ -21,7 +22,6 @@ enum class Environment {
     TEST,
     PRODUCTION
 }
-
 /**
  * AI模型类型枚举
  */
@@ -32,7 +32,6 @@ enum class AIModelType {
     BGE_RERANKER_V2_M3,     // 检索结果重排序
     GROK_4_IMAGEGEN         // 图像生成
 }
-
 /**
  * 模型能力池
  */
@@ -42,7 +41,6 @@ enum class ModelCapability {
     RERANKING,             // 重排序能力
     IMAGE_GENERATION       // 图像生成能力
 }
-
 /**
  * 模型健康状态
  */
@@ -56,7 +54,6 @@ data class ModelHealthStatus(
     val inCircuitBreaker: Boolean = false,
     val circuitBreakerUntil: Long? = null
 )
-
 /**
  * AI配置管理接口
  */
@@ -69,32 +66,26 @@ interface AIConfigManager {
         appKey: String? = null,
         apiBaseUrl: String? = null
     ): Result<Unit>
-
     /**
      * 获取模型配置
      */
     suspend fun getConfig(modelType: AIModelType): ModelConfig?
-
     /**
      * 测试模型连接
      */
     suspend fun testConnection(modelType: AIModelType): Result<ModelHealthStatus>
-
     /**
      * 切换环境
      */
     suspend fun switchEnvironment(environment: Environment): Result<Unit>
-
     /**
      * 获取当前环境
      */
     suspend fun getCurrentEnvironment(): Environment
-
     /**
      * 获取模型健康状态
      */
     suspend fun getHealthStatus(modelType: AIModelType): ModelHealthStatus
-
     /**
      * 更新模型健康状态
      */
@@ -103,18 +94,15 @@ interface AIConfigManager {
         isSuccess: Boolean,
         errorMessage: String? = null
     )
-
     /**
      * 获取同能力池的健康模型
      */
     suspend fun getHealthyModelsForCapability(capability: ModelCapability): List<AIModelType>
-
     /**
      * 清除所有配置
      */
     suspend fun clearAllConfigs()
 }
-
 /**
  * 模型能力映射
  */
@@ -126,14 +114,12 @@ object ModelCapabilityMapping {
         AIModelType.BGE_RERANKER_V2_M3 to listOf(ModelCapability.RERANKING),
         AIModelType.GROK_4_IMAGEGEN to listOf(ModelCapability.IMAGE_GENERATION)
     )
-
     fun getModelsForCapability(capability: ModelCapability): List<AIModelType> {
         return capabilityMap.entries
             .filter { it.value.contains(capability) }
             .map { it.key }
     }
 }
-
 /**
  * DataStore Keys
  */
@@ -151,7 +137,6 @@ object AIConfigKeys {
     val CURRENT_ENVIRONMENT = stringPreferencesKey("current_environment")
     val DOMAIN_WHITELIST = stringPreferencesKey("domain_whitelist")
 }
-
 /**
  * 配置验证器
  */
@@ -162,7 +147,6 @@ object ConfigValidator {
         "dashscope.aliyuncs.com",
         "api.anthropic.com"
     )
-
     /**
      * 验证API URL
      */
@@ -190,7 +174,6 @@ object ConfigValidator {
             Result.failure(ConfigValidationException("Invalid URL format: ${e.message}"))
         }
     }
-
     /**
      * 验证App Key格式
      */
@@ -202,7 +185,6 @@ object ConfigValidator {
         }
     }
 }
-
 /**
  * 配置验证异常
  */

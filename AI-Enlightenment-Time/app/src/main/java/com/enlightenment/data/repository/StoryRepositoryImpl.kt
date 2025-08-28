@@ -1,8 +1,8 @@
 package com.enlightenment.data.repository
 
+import com.enlightenment.ai.service.AIService
 import com.enlightenment.data.local.dao.StoryDao
 import com.enlightenment.data.local.entity.StoryEntity
-import com.enlightenment.ai.service.AIService
 import com.enlightenment.domain.model.AgeGroup
 import com.enlightenment.domain.model.Story
 import com.enlightenment.domain.model.StoryCategory
@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 
-class StoryRepositoryImpl constructor(
+
+class StoryRepositoryImpl(
     private val storyDao: StoryDao,
     private val aiService: AIService
 ) : StoryRepository {

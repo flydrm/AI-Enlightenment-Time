@@ -1,9 +1,11 @@
 package com.enlightenment.domain.repository
 
+import com.enlightenment.domain.model.AgeGroup
 import com.enlightenment.domain.model.Story
 import com.enlightenment.domain.model.StoryCategory
-import com.enlightenment.domain.model.AgeGroup
 import kotlinx.coroutines.flow.Flow
+
+
 
 interface StoryRepository {
     suspend fun generateStory(

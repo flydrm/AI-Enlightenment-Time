@@ -5,20 +5,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
+
 
 /**
  * 家长认证界面
@@ -28,7 +32,7 @@ import kotlinx.coroutines.launch
 fun ParentAuthScreen(
     onAuthSuccess: () -> Unit,
     onCancel: () -> Unit,
-    viewModel: ParentAuthViewModel = hiltViewModel()
+    viewModel: ParentAuthViewModel = remember { HomeViewModel() }
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
@@ -57,14 +61,14 @@ fun ParentAuthScreen(
             
             Text(
                 text = "家长验证",
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             
             Text(
                 text = "请输入家长PIN码以继续",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 32.dp)
             )
@@ -76,7 +80,7 @@ fun ParentAuthScreen(
                         pinCode = uiState.pinCode,
                         onPinChange = viewModel::onPinChange,
                         isError = uiState.errorMessage != null,
-                        enabled = !uiState.isLoading
+                        enabled = !uiState.is"Loading"
                     )
                 }
                 AuthMethod.MATH_CHALLENGE -> {
@@ -85,7 +89,7 @@ fun ParentAuthScreen(
                         answer = uiState.mathAnswer,
                         onAnswerChange = viewModel::onMathAnswerChange,
                         isError = uiState.errorMessage != null,
-                        enabled = !uiState.isLoading
+                        enabled = !uiState.is"Loading"
                     )
                 }
             }
@@ -123,7 +127,7 @@ fun ParentAuthScreen(
                 OutlinedButton(
                     onClick = onCancel,
                     modifier = Modifier.weight(1f),
-                    enabled = !uiState.isLoading
+                    enabled = !uiState.is"Loading"
                 ) {
                     Text("取消")
                 }
@@ -141,9 +145,9 @@ fun ParentAuthScreen(
                     enabled = when (uiState.authMethod) {
                         AuthMethod.PIN -> uiState.pinCode.length >= 4
                         AuthMethod.MATH_CHALLENGE -> uiState.mathAnswer.isNotEmpty()
-                    } && !uiState.isLoading
+                    } && !uiState.is"Loading"
                 ) {
-                    if (uiState.isLoading) {
+                    if (uiState.is"Loading") {
                         CircularProgressIndicator(
                             modifier = Modifier.size(16.dp),
                             color = MaterialTheme.colorScheme.onPrimary
@@ -158,7 +162,7 @@ fun ParentAuthScreen(
             TextButton(
                 onClick = viewModel::toggleAuthMethod,
                 modifier = Modifier.padding(top = 16.dp),
-                enabled = !uiState.isLoading
+                enabled = !uiState.is"Loading"
             ) {
                 Text(
                     text = when (uiState.authMethod) {
@@ -173,14 +177,13 @@ fun ParentAuthScreen(
                 Text(
                     text = "剩余尝试次数：${uiState.attemptsRemaining}",
                     color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.typography.bodySmall,
                     modifier = Modifier.padding(top = 8.dp)
                 )
             }
         }
     }
 }
-
 /**
  * PIN输入组件
  */
@@ -232,7 +235,6 @@ private fun PinInputSection(
         )
     }
 }
-
 /**
  * 数学题挑战组件
  */
@@ -277,7 +279,6 @@ private fun MathChallengeSection(
         )
     }
 }
-
 /**
  * 数字键盘组件
  */
@@ -337,7 +338,6 @@ private fun NumericKeypad(
         }
     }
 }
-
 /**
  * 验证方式
  */

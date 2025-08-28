@@ -1,9 +1,16 @@
 package com.enlightenment.presentation.components.animations
 
+@file:OptIn(ExperimentalAnimationApi::class)
+
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+
+
+
+
 
 /**
  * 页面过渡动画
@@ -77,7 +84,6 @@ object PageTransitions {
         }
     }
 }
-
 /**
  * 页面切换动画包装器
  */
@@ -107,7 +113,6 @@ fun AnimatedPage(
         content = content
     )
 }
-
 /**
  * 交错动画列表
  */
@@ -139,7 +144,6 @@ fun <T> StaggeredAnimatedList(
         }
     }
 }
-
 /**
  * 展开收起动画
  */

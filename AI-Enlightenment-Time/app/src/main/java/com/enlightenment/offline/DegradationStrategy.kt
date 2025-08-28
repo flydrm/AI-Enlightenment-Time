@@ -4,15 +4,16 @@ import com.enlightenment.ai.model.RecognitionResult
 import com.enlightenment.ai.model.VoiceType
 import com.enlightenment.domain.model.Story
 import com.enlightenment.domain.model.StoryCategory
-import kotlinx.coroutines.delay
 import kotlin.random.Random
+import kotlinx.coroutines.delay
+
+
 
 /**
  * 降级策略管理器
  * 当AI服务不可用时提供降级方案
  */
-
-class DegradationStrategy constructor(
+class DegradationStrategy(
     private val offlineManager: OfflineManager
 ) {
     
@@ -223,7 +224,6 @@ class DegradationStrategy constructor(
         }
     }
 }
-
 /**
  * 服务类型
  */

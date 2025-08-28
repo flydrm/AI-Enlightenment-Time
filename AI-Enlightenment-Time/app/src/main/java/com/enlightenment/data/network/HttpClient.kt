@@ -1,17 +1,18 @@
 package com.enlightenment.data.network
 
 import com.enlightenment.BuildConfig
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.OkHttpClient
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Retrofit
+
+
 
 /**
  * HTTP客户端配置
  */
-
-class HttpClient constructor() {
+class HttpClient() {
     
     companion object {
         private const val DEFAULT_TIMEOUT = 30L // 秒

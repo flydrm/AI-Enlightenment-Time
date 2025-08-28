@@ -7,12 +7,13 @@ import com.enlightenment.security.UserAction
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
+
+
 /**
  * 每日任务调度器
  * 负责安排和管理每日15分钟的学习任务
  */
-
-class DailyTaskScheduler constructor(
+class DailyTaskScheduler(
     private val context: Context,
     private val auditLogger: AuditLogger
 ) {

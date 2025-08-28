@@ -1,13 +1,15 @@
 package com.enlightenment.domain.usecase
 
-import com.enlightenment.domain.model.WeeklyProgress
 import com.enlightenment.domain.model.DailyProgress
+import com.enlightenment.domain.model.WeeklyProgress
 import com.enlightenment.domain.repository.UserProgressRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import java.util.Calendar
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.Flow
 
-class GetWeeklyProgressUseCase constructor(
+
+
+class GetWeeklyProgressUseCase(
     private val userProgressRepository: UserProgressRepository
 ) {
     suspend operator fun invoke(): Result<WeeklyProgress> {

@@ -3,6 +3,8 @@ package com.enlightenment.data.local.database
 import android.content.Context
 import com.enlightenment.data.local.dao.*
 
+
+
 /**
  * 应用数据库抽象类
  * 使用模拟实现以解决编译问题

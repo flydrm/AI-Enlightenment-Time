@@ -1,0 +1,15 @@
+package com.enlightenment.domain.usecase
+
+import com.enlightenment.domain.model.Story
+import com.enlightenment.domain.repository.StoryRepository
+import javax.inject.Inject
+
+
+
+class GetStoryByIdUseCase @Inject constructor(
+    private val storyRepository: StoryRepository
+) {
+    suspend fun execute(storyId: String): Story? {
+        return storyRepository.getStoryById(storyId)
+    }
+}

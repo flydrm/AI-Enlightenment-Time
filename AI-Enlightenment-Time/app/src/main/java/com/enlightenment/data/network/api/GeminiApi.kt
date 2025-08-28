@@ -2,6 +2,8 @@ package com.enlightenment.data.network.api
 
 import retrofit2.http.*
 
+
+
 /**
  * Google Gemini API接口
  * 文档：https://ai.google.dev/tutorials/rest_quickstart
@@ -42,7 +44,6 @@ interface GeminiApi {
         @Body request: TokenCountRequest
     ): TokenCountResponse
 }
-
 /**
  * Gemini请求体
  */
@@ -51,7 +52,6 @@ data class GeminiRequest(
     val generationConfig: GenerationConfig? = null,
     val safetySettings: List<SafetySetting>? = null
 )
-
 /**
  * 内容
  */
@@ -59,7 +59,6 @@ data class Content(
     val role: String, // "user" or "model"
     val parts: List<Part>
 )
-
 /**
  * 内容部分
  */
@@ -67,7 +66,6 @@ sealed class Part {
     data class TextPart(val text: String) : Part()
     data class InlineDataPart(val inlineData: InlineData) : Part()
 }
-
 /**
  * 内联数据（图片等）
  */
@@ -75,7 +73,6 @@ data class InlineData(
     val mimeType: String,
     val data: String // Base64编码
 )
-
 /**
  * 生成配置
  */
@@ -87,7 +84,6 @@ data class GenerationConfig(
     val maxOutputTokens: Int? = null,
     val stopSequences: List<String>? = null
 )
-
 /**
  * 安全设置
  */
@@ -117,7 +113,6 @@ data class SafetySetting(
         )
     }
 }
-
 /**
  * Gemini响应
  */
@@ -125,7 +120,6 @@ data class GeminiResponse(
     val candidates: List<Candidate>,
     val promptFeedback: PromptFeedback? = null
 )
-
 /**
  * 候选结果
  */
@@ -135,7 +129,6 @@ data class Candidate(
     val index: Int,
     val safetyRatings: List<SafetyRating>? = null
 )
-
 /**
  * 安全评级
  */
@@ -143,21 +136,18 @@ data class SafetyRating(
     val category: String,
     val probability: String
 )
-
 /**
  * 提示反馈
  */
 data class PromptFeedback(
     val safetyRatings: List<SafetyRating>
 )
-
 /**
  * Token计数请求
  */
 data class TokenCountRequest(
     val contents: List<Content>
 )
-
 /**
  * Token计数响应
  */

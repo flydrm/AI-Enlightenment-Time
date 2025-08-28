@@ -1,17 +1,18 @@
 package com.enlightenment.ai.service
 
+import com.enlightenment.data.network.api.Content
 import com.enlightenment.data.network.api.GeminiApi
 import com.enlightenment.data.network.api.GeminiRequest
-import com.enlightenment.data.network.api.Content
 import com.enlightenment.data.network.api.Part
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+
+
 /**
  * Service for interacting with Gemini AI model
  */
-
-class GeminiService constructor(
+class GeminiService(
     private val geminiApi: GeminiApi
 ) {
     
