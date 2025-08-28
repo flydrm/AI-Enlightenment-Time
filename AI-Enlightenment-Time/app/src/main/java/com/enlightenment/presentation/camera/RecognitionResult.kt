@@ -1,5 +1,7 @@
 package com.enlightenment.presentation.camera
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.ai.model.RecognitionResult as AIRecognitionResult
 
 

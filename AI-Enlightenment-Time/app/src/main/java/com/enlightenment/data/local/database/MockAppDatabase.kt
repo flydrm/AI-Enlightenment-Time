@@ -1,5 +1,7 @@
 package com.enlightenment.data.local.database
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
 import com.enlightenment.data.local.dao.*
 import com.enlightenment.data.local.entity.*

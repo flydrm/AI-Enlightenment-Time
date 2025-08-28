@@ -1,5 +1,7 @@
 package com.enlightenment.di
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
 import androidx.room.Room
 import com.enlightenment.data.local.dao.StoryDao

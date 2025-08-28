@@ -1,5 +1,7 @@
 package com.enlightenment.presentation.camera
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.Manifest
 import androidx.camera.core.CameraSelector
 import androidx.camera.view.PreviewView
@@ -161,7 +163,7 @@ private fun CameraPermissionScreen(
         
         Text(
             text = "我们需要相机权限",
-            style = MaterialTheme.typography.typography.headlineMedium,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
@@ -170,7 +172,7 @@ private fun CameraPermissionScreen(
         
         Text(
             text = "小朋友，让我们一起拍照探索世界吧！请让爸爸妈妈帮你打开相机权限。",
-            style = MaterialTheme.typography.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -403,7 +405,7 @@ private fun CameraPreviewScreen(
                     Text(
                         text = "点击拍照，发现有趣的东西！",
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                        style = MaterialTheme.typography.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
@@ -573,7 +575,7 @@ private fun PhotoPreviewScreen(
                     Text(
                         text = "正在识别图片中的内容...",
                         color = Color.White,
-                        style = MaterialTheme.typography.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }

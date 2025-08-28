@@ -1,5 +1,7 @@
 package com.enlightenment.ai.service.impl
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.data.network.api.*
 import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers

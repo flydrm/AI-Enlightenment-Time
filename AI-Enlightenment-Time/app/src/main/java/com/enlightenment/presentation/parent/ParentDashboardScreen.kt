@@ -1,7 +1,9 @@
 package com.enlightenment.presentation.parent
 
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +26,8 @@ import androidx.navigation.NavController
 
 
 
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParentDashboardScreen(
@@ -38,7 +42,7 @@ fun ParentDashboardScreen(
                 title = { 
                     Text(
                         "家长控制面板",
-                        style = MaterialTheme.typography.typography.headlineMedium
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 },
                 navigationIcon = {
@@ -121,7 +125,7 @@ fun LearningOverviewCard(
         ) {
             Text(
                 "学习概览",
-                style = MaterialTheme.typography.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -170,12 +174,12 @@ fun StatisticItem(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = value,
-            style = MaterialTheme.typography.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.typography.bodySmall,
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -196,7 +200,7 @@ fun QuickActionsCard(
         ) {
             Text(
                 "快速操作",
-                style = MaterialTheme.typography.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -278,7 +282,7 @@ fun TodayActivityCard(
         ) {
             Text(
                 "今日活动",
-                style = MaterialTheme.typography.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -287,7 +291,7 @@ fun TodayActivityCard(
             if (activities.isEmpty()) {
                 Text(
                     "今天还没有学习活动",
-                    style = MaterialTheme.typography.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             } else {
@@ -325,19 +329,19 @@ fun ActivityItem(activity: Activity) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = activity.title,
-                style = MaterialTheme.typography.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium
             )
             Text(
                 text = activity.time,
-                style = MaterialTheme.typography.typography.bodySmall,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         
         Text(
             text = "${activity.duration}分钟",
-            style = MaterialTheme.typography.typography.bodySmall,
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -362,13 +366,13 @@ fun AchievementProgressCard(
             ) {
                 Text(
                     "成就进度",
-                    style = MaterialTheme.typography.typography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
                 
                 Text(
                     "$unlockedCount / $totalCount",
-                    style = MaterialTheme.typography.typography.titleMedium,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
@@ -387,13 +391,13 @@ fun AchievementProgressCard(
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     "最近解锁：",
-                    style = MaterialTheme.typography.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 recentAchievements.forEach { achievement ->
                     Text(
                         "• $achievement",
-                        style = MaterialTheme.typography.typography.bodySmall,
+                        style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
                     )
                 }
@@ -415,7 +419,7 @@ fun SecuritySettingsCard(
         ) {
             Text(
                 "安全设置",
-                style = MaterialTheme.typography.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             

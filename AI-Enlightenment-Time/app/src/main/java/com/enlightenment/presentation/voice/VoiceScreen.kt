@@ -1,5 +1,7 @@
 package com.enlightenment.presentation.voice
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.Manifest
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -122,7 +124,7 @@ private fun VoiceContent(
                 }
                 
                 // 显示当前状态
-                if (voiceState is VoiceState.Processing) {
+                if (voiceState == VoiceState.PROCESSING) {
                     item {
                         ProcessingIndicator()
                     }
@@ -148,9 +150,9 @@ private fun VoiceContent(
                 .size(80.dp),
             isActive = isListening,
             speech = when (voiceState) {
-                is VoiceState.Listening -> "我在听呢..."
-                is VoiceState.Processing -> "让我想想..."
-                is VoiceState.Speaking -> "听我说..."
+                == VoiceState.LISTENING -> "我在听呢..."
+                == VoiceState.PROCESSING -> "让我想想..."
+                == VoiceState.SPEAKING -> "听我说..."
                 is VoiceState.Error -> "出错了，再试一次吧！"
                 else -> null
             }
@@ -187,7 +189,7 @@ private fun MessageBubble(
             ) {
                 Text(
                     text = message.content,
-                    style = MaterialTheme.typography.typography.bodyLarge,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = if (isUser) {
                         MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
@@ -197,7 +199,7 @@ private fun MessageBubble(
                 
                 Text(
                     text = formatTime(message.timestamp),
-                    style = MaterialTheme.typography.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = if (isUser) {
                         MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f)
                     } else {
@@ -266,7 +268,7 @@ private fun BottomVoiceControls(
                             MaterialTheme.colorScheme.primary
                         }
                     ),
-                enabled = voiceState !is VoiceState.Processing
+                enabled = voiceState !== VoiceState.PROCESSING
             ) {
                 Icon(
                     imageVector = if (isListening) Icons.Default.Stop else Icons.Default.Mic,
@@ -280,10 +282,10 @@ private fun BottomVoiceControls(
             Text(
                 text = when {
                     isListening -> "正在录音..."
-                    voiceState is VoiceState.Processing -> "处理中..."
+                    voiceState == VoiceState.PROCESSING -> "处理中..."
                     else -> "点击说话"
                 },
-                style = MaterialTheme.typography.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(top = 100.dp)

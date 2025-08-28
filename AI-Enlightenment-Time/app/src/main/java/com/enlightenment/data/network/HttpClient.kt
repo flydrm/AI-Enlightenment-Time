@@ -1,5 +1,7 @@
 package com.enlightenment.data.network
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.BuildConfig
 import java.util.concurrent.TimeUnit
 import okhttp3.logging.HttpLoggingInterceptor

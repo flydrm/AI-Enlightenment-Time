@@ -1,7 +1,9 @@
 package com.enlightenment.presentation.story.player
 
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -31,6 +33,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.enlightenment.presentation.components.AnimatedPanda
 import kotlinx.coroutines.delay
+
+
 
 
 
@@ -97,10 +101,10 @@ fun StoryPlayerScreen(
                             .align(Alignment.TopEnd)
                             .padding(16.dp)
                             .size(80.dp),
-                        isActive = playerState is PlayerState.Playing,
+                        isActive = playerState == PlayerState.PLAYING,
                         speech = when (playerState) {
-                            is PlayerState.Playing -> "听我讲故事..."
-                            is PlayerState.Paused -> "暂停一下"
+                            == PlayerState.PLAYING -> "听我讲故事..."
+                            == PlayerState.PAUSED -> "暂停一下"
                             is PlayerState.Finished -> "故事讲完啦！"
                             else -> null
                         }
@@ -144,7 +148,7 @@ private fun StoryPlayerTopBar(
             Text(
                 text = title,
                 maxLines = 1,
-                style = MaterialTheme.typography.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium
             )
         },
         navigationIcon = {
@@ -163,7 +167,7 @@ private fun StoryPlayerTopBar(
             ) {
                 Text(
                     text = "自动播放",
-                    style = MaterialTheme.typography.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall
                 )
                 Switch(
                     checked = isAutoPlay,
@@ -231,7 +235,7 @@ private fun StoryContent(
         ) { content ->
             StoryText(
                 text = content,
-                isPlaying = playerState is PlayerState.Playing
+                isPlaying = playerState == PlayerState.PLAYING
             )
         }
         
@@ -284,7 +288,7 @@ private fun StoryText(
     
     Text(
         text = visibleText,
-        style = MaterialTheme.typography.typography.bodyLarge.copy(
+        style = MaterialTheme.typography.bodyLarge.copy(
             fontSize = 18.sp,
             lineHeight = 28.sp
         ),
@@ -335,11 +339,11 @@ private fun StoryPlayerControls(
                 ) {
                     Text(
                         text = "章节 ${currentStoryIndex + 1}",
-                        style = MaterialTheme.typography.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall
                     )
                     Text(
                         text = "共 ${story.chapters.size} 章",
-                        style = MaterialTheme.typography.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall
                     )
                 }
             }
@@ -366,7 +370,7 @@ private fun StoryPlayerControls(
                 
                 // 播放/暂停按钮
                 val playPauseScale by animateFloatAsState(
-                    targetValue = if (playerState is PlayerState.Playing) 0.9f else 1f,
+                    targetValue = if (playerState == PlayerState.PLAYING) 0.9f else 1f,
                     animationSpec = spring(
                         dampingRatio = Spring.DampingRatioMediumBouncy,
                         stiffness = Spring.StiffnessLow
@@ -382,12 +386,12 @@ private fun StoryPlayerControls(
                         .background(MaterialTheme.colorScheme.primary)
                 ) {
                     Icon(
-                        imageVector = if (playerState is PlayerState.Playing) {
+                        imageVector = if (playerState == PlayerState.PLAYING) {
                             Icons.Default.Pause
                         } else {
                             Icons.Default.PlayArrow
                         },
-                        contentDescription = if (playerState is PlayerState.Playing) "暂停" else "播放",
+                        contentDescription = if (playerState == PlayerState.PLAYING) "暂停" else "播放",
                         tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.size(32.dp)
                     )

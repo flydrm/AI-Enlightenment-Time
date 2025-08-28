@@ -1,5 +1,7 @@
 package com.enlightenment.multimedia.camera
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
 import android.net.Uri
 import androidx.camera.core.*

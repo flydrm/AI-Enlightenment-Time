@@ -1,5 +1,7 @@
 package com.enlightenment.security
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
@@ -62,7 +64,7 @@ class SecureStorage(
             AIService.QWEN -> KEY_QWEN_API
             AIService.BGE -> KEY_BGE_API
         }
-        return encryptedPrefs.getString(key, null) ?: ""
+        return encryptedPrefs.getString(key, null) ?: "" ?: ""
     }
     
     // 便捷方法
@@ -85,7 +87,7 @@ class SecureStorage(
      * 验证家长PIN码
      */
     fun verifyParentPin(pin: String): Boolean {
-        val storedHash = encryptedPrefs.getString(KEY_PARENT_PIN, null) ?: "" ?: return false
+        val storedHash = encryptedPrefs.getString(KEY_PARENT_PIN, null) ?: "" ?: "" ?: return false
         return hashPin(pin) == storedHash
     }
     
@@ -101,7 +103,7 @@ class SecureStorage(
      * 获取儿童档案信息
      */
     fun getChildProfile(): ChildProfile? {
-        val json = encryptedPrefs.getString(KEY_CHILD_PROFILE, null) ?: "" ?: return null
+        val json = encryptedPrefs.getString(KEY_CHILD_PROFILE, null) ?: "" ?: "" ?: return null
         return ChildProfile.fromJson(json)
     }
     

@@ -1,5 +1,7 @@
 package com.enlightenment.performance
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.app.ActivityManager
 import android.content.Context
 import android.graphics.Bitmap

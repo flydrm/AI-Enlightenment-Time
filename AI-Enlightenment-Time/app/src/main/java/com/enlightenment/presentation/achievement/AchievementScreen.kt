@@ -1,7 +1,9 @@
 package com.enlightenment.presentation.achievement
 
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -40,6 +42,8 @@ import com.enlightenment.domain.model.Achievement
 
 
 
+
+
 /**
  * 成就展示界面
  */
@@ -57,7 +61,7 @@ fun AchievementScreen(
                 title = { 
                     Text(
                         "我的成就",
-                        style = MaterialTheme.typography.typography.headlineMedium,
+                        style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
                 },
@@ -170,13 +174,13 @@ private fun AchievementStatsCard(
             ) {
                 Text(
                     text = "$unlockedCount/$totalCount",
-                    style = MaterialTheme.typography.typography.headlineMedium,
+                    style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
                     text = "已解锁",
-                    style = MaterialTheme.typography.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
@@ -204,14 +208,14 @@ private fun AchievementStatsCard(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "$totalPoints",
-                        style = MaterialTheme.typography.typography.headlineMedium,
+                        style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
                 Text(
                     text = "总积分",
-                    style = MaterialTheme.typography.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
@@ -309,7 +313,7 @@ private fun AchievementCard(
                 // 名称
                 Text(
                     text = achievement.name,
-                    style = MaterialTheme.typography.typography.titleMedium,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     color = if (isUnlocked) {
@@ -334,7 +338,7 @@ private fun AchievementCard(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "${achievement.points}",
-                        style = MaterialTheme.typography.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = if (isUnlocked) {
                             MaterialTheme.colorScheme.primary
                         } else {
@@ -386,7 +390,7 @@ private fun AchievementDetailDialog(
                     )
                     Text(
                         text = achievement.category.toChineseName(),
-                        style = MaterialTheme.typography.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -396,7 +400,7 @@ private fun AchievementDetailDialog(
             Column {
                 Text(
                     text = achievement.description,
-                    style = MaterialTheme.typography.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge
                 )
                 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -412,7 +416,7 @@ private fun AchievementDetailDialog(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "奖励 ${achievement.points} 积分",
-                        style = MaterialTheme.typography.typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
                 }

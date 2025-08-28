@@ -1,7 +1,9 @@
 package com.enlightenment.presentation.ui.screens.story
 
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,6 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.*
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.FilterChip
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.Icons
@@ -37,6 +41,8 @@ import com.enlightenment.presentation.ui.theme.*
 
 
 
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoryScreen(
@@ -51,7 +57,7 @@ fun StoryScreen(
                 title = { 
                     Text(
                         "故事世界",
-                        style = MaterialTheme.typography.typography.headlineMedium
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 },
                 navigationIcon = {
@@ -123,7 +129,7 @@ fun StoryScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         "正在生成精彩故事...",
-                        style = MaterialTheme.typography.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
             }
@@ -150,7 +156,7 @@ private fun StoryContent(
         item {
             Text(
                 "选择类别",
-                style = MaterialTheme.typography.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -194,7 +200,7 @@ private fun StoryContent(
         item {
             Text(
                 "年龄段",
-                style = MaterialTheme.typography.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -242,13 +248,13 @@ private fun StoryContent(
                     ) {
                         Text(
                             "还没有故事",
-                            style = MaterialTheme.typography.typography.titleMedium,
+                            style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             "点击下方按钮生成新故事",
-                            style = MaterialTheme.typography.typography.bodyMedium,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -290,7 +296,7 @@ private fun GeneratedStoryDialog(
             Column {
                 Text(
                     story.title,
-                    style = MaterialTheme.typography.typography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
@@ -298,14 +304,14 @@ private fun GeneratedStoryDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     "${story.category.icon} ${story.category.displayName}",
-                    style = MaterialTheme.typography.typography.bodyLarge,
+                    style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     "时长: ${story.duration / 60}分钟",
-                    style = MaterialTheme.typography.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()

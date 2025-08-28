@@ -1,5 +1,7 @@
 package com.enlightenment.domain.achievement
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.data.preference.UserPreferences
 import com.enlightenment.domain.model.Achievement

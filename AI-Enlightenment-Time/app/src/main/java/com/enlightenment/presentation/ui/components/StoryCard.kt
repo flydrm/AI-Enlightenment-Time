@@ -1,5 +1,7 @@
 package com.enlightenment.presentation.ui.components
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -97,7 +99,7 @@ fun StoryCard(
             // Title
             Text(
                 text = story.title,
-                style = MaterialTheme.typography.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -113,7 +115,7 @@ fun StoryCard(
             ) {
                 Text(
                     text = "${story.duration / 60}分钟",
-                    style = MaterialTheme.typography.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 

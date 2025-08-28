@@ -1,7 +1,9 @@
 package com.enlightenment.presentation.parent
 
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
@@ -33,6 +35,8 @@ import java.time.LocalDate
 
 
 
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LearningReportScreen(
@@ -48,7 +52,7 @@ fun LearningReportScreen(
                 title = { 
                     Text(
                         "学习报告",
-                        style = MaterialTheme.typography.typography.headlineMedium
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 },
                 navigationIcon = {
@@ -139,7 +143,7 @@ fun LearningReportScreen(
                 item {
                     Text(
                         "学习活动详情",
-                        style = MaterialTheme.typography.typography.titleLarge,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(vertical = 8.dp)
                     )
@@ -167,7 +171,7 @@ fun LearningTimeCard(
         ) {
             Text(
                 "学习时长统计",
-                style = MaterialTheme.typography.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -209,13 +213,13 @@ fun TimeStatItem(
     ) {
         Text(
             text = value,
-            style = MaterialTheme.typography.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = color
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.typography.bodySmall,
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -233,7 +237,7 @@ fun LearningTrendCard(
         ) {
             Text(
                 "学习趋势",
-                style = MaterialTheme.typography.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -257,14 +261,14 @@ fun LearningTrendCard(
                 ) {
                     Text(
                         text = "最近${trendData.size}天学习时长变化",
-                        style = MaterialTheme.typography.typography.bodySmall,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             } else {
                 Text(
                     "暂无数据",
-                    style = MaterialTheme.typography.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
@@ -334,7 +338,7 @@ fun ContentDistributionCard(
         ) {
             Text(
                 "内容分布",
-                style = MaterialTheme.typography.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -362,11 +366,11 @@ fun ContentCategoryItem(
         ) {
             Text(
                 text = category,
-                style = MaterialTheme.typography.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium
             )
             Text(
                 text = "${(percentage * 100).toInt()}%",
-                style = MaterialTheme.typography.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -395,7 +399,7 @@ fun SkillProgressCard(
         ) {
             Text(
                 "技能进展",
-                style = MaterialTheme.typography.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -436,11 +440,11 @@ fun SkillProgressItem(skill: SkillProgress) {
             ) {
                 Text(
                     text = skill.name,
-                    style = MaterialTheme.typography.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
                     text = "Lv.${skill.level}",
-                    style = MaterialTheme.typography.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -487,18 +491,18 @@ fun DetailedActivityCard(activity: DetailedActivity) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = activity.title,
-                    style = MaterialTheme.typography.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
                     text = activity.date.format(DateTimeFormatter.ofPattern("MM月dd日 HH:mm")),
-                    style = MaterialTheme.typography.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 if (activity.description.isNotEmpty()) {
                     Text(
                         text = activity.description,
-                        style = MaterialTheme.typography.typography.bodySmall,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 2.dp)
                     )
@@ -510,13 +514,13 @@ fun DetailedActivityCard(activity: DetailedActivity) {
             ) {
                 Text(
                     text = "${activity.duration}分钟",
-                    style = MaterialTheme.typography.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold
                 )
                 if (activity.score > 0) {
                     Text(
                         text = "+${activity.score}分",
-                        style = MaterialTheme.typography.typography.bodySmall,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -533,12 +537,4 @@ data class SkillProgress(
     val name: String,
     val level: Int,
     val progress: Float // 0-1
-)
-data class DetailedActivity(
-    val title: String,
-    val type: String,
-    val date: LocalDate,
-    val duration: Int,
-    val score: Int,
-    val description: String
 )

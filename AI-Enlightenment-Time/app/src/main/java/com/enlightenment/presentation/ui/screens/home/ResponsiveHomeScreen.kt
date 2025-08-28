@@ -1,7 +1,9 @@
 package com.enlightenment.presentation.ui.screens.home
 
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
@@ -20,6 +22,8 @@ import androidx.navigation.NavController
 import com.enlightenment.presentation.components.AnimatedPanda
 import com.enlightenment.presentation.navigation.Screen
 import com.enlightenment.presentation.ui.responsive.*
+
+
 
 
 
@@ -211,7 +215,7 @@ private fun ExpandedHomeLayout(navController: NavController) {
                         )
                         Text(
                             text = "今天想和小熊猫乐乐一起探索什么呢？",
-                            style = MaterialTheme.typography.typography.bodyLarge,
+                            style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -277,7 +281,7 @@ private fun CompactMenuItem(
             
             Text(
                 text = item.title,
-                style = MaterialTheme.typography.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center
             )
         }
@@ -363,7 +367,7 @@ private fun ExpandedMenuItem(
             
             Text(
                 text = item.title,
-                style = MaterialTheme.typography.typography.titleMedium,
+                style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
             )
             
@@ -371,7 +375,7 @@ private fun ExpandedMenuItem(
             
             Text(
                 text = item.description,
-                style = MaterialTheme.typography.typography.bodySmall,
+                style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

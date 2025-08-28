@@ -1,5 +1,7 @@
 package com.enlightenment.presentation.ui.screens.home
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -159,7 +161,7 @@ private fun HomeHeader(
         Column {
             Text(
                 text = greeting,
-                style = MaterialTheme.typography.typography.headlineMedium,
+                style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold
             )
@@ -168,7 +170,7 @@ private fun HomeHeader(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "🔥 连续学习 $streak 天",
-                    style = MaterialTheme.typography.typography.bodyLarge,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
@@ -196,7 +198,7 @@ private fun RecentStoriesSection(
     Column {
         Text(
             text = "最近的故事",
-            style = MaterialTheme.typography.typography.titleLarge,
+            style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(bottom = 8.dp)
         )

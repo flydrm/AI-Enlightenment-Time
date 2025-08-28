@@ -1,7 +1,9 @@
 package com.enlightenment.presentation.settings
 
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+
+
 
 
 
@@ -39,7 +43,7 @@ fun SettingsScreen(
                 title = { 
                     Text(
                         "设置",
-                        style = MaterialTheme.typography.typography.headlineMedium
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 },
                 navigationIcon = {
@@ -333,7 +337,7 @@ fun SettingsSection(
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -378,11 +382,11 @@ fun SettingsItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge
             )
             Text(
                 text = subtitle,
-                style = MaterialTheme.typography.typography.bodySmall,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -419,11 +423,11 @@ fun SettingsItemSwitch(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge
             )
             Text(
                 text = subtitle,
-                style = MaterialTheme.typography.typography.bodySmall,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -459,7 +463,7 @@ fun DailyTimeDialog(
                 
                 Text(
                     text = "$selectedMinutes 分钟",
-                    style = MaterialTheme.typography.typography.titleMedium,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }

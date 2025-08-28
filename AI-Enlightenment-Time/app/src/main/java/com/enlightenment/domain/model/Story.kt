@@ -1,5 +1,7 @@
 package com.enlightenment.domain.model
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import java.util.UUID
 
 
@@ -20,6 +22,7 @@ data class Story(
     val coverImage: String? = null,
     val genre: String = "",
     val readTime: Int = 5 // in minutes
+    val chapters: List<Chapter> = emptyList()
 )
 data class Question(
     val id: String = UUID.randomUUID().toString(),

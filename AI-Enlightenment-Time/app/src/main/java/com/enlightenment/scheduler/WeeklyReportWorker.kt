@@ -1,5 +1,7 @@
 package com.enlightenment.scheduler
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -25,16 +27,14 @@ class WeeklyReportWorker(
     
     private suspend fun generateWeeklyReport() {
         val userProgressRepository = DIContainer.userProgressRepository
-        val achievementRepository = DIContainer.achievementRepository
         
         val endDate = Date()
         val startDate = Date(endDate.time - 7 * 24 * 60 * 60 * 1000L)
         
-        val weeklyProgress = userProgressRepository.getWeeklyProgress("default_user", startDate, endDate).first()
-        val achievements = achievementRepository.getAchievements("default_user").first()
+        val weeklyProgress = userProgressRepository.getWeeklyProgress()
         
-        val totalMinutes = weeklyProgress.dailyProgress.sumOf { it.totalMinutesSpent }
-        val totalStories = weeklyProgress.dailyProgress.sumOf { it.storiesCompleted }
+        val totalMinutes = weeklyProgress.sumOf { it.totalMinutesSpent }
+        val totalStories = weeklyProgress.sumOf { it.storiesCompleted }
         
         sendNotification(
             title = "本周学习报告",

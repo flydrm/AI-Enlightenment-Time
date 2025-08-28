@@ -1,5 +1,7 @@
 package com.enlightenment.scheduler
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -7,109 +9,79 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.enlightenment.data.preference.UserPreferences
-import com.enlightenment.domain.usecase.GenerateStoryUseCase
-import com.enlightenment.MainActivityNoHilt
+import com.enlightenment.di.DIContainer
+import com.enlightenment.presentation.MainActivityNoHilt
 import com.enlightenment.R
-import com.enlightenment.security.AuditLogger
-import com.enlightenment.security.UserAction
 import kotlinx.coroutines.flow.first
 
 
 
-/**
- * 每日学习提醒工作器
- */
-class DailyLearningWorker  constructor(
-    appContext: Context,
-    workerParams: WorkerParameters,
-    private val userPreferences: UserPreferences,
-    private val generateStoryUseCase: GenerateStoryUseCase,
-    private val auditLogger: AuditLogger
-) : CoroutineWorker(appContext, workerParams) {
-    
-    companion object {
-        const val CHANNEL_ID = "daily_learning_reminder"
-        const val NOTIFICATION_ID = 1001
-    }
+class DailyLearningWorker(
+    context: Context,
+    params: WorkerParameters
+) : CoroutineWorker(context, params) {
     
     override suspend fun doWork(): Result {
-        try {
-            // 检查是否启用了提醒
-            val isReminderEnabled = userPreferences.true.first()
-            if (!isReminderEnabled) {
-                return Result.success()
-            }
-            
-            // 检查今天是否已经学习
-            val hasLearnedToday = checkIfLearnedToday()
-            if (hasLearnedToday && !inputData.getBoolean("is_test", false)) {
-                return Result.success()
-            }
-            
-            // 创建通知渠道
-            createNotificationChannel()
-            
-            // 准备今日学习内容
-            val todayTheme = generateTodayTheme()
-            val childName = userPreferences.childName.first()
-            
-            // 发送通知
-            showLearningReminder(childName, todayTheme)
-            
-            // 记录提醒发送
-            auditLogger.logUserAction(
-                UserAction.APP_LAUNCH,
-                "发送每日学习提醒",
-                mapOf(
-                    "theme" to todayTheme,
-                    "scheduled_time" to "${inputData.getInt("scheduled_hour", 9)}:${inputData.getInt("scheduled_minute", 0)}"
-                )
-            )
-            
-            return Result.success()
-            
+        return try {
+            sendDailyReminder()
+            Result.success()
         } catch (e: Exception) {
-            auditLogger.logError(
-                "DAILY_REMINDER_ERROR",
-                "发送每日学习提醒失败",
-                e.stackTraceToString()
-            )
-            return Result.retry()
+            Result.failure()
         }
     }
     
-    /**
-     * 创建通知渠道
-     */
-    private fun createNotificationChannel() {
+    private suspend fun sendDailyReminder() {
+        val userPreferences = DIContainer.userPreferences
+        
+        // 检查是否启用了提醒
+        val isReminderEnabled = true // 简化实现
+        if (!isReminderEnabled) {
+            return
+        }
+        
+        // 获取用户进度
+        val userProgressRepository = DIContainer.userProgressRepository
+        val progress = userProgressRepository.getUserProgress()
+        
+        // 根据进度生成个性化消息
+        val message = generatePersonalizedMessage(progress?.storiesCompleted ?: 0)
+        
+        // 发送通知
+        sendNotification(
+            title = inputData.getString("title") ?: "学习时间到了！",
+            content = message
+        )
+    }
+    
+    private fun generatePersonalizedMessage(storiesCompleted: Int): String {
+        return when {
+            storiesCompleted == 0 -> "快来开始今天的学习之旅吧！"
+            storiesCompleted < 5 -> "你已经完成了${storiesCompleted}个故事，继续加油！"
+            storiesCompleted < 10 -> "太棒了！已经完成${storiesCompleted}个故事了！"
+            else -> "学习小达人！已经完成${storiesCompleted}个故事啦！"
+        }
+    }
+    
+    private fun sendNotification(title: String, content: String) {
+        val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        
+        // 创建通知渠道（Android O及以上）
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "每日学习提醒",
-                NotificationManager.IMPORTANCE_HIGH
+                "学习提醒",
+                NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "提醒小朋友每天的AI启蒙学习时间"
-                enableLights(true)
-                enableVibration(true)
+                description = "每日学习提醒通知"
             }
-            
-            val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
-    }
-    
-    /**
-     * 显示学习提醒通知
-     */
-    private fun showLearningReminder(childName: String, theme: String) {
+        
+        // 创建点击通知的Intent
         val intent = Intent(applicationContext, MainActivityNoHilt::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("from_notification", true)
-            putExtra("suggested_theme", theme)
         }
         
         val pendingIntent = PendingIntent.getActivity(
@@ -119,56 +91,27 @@ class DailyLearningWorker  constructor(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         
+        // 构建通知
         val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.star_on)
-            .setContentTitle("🐼 ${childName}，学习时间到啦！")
-            .setContentText("今天我们一起探索「$theme」吧！")
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText("小熊猫已经准备好了精彩的故事和有趣的游戏，快来和我一起学习吧！今天的主题是「$theme」，会有很多好玩的内容等着你哦！"))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setCategory(NotificationCompat.CATEGORY_REMINDER)
-            .setAutoCancel(true)
+            .setContentTitle(title)
+            .setContentText(content)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
             .addAction(
-                android.R.drawable.star_on,
+                android.R.drawable.ic_media_play,
                 "开始学习",
                 pendingIntent
             )
             .build()
         
-        if (NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()) {
-            NotificationManagerCompat.from(applicationContext).notify(NOTIFICATION_ID, notification)
-        }
+        // 发送通知
+        notificationManager.notify(NOTIFICATION_ID, notification)
     }
     
-    /**
-     * 检查今天是否已经学习
-     */
-    private suspend fun checkIfLearnedToday(): Boolean {
-        // 这里应该查询数据库检查今天的学习记录
-        // 暂时返回false
-        return false
-    }
-    
-    /**
-     * 生成今日主题
-     */
-    private fun generateTodayTheme(): String {
-        val themes = listOf(
-            "神奇的海洋世界",
-            "太空探险记",
-            "森林里的小动物",
-            "有趣的科学实验",
-            "恐龙的秘密",
-            "彩虹的故事",
-            "音乐的魔法",
-            "数字王国历险",
-            "勇敢的小英雄",
-            "友谊的力量"
-        )
-        
-        // 基于日期选择主题，确保每天不同
-        val dayOfYear = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_YEAR)
-        return themes[dayOfYear % themes.size]
+    companion object {
+        const val CHANNEL_ID = "daily_learning_reminder"
+        const val NOTIFICATION_ID = 1001
     }
 }

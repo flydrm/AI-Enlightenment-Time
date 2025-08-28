@@ -1,5 +1,7 @@
 package com.enlightenment.di
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
 import com.enlightenment.performance.MemoryOptimizer
 import com.enlightenment.performance.PerformanceMonitor

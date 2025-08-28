@@ -1,5 +1,7 @@
 package com.enlightenment.data.local.dao
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.room.*
 import com.enlightenment.data.local.entity.DailyProgressEntity
 import kotlinx.coroutines.flow.Flow

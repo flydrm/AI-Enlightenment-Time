@@ -1,5 +1,7 @@
 package com.enlightenment.security
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -128,7 +130,7 @@ class SecurityManager(
      * 获取安全存储的数据
      */
     fun getSecureData(key: String): String? {
-        return encryptedSharedPreferences.getString(key, null) ?: ""
+        return encryptedSharedPreferences.getString(key, null) ?: "" ?: ""
     }
     
     /**

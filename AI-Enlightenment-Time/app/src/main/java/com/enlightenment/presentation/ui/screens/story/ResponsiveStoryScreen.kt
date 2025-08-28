@@ -1,7 +1,9 @@
 package com.enlightenment.presentation.ui.screens.story
 
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.items
@@ -9,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
+import androidx.compose.material3.AssistChip
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
@@ -26,6 +29,8 @@ import coil.compose.AsyncImage
 import com.enlightenment.domain.model.Story
 import com.enlightenment.presentation.navigation.Screen
 import com.enlightenment.presentation.ui.responsive.*
+
+
 
 
 
@@ -231,7 +236,7 @@ private fun ExpandedStoryLayout(
         ) {
             Text(
                 text = "精选故事",
-                style = MaterialTheme.typography.typography.headlineMedium,
+                style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
             
@@ -304,14 +309,14 @@ private fun CompactStoryCard(
             ) {
                 Text(
                     text = story.title,
-                    style = MaterialTheme.typography.typography.titleMedium,
+                    style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 
                 Text(
                     text = story.content.take(100) + "...",
-                    style = MaterialTheme.typography.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -386,14 +391,14 @@ private fun MediumStoryCard(
             ) {
                 Text(
                     text = story.title,
-                    style = MaterialTheme.typography.typography.titleMedium,
+                    style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 
                 Text(
                     text = story.content.take(150) + "...",
-                    style = MaterialTheme.typography.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
@@ -537,7 +542,7 @@ private fun ExpandedStoryCard(
             ) {
                 Text(
                     text = story.title,
-                    style = MaterialTheme.typography.typography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -546,7 +551,7 @@ private fun ExpandedStoryCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Chip(
+                    AssistChip(
                         onClick = { },
                         label = { Text(story.genre.name) }
                     )
@@ -600,7 +605,7 @@ private fun EmptyStoryState(
         
         Text(
             text = "让小熊猫为你创作一个精彩的故事吧！",
-            style = MaterialTheme.typography.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         

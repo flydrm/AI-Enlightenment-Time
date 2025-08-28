@@ -1,5 +1,7 @@
 package com.enlightenment.presentation.ui.theme
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.graphics.Color
 
 

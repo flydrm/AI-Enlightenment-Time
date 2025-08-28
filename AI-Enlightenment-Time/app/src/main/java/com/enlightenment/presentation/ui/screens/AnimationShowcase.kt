@@ -1,7 +1,9 @@
 package com.enlightenment.presentation.ui.screens
 
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -15,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import com.enlightenment.presentation.components.animations.*
 import com.enlightenment.presentation.components.EnhancedAnimatedPanda
 import com.enlightenment.presentation.components.PandaMood
+
+
 
 
 
@@ -57,7 +61,7 @@ fun AnimationShowcaseScreen() {
                                 mood = PandaMood.HAPPY,
                                 speech = "我很开心！"
                             )
-                            Text("开心", style = MaterialTheme.typography.typography.bodySmall)
+                            Text("开心", style = MaterialTheme.typography.bodySmall)
                         }
                         
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -65,7 +69,7 @@ fun AnimationShowcaseScreen() {
                                 mood = PandaMood.EXCITED,
                                 speech = "太棒了！"
                             )
-                            Text("兴奋", style = MaterialTheme.typography.typography.bodySmall)
+                            Text("兴奋", style = MaterialTheme.typography.bodySmall)
                         }
                         
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -73,7 +77,7 @@ fun AnimationShowcaseScreen() {
                                 mood = PandaMood.THINKING,
                                 speech = "让我想想..."
                             )
-                            Text("思考", style = MaterialTheme.typography.typography.bodySmall)
+                            Text("思考", style = MaterialTheme.typography.bodySmall)
                         }
                     }
                 }
@@ -141,7 +145,7 @@ fun AnimationShowcaseScreen() {
                         Text(
                             "彩虹效果",
                             modifier = Modifier.align(Alignment.Center),
-                            style = MaterialTheme.typography.typography.headlineMedium,
+                            style = MaterialTheme.typography.headlineMedium,
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -314,7 +318,7 @@ private fun AnimationCard(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.typography.titleMedium,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
             

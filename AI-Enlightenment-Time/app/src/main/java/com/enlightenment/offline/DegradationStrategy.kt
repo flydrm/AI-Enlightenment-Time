@@ -1,5 +1,7 @@
 package com.enlightenment.offline
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.ai.model.RecognitionResult
 import com.enlightenment.ai.model.VoiceType
 import com.enlightenment.domain.model.Story
@@ -22,6 +24,12 @@ class DegradationStrategy(
      * 当AI故事生成服务不可用时使用
      */
     suspend fun generateDegradedStory(
+        id = "",
+        title = "",
+        content = "",
+        duration = 5,
+        ageGroup = AgeGroup.TODDLER,
+        category = StoryCategory.ANIMAL
         theme: String,
         age: Int,
         category: StoryCategory = StoryCategory.ADVENTURE
@@ -31,9 +39,21 @@ class DegradationStrategy(
         
         // 从离线模板中选择合适的故事
         val templates = OfflineStoryTemplates.getTemplates(category)
-        val template = templates.randomOrNull() ?: createDefaultStory(theme)
+        val template = templates.randomOrNull() ?: createDefaultStory(
+        id = "",
+        title = "",
+        content = "",
+        duration = 5,
+        ageGroup = AgeGroup.TODDLER,
+        category = StoryCategory.ANIMALtheme)
         
         return Story(
+        id = "",
+        title = "",
+        content = "",
+        duration = 5,
+        ageGroup = AgeGroup.TODDLER,
+        category = StoryCategory.ANIMAL
             id = "degraded_${System.currentTimeMillis()}",
             title = adaptTitle(template.title, theme),
             content = adaptContent(template.content, theme, age),
@@ -154,7 +174,13 @@ class DegradationStrategy(
     /**
      * 创建默认故事
      */
-    private fun createDefaultStory(theme: String): StoryTemplate {
+    private fun createDefaultStory(
+        id = "",
+        title = "",
+        content = "",
+        duration = 5,
+        ageGroup = AgeGroup.TODDLER,
+        category = StoryCategory.ANIMALtheme: String): StoryTemplate {
         return StoryTemplate(
             title = "关于${theme}的奇妙故事",
             content = """

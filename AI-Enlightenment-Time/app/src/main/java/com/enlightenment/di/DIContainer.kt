@@ -1,15 +1,16 @@
 package com.enlightenment.di
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
 import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.data.network.HttpClient
 import com.enlightenment.data.preference.UserPreferences
 import com.enlightenment.data.repository.StoryRepositoryImpl
 import com.enlightenment.data.repository.UserProgressRepositoryImpl
+import com.enlightenment.domain.repository.AchievementRepository
 import com.enlightenment.domain.repository.StoryRepository
-import com.enlightenment.domain.repository.AchievementRepository
 import com.enlightenment.domain.repository.UserProgressRepository
-import com.enlightenment.domain.repository.AchievementRepository
 import com.enlightenment.domain.usecase.*
 import com.enlightenment.multimedia.audio.AudioManager
 import com.enlightenment.multimedia.audio.AudioManagerImpl
@@ -113,7 +114,6 @@ object DIContainer {
         AuditLogger(applicationContext, database, secureStorage)
     }
 }
-
     // 添加Achievement Repository
     val achievementRepository: AchievementRepository by lazy {
         AchievementRepositoryImpl()

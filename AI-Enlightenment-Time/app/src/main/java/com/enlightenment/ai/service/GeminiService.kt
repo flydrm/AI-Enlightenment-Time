@@ -1,5 +1,7 @@
 package com.enlightenment.ai.service
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.data.network.api.Content
 import com.enlightenment.data.network.api.GeminiApi
 import com.enlightenment.data.network.api.GeminiRequest

@@ -1,5 +1,7 @@
 package com.enlightenment.ai.model.impl
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.ai.model.*
 import kotlin.random.Random
 import kotlinx.coroutines.delay

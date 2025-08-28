@@ -1,5 +1,7 @@
 package com.enlightenment.data.network.api
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import retrofit2.http.*
 
 

@@ -1,7 +1,9 @@
 package com.enlightenment.presentation.ui.screens.camera
 
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material.icons.filled.ArrowBack
@@ -19,6 +21,8 @@ import androidx.navigation.NavController
 
 
 
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CameraScreen(
@@ -30,7 +34,7 @@ fun CameraScreen(
                 title = { 
                     Text(
                         "拍照识物",
-                        style = MaterialTheme.typography.typography.headlineMedium
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 },
                 navigationIcon = {
@@ -63,7 +67,7 @@ fun CameraScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     "拍照识物功能\n即将上线",
-                    style = MaterialTheme.typography.typography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center
                 )
             }

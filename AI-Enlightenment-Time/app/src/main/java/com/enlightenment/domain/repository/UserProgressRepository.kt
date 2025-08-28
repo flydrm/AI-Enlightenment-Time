@@ -1,34 +1,21 @@
 package com.enlightenment.domain.repository
 
-import com.enlightenment.domain.model.Achievement
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.domain.model.DailyProgress
 import com.enlightenment.domain.model.UserProgress
+import java.util.Date
 import kotlinx.coroutines.flow.Flow
 
 
 
 interface UserProgressRepository {
-    suspend fun getUserProgress("default_user"): Flow<UserProgress>
-    
-    suspend fun updateProgress(progress: UserProgress)
-    
-    suspend fun recordStoryCompletion(storyId: String, timeSpentMinutes: Int)
-    
-    suspend fun recordQuestionAnswer(isCorrect: Boolean)
-    
-    suspend fun getDailyProgress(date: Long): DailyProgress?
-    
+    suspend fun createUserProgress(userProgress: UserProgress)
+    suspend fun updateUserProgress(userProgress: UserProgress)
+    suspend fun getUserProgress(): UserProgress?
+    fun getUserProgressFlow(): Flow<UserProgress?>
+    suspend fun incrementStoriesCompleted(userId: String)
+    suspend fun updateTotalMinutesSpent(userId: String, minutes: Int)
+    suspend fun updateLastActiveDate(userId: String, date: Date)
     suspend fun getWeeklyProgress(): List<DailyProgress>
-    
-    suspend fun getAchievements(): Flow<List<Achievement>>
-    
-    suspend fun unlockAchievement(achievementId: String)
-    
-    suspend fun updateStreak()
-    
-    suspend fun resetProgress()
-    
-    fun observeDailyProgress(date: Long): Flow<DailyProgress?>
-    
-    suspend fun addPoints(userId: String, points: Int)
 }

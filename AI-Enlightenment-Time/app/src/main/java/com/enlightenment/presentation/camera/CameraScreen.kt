@@ -1,5 +1,7 @@
 package com.enlightenment.presentation.camera
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.Manifest
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.*
@@ -369,11 +371,11 @@ private fun RecognitionResultDialog(
                         ) {
                             Text(
                                 text = obj.label,
-                                style = MaterialTheme.typography.typography.bodyLarge
+                                style = MaterialTheme.typography.bodyLarge
                             )
                             Text(
                                 text = "${(obj.confidence * 100).toInt()}%",
-                                style = MaterialTheme.typography.typography.bodyMedium,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.primary
                             )
                         }
@@ -384,7 +386,7 @@ private fun RecognitionResultDialog(
                 
                 Text(
                     text = result.childFriendlyDescription,
-                    style = MaterialTheme.typography.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }

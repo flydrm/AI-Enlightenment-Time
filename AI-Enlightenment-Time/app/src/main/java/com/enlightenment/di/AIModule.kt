@@ -1,5 +1,7 @@
 package com.enlightenment.di
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.ai.model.*
 import com.enlightenment.ai.model.impl.*
 import com.enlightenment.ai.service.AIService
