@@ -54,11 +54,14 @@ AI-Enlightenment-Time
   - BAAI/bge-reranker-v2-m3：用于在检索或多候选生成时对结果进行排序与置信度增强（照片识别候选、多模型生成结果选择）。
   - grok-4-imageGen：用于奖励图片、卡片和插图生成，提升“科技感”视觉产出。
 - 模型调用层设计：
-  - 抽象接口：IAIService，支持本地缓存、优先本地（若支持）-> 家长授权云调用 -> 降级文本/本地规则。
+  - 抽象接口：IAIService，支持按模型配置 appKey + apiBaseUrl、本地缓存、优先本地（若支持）-> 家长授权云调用 -> 降级文本/本地规则。
   - 调用策略：按场景分配主模型与轻量替代模型（见第6节）。
+  - 运行时配置：支持热更新各模型 appKey 与 apiBaseUrl；更新后新建连接并对在途请求不打断；所有变更写入审计日志（不含明文）。
 - 存储与密钥管理：
-  - API Key 存放于 Jetpack DataStore，密钥加密（Android Keystore）。
-  - 敏感日志仅本地保存，外发需脱敏并获家长授权。
+  - 每个模型的 appKey 与 apiBaseUrl 存放于 Jetpack DataStore；appKey 使用 Android Keystore（AES-GCM）加密封装，apiBaseUrl 明文但需校验。
+  - apiBaseUrl 校验：必须为 https，禁止查询参数/片段；可选域名白名单以降低 SSRF 风险。
+  - 环境区分：支持开发/测试/生产三套配置，一键切换与回滚；默认随构建类型选择环境。
+  - 敏感日志仅本地保存，外发需脱敏并获家长授权（仅记录 host，不记录 Key 明文）。
 
 6. AI 模型调用策略、降级与隐私/成本评估概要
 - 首要原则：隐私优先、成本可控、响应可接受。
@@ -84,6 +87,7 @@ AI-Enlightenment-Time
 - 无障碍与护眼：
   - 夜间/护眼模式、字体大小调节、自动朗读优化。
 - 家长入口：权限、模型开关、隐私设置、调用记录与开销概览。
+ - 家长入口：权限、模型开关、隐私设置、调用记录与开销概览；模型配置中心（逐模型 appKey + apiBaseUrl 管理、https 校验、域名白名单、保存前“测试连接”）。
 
 8. 验收标准与可测试项（精要）
 - 每日流程：每次启动能生成并播放 15 分钟内的探索内容（文本/语音/视觉），并记录完成度（Acceptance: 90% 正常生成成功或有合理降级提示）。
@@ -91,6 +95,8 @@ AI-Enlightenment-Time
 - 图像识别准确率（离线可测场景）：在标准数据集上达到预期阈值（需定义基线 N）。
 - 模型降级：在网络断开时能自动降级并给出可替代内容（Acceptance: 无崩溃并显示降级提示）。
 - 隐私合规：未经家长授权不上传可识别图像（验收通过检查上传日志）。
+ - 配置可测：设置页可分别为各模型配置 appKey 与 apiBaseUrl；apiBaseUrl 必须为 https、通过白名单校验且无查询/片段；“测试连接”按钮成功率 ≥ 99%；更新后新发起请求使用新配置且不影响在途请求；误配时显示可读错误并自动降级。
+ - 审计与安全：配置变更记录时间戳、模型、字段类型（Key/URL）与操作者；不记录 Key 明文，URL 仅记录 host。
 
 9. 需求追踪矩阵（概要）
 - Requirement -> Task -> Acceptance Criteria（示例）：
@@ -177,12 +183,25 @@ AI-Enlightenment-Time
   - 图片向量化 → Qwen3-Embedding-8B（本地优先；若本地不可用且获得授权则云端调用）。  
   - Reranker → bge-reranker-v2-m3 仅在候选数 > N（默认 N=5）且初筛置信度 < 0.7 时调用。  
   - 图像生成 → grok-4-imageGen，异步提示并允许家长审批/计费确认。  
+ - 配置模型（新增）
+   - Config 数据结构（示例）
+     - ModelConfig: { model: String, appKey: EncryptedString, apiBaseUrl: String, environment: Enum(dev/test/prod), updatedAt: Long }
+     - GlobalConfig: { activeEnv: Enum, domainWhitelist: List<String> }
+   - Config API（示例）
+     - updateConfig(model: String, appKey: CharArray?, apiBaseUrl: String?): Result
+     - testConnection(model: String): Result<Health>
+     - switchEnvironment(env: Enum): Result
+   - 校验与应用
+     - apiBaseUrl 必须 https、不得包含查询或片段；可选域名白名单校验。
+     - 成功更新后重建对应模型的 HTTP 客户端；在途请求不被中断。
+     - 失败时返回具体错误码（INVALID_URL / NOT_HTTPS / DOMAIN_NOT_ALLOWED / KEY_MISSING / NETWORK_FAIL）。
 
 4. 配置与密钥管理流程
-- 存储位置：所有 API Key 存放在 Jetpack DataStore 中的加密条目，使用 Android Keystore (AES-GCM) 加密密钥进行封装。Key 储存与读取要封装在 KeyManager 类中，并提供审计日志接口（仅记录操作时间与调用类型，不记录明文）。  
+- 存储位置：每个模型维护 appKey（加密）与 apiBaseUrl（明文校验）；统一存放在 Jetpack DataStore。appKey 以 Android Keystore (AES-GCM) 封装存取。通过 KeyManager 封装读写与轮换，并提供审计接口（仅记录时间/模型/操作类型）。  
 - 家长授权：首次触发云调用（上传图像/语音或使用付费模型）时弹出明确授权对话，记录（家长ID、时间戳、授权范围、到期日）。授权可在家长设置中随时撤回。  
-- 配置回滚与环境区分：支持开发/测试/生产三套 Key 配置，KeyManager 在 Debug 模式下使用 MockKeyStore。  
-- 最小权限原则：应用只保存每个模型所需的最小 Key 权限，并提供定期刷新与失效检测（例如每 90 天提示重新配置）。  
+- 配置回滚与环境区分：支持开发/测试/生产三套配置；可一键切换活跃环境与回滚；Debug 使用 MockKeyStore。  
+- URL 校验与白名单：apiBaseUrl 必须为 https 且无查询/片段；可选启用域名白名单；不符合时拒绝保存并提示。  
+- 最小权限原则：仅保存所需最小 appKey 权限；支持 Key 轮换与失效检测（如每 90 天提醒）。  
 
 5. 隐私与数据脱敏实现细则
 - 上传最小化：
