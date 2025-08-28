@@ -1,17 +1,20 @@
 package com.enlightenment.presentation.camera
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.util.Log
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enlightenment.ai.service.AIService
+import com.enlightenment.data.preference.UserPreferences
 import com.enlightenment.multimedia.camera.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 /**
@@ -21,7 +24,8 @@ import javax.inject.Inject
 class CameraViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val cameraService: CameraService,
-    private val aiService: AIService
+    private val aiService: AIService,
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
     
     companion object {
@@ -83,10 +87,13 @@ class CameraViewModel @Inject constructor(
                         imageData = result.imageData
                     )
                     
+                    // 获取儿童年龄
+                    val childAge = userPreferences.childAge.first()
+                    
                     // 生成儿童友好的描述
                     val description = aiService.imageRecognition.generateChildFriendlyDescription(
                         recognitionResults = recognitionResults,
-                        childAge = 5 // TODO: 从用户设置中获取年龄
+                        childAge = childAge
                     )
                     
                     _lastCaptureResult.value = RecognitionResult(
@@ -98,7 +105,10 @@ class CameraViewModel @Inject constructor(
                     viewModelScope.launch {
                         try {
                             val audioData = aiService.speechService.textToSpeech(description)
-                            // TODO: 播放音频
+                            
+                            // 播放音频
+                            playAudio(audioData)
+                            
                         } catch (e: Exception) {
                             Log.e(TAG, "Failed to synthesize speech", e)
                         }
@@ -134,6 +144,46 @@ class CameraViewModel @Inject constructor(
      */
     fun clearResult() {
         _lastCaptureResult.value = null
+    }
+    
+    /**
+     * 播放音频数据
+     */
+    private suspend fun playAudio(audioData: ByteArray) {
+        try {
+            // 创建临时文件
+            val tempFile = kotlin.io.path.createTempFile(
+                directory = context.cacheDir.toPath(),
+                prefix = "tts_",
+                suffix = ".mp3"
+            ).toFile()
+            
+            // 写入音频数据
+            tempFile.writeBytes(audioData)
+            
+            // 使用MediaPlayer播放
+            val mediaPlayer = MediaPlayer().apply {
+                setDataSource(tempFile.absolutePath)
+                prepare()
+                
+                setOnCompletionListener {
+                    release()
+                    tempFile.delete()
+                }
+                
+                setOnErrorListener { _, what, extra ->
+                    Log.e(TAG, "MediaPlayer error: what=$what, extra=$extra")
+                    release()
+                    tempFile.delete()
+                    true
+                }
+            }
+            
+            mediaPlayer.start()
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to play audio", e)
+        }
     }
     
     override fun onCleared() {

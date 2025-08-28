@@ -24,6 +24,11 @@ interface AIService {
     val speechService: SpeechService
     
     /**
+     * 图像生成服务
+     */
+    val imageGenerationService: ImageGenerationService
+    
+    /**
      * 初始化所有AI服务
      */
     suspend fun initialize()

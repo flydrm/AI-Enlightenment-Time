@@ -242,11 +242,12 @@ private fun StoryContent(
             
             choices.forEach { choice ->
                 OutlinedButton(
-                    onClick = { /* TODO: 处理选择 */ },
+                    onClick = { viewModel.handleChoice(choice) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(12.dp),
+                    enabled = playerState !is PlayerState.Loading
                 ) {
                     Text(text = choice)
                 }

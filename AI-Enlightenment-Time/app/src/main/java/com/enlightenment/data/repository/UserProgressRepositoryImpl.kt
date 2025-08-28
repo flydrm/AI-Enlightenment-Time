@@ -1,6 +1,8 @@
 package com.enlightenment.data.repository
 
+import com.enlightenment.data.local.dao.DailyProgressDao
 import com.enlightenment.data.local.dao.UserProgressDao
+import com.enlightenment.data.local.entity.DailyProgressEntity
 import com.enlightenment.data.local.entity.UserProgressEntity
 import com.enlightenment.domain.model.Achievement
 import com.enlightenment.domain.model.AchievementCategory
@@ -17,7 +19,8 @@ import javax.inject.Singleton
 
 @Singleton
 class UserProgressRepositoryImpl @Inject constructor(
-    private val userProgressDao: UserProgressDao
+    private val userProgressDao: UserProgressDao,
+    private val dailyProgressDao: DailyProgressDao
 ) : UserProgressRepository {
     
     companion object {
@@ -45,20 +48,74 @@ class UserProgressRepositoryImpl @Inject constructor(
         )
         
         userProgressDao.updateProgress(updatedProgress)
+        
+        // 同时更新每日进度
+        val today = getTodayStartTimestamp()
+        var dailyProgress = dailyProgressDao.getDailyProgress(DEFAULT_USER_ID, today)
+        if (dailyProgress == null) {
+            dailyProgress = DailyProgressEntity(
+                date = today,
+                userId = DEFAULT_USER_ID
+            )
+            dailyProgressDao.insertOrUpdate(dailyProgress)
+        }
+        
+        dailyProgressDao.incrementStoriesCompleted(DEFAULT_USER_ID, today)
+        dailyProgressDao.addLearningTime(DEFAULT_USER_ID, today, timeSpentMinutes)
     }
     
     override suspend fun recordQuestionAnswer(isCorrect: Boolean) {
-        // TODO: Implement daily progress tracking
+        val today = getTodayStartTimestamp()
+        
+        // 获取或创建今日进度
+        var dailyProgress = dailyProgressDao.getDailyProgress(DEFAULT_USER_ID, today)
+        if (dailyProgress == null) {
+            dailyProgress = DailyProgressEntity(
+                date = today,
+                userId = DEFAULT_USER_ID
+            )
+            dailyProgressDao.insertOrUpdate(dailyProgress)
+        }
+        
+        // 更新问题回答记录
+        val correctIncrement = if (isCorrect) 1 else 0
+        dailyProgressDao.recordQuestionAnswer(DEFAULT_USER_ID, today, correctIncrement)
     }
     
     override suspend fun getDailyProgress(date: Long): DailyProgress? {
-        // TODO: Implement daily progress tracking
-        return null
+        val startOfDay = getStartOfDay(date)
+        val progress = dailyProgressDao.getDailyProgress(DEFAULT_USER_ID, startOfDay)
+        return progress?.toDomainModel()
     }
     
     override suspend fun getWeeklyProgress(): List<DailyProgress> {
-        // TODO: Implement weekly progress tracking
-        return emptyList()
+        val today = getTodayStartTimestamp()
+        val sevenDaysAgo = today - TimeUnit.DAYS.toMillis(6) // 包括今天，共7天
+        
+        val progressList = dailyProgressDao.getProgressBetweenDates(
+            DEFAULT_USER_ID, 
+            sevenDaysAgo, 
+            today
+        )
+        
+        // 创建完整的7天列表，包括没有记录的天数
+        val completeWeekList = mutableListOf<DailyProgress>()
+        for (i in 0..6) {
+            val date = today - TimeUnit.DAYS.toMillis(6 - i.toLong())
+            val existingProgress = progressList.find { it.date == date }
+            
+            completeWeekList.add(
+                existingProgress?.toDomainModel() ?: DailyProgress(
+                    date = date,
+                    storiesCompleted = 0,
+                    learningTimeMinutes = 0,
+                    questionsAnswered = 0,
+                    correctAnswers = 0
+                )
+            )
+        }
+        
+        return completeWeekList
     }
     
     override suspend fun getAchievements(): Flow<List<Achievement>> {
@@ -176,5 +233,24 @@ class UserProgressRepositoryImpl @Inject constructor(
                 category = AchievementCategory.EXPLORATION
             )
         )
+    }
+    
+    private fun getTodayStartTimestamp(): Long {
+        return Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+    }
+    
+    private fun getStartOfDay(timestamp: Long): Long {
+        return Calendar.getInstance().apply {
+            timeInMillis = timestamp
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
     }
 }

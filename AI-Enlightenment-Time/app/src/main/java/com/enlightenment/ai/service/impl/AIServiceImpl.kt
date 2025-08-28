@@ -2,11 +2,13 @@ package com.enlightenment.ai.service.impl
 
 import com.enlightenment.ai.service.*
 import com.enlightenment.ai.model.*
+import com.enlightenment.ai.config.AIConfigManager
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,14 +20,17 @@ class AIServiceImpl @Inject constructor(
     private val textGenerationModel: TextGenerationModel,
     private val imageRecognitionModel: ImageRecognitionModel,
     private val speechRecognitionModel: SpeechRecognitionModel,
-    private val textToSpeechModel: TextToSpeechModel
+    private val textToSpeechModel: TextToSpeechModel,
+    private val configManager: AIConfigManager
 ) : AIService {
     
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val _isReady = MutableStateFlow(false)
     override val isReady: StateFlow<Boolean> = _isReady.asStateFlow()
     
-    override val storyGenerator: StoryGenerationService = StoryGenerationServiceImpl(textGenerationModel)
+    override val storyGenerator: StoryGenerationService by lazy {
+        StoryGenerationServiceImpl(textGenerationModel, imageGenerationService)
+    }
     override val imageRecognition: ImageRecognitionService = ImageRecognitionServiceImpl(
         imageRecognitionModel, 
         textGenerationModel
@@ -34,6 +39,7 @@ class AIServiceImpl @Inject constructor(
         speechRecognitionModel,
         textToSpeechModel
     )
+    override val imageGenerationService: ImageGenerationService = ImageGenerationServiceImpl(configManager)
     
     override suspend fun initialize() {
         try {
@@ -67,7 +73,8 @@ class AIServiceImpl @Inject constructor(
  * 故事生成服务实现
  */
 class StoryGenerationServiceImpl(
-    private val textGenerationModel: TextGenerationModel
+    private val textGenerationModel: TextGenerationModel,
+    private val imageGenerationService: ImageGenerationService? = null
 ) : StoryGenerationService {
     
     override suspend fun generateStory(
@@ -86,12 +93,21 @@ class StoryGenerationServiceImpl(
             temperature = 0.8f
         )
         
+        val title = extractTitle(storyContent)
+        
+        // 生成配图
+        val imageUrl = imageGenerationService?.generateStoryImage(
+            storyTitle = title,
+            storyContent = storyContent.take(500), // 使用前500字作为内容摘要
+            style = ImageStyle.CHILDREN_BOOK
+        )
+        
         return Story(
             id = generateStoryId(),
-            title = extractTitle(storyContent),
+            title = title,
             content = storyContent,
             chapters = parseChapters(storyContent),
-            imageUrl = null // TODO: 生成配图
+            imageUrl = imageUrl
         )
     }
     
@@ -237,11 +253,38 @@ class SpeechServiceImpl(
     }
     
     override fun startRealtimeSpeechRecognition(): Flow<String> {
-        val flow = MutableSharedFlow<String>()
+        val flow = MutableSharedFlow<String>(
+            replay = 0,
+            extraBufferCapacity = 10
+        )
         recognitionJob = flow
         
-        // TODO: 实现实时语音识别逻辑
-        // 这里需要与Android的AudioRecord等组件集成
+        // 启动实时语音识别协程
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // 模拟实时语音识别
+                // 在实际实现中，这里应该：
+                // 1. 使用 AudioRecord 采集音频数据
+                // 2. 将音频数据发送到语音识别模型
+                // 3. 将识别结果发送到 flow
+                
+                // 暂时使用模拟数据
+                val simulatedPhrases = listOf(
+                    "你好，小熊猫",
+                    "我想听故事",
+                    "这是什么？",
+                    "真有趣！"
+                )
+                
+                for (phrase in simulatedPhrases) {
+                    delay(2000) // 模拟语音输入间隔
+                    flow.emit(phrase)
+                }
+            } catch (e: Exception) {
+                // 错误处理
+                flow.emit("语音识别出错了，请重试")
+            }
+        }
         
         return flow.asSharedFlow()
     }
