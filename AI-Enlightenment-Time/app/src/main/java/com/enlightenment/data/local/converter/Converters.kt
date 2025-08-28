@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import com.enlightenment.domain.model.AgeGroup
 import com.enlightenment.domain.model.Question
 import com.enlightenment.domain.model.StoryCategory
+import com.enlightenment.security.AuditCategory
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -67,5 +68,26 @@ class Converters {
         } else {
             data.split(",").toSet()
         }
+    }
+    
+    @TypeConverter
+    fun fromAuditCategory(category: AuditCategory): String {
+        return category.name
+    }
+    
+    @TypeConverter
+    fun toAuditCategory(name: String): AuditCategory {
+        return AuditCategory.valueOf(name)
+    }
+    
+    @TypeConverter
+    fun fromStringMap(map: Map<String, String>): String {
+        return gson.toJson(map)
+    }
+    
+    @TypeConverter
+    fun toStringMap(json: String): Map<String, String> {
+        val type = object : TypeToken<Map<String, String>>() {}.type
+        return gson.fromJson(json, type) ?: emptyMap()
     }
 }

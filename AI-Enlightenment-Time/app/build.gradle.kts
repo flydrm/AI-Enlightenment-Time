@@ -20,6 +20,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        
+        // Build config fields for AI configuration
+        buildConfigField("boolean", "USE_REAL_AI", "false") // Set to true to use real AI APIs
+        buildConfigField("String", "PRIMARY_TEXT_MODEL", "\"gemini\"") // "gemini" or "gpt5"
     }
 
     buildTypes {
@@ -129,6 +133,19 @@ dependencies {
     
     // Text-to-Speech
     implementation("com.google.android.play:core-ktx:1.8.1")
+    
+    // Networking
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    
+    // Security
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    
+    // WorkManager for scheduling
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.hilt:hilt-work:1.1.0")
     
     // Testing
     testImplementation("junit:junit:4.13.2")
