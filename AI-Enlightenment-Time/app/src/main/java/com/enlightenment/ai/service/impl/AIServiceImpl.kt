@@ -202,6 +202,7 @@ class ImageRecognitionServiceImpl(
 ) : ImageRecognitionService {
     
     override suspend fun recognizeObjects(imageData: ByteArray): List<RecognitionResult> {
+        // 使用Qwen模型进行图像识别
         return imageRecognitionModel.recognizeImage(imageData)
     }
     
@@ -210,7 +211,7 @@ class ImageRecognitionServiceImpl(
         childAge: Int
     ): String {
         if (recognitionResults.isEmpty()) {
-            return "我没有看到什么特别的东西呢，再试试看？"
+            return getEncouragingMessage(childAge)
         }
         
         val topResults = recognitionResults.sortedByDescending { it.confidence }.take(3)
@@ -230,7 +231,18 @@ class ImageRecognitionServiceImpl(
                 append("${result.label}（置信度：${(result.confidence * 100).toInt()}%）")
             }
             append("。请用简单的语言，加入一些有趣的知识或故事。")
+            append("确保内容安全、积极向上，能激发孩子的好奇心。")
         }
+    }
+    
+    private fun getEncouragingMessage(age: Int): String {
+        val messages = listOf(
+            "哇，这个有点难看清楚呢！要不我们换个角度再试试？",
+            "嗯...让我再仔细看看。你能告诉我这是什么吗？",
+            "这个看起来很有趣！但是我需要看得更清楚一点。",
+            "哎呀，图片有点模糊呢。我们再拍一张好不好？"
+        )
+        return messages.random()
     }
 }
 

@@ -34,6 +34,15 @@ interface StoryDao {
     @Query("UPDATE stories SET isCompleted = 1 WHERE id = :storyId")
     suspend fun markAsCompleted(storyId: String)
     
+    @Query("SELECT * FROM stories WHERE createdAt >= :startTime AND createdAt <= :endTime AND isCompleted = 1")
+    suspend fun getCompletedStoriesBetween(startTime: Long, endTime: Long): List<StoryEntity>
+    
+    @Query("SELECT * FROM stories WHERE createdAt < :cutoffTime")
+    suspend fun getStoriesBeforeDate(cutoffTime: Long): List<StoryEntity>
+    
+    @Query("DELETE FROM stories WHERE createdAt < :cutoffTime")
+    suspend fun deleteStoriesBeforeDate(cutoffTime: Long)
+    
     @Query("UPDATE stories SET isFavorite = NOT isFavorite WHERE id = :storyId")
     suspend fun toggleFavorite(storyId: String)
     

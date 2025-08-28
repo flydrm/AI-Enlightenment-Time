@@ -4,6 +4,9 @@ import com.enlightenment.ai.config.AIConfigManager
 import com.enlightenment.ai.config.AIModelType
 import com.enlightenment.ai.service.ImageGenerationService
 import com.enlightenment.ai.service.ImageStyle
+import com.enlightenment.data.network.api.GrokImageApi
+import com.enlightenment.data.network.api.ImageGenerationRequest
+import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -15,7 +18,9 @@ import javax.inject.Singleton
  */
 @Singleton
 class ImageGenerationServiceImpl @Inject constructor(
-    private val configManager: AIConfigManager
+    private val configManager: AIConfigManager,
+    private val grokImageApi: GrokImageApi,
+    private val secureStorage: SecureStorage
 ) : ImageGenerationService {
     
     override suspend fun generateStoryImage(
@@ -31,18 +36,33 @@ class ImageGenerationServiceImpl @Inject constructor(
             // 检查模型健康状态
             val healthStatus = configManager.getHealthStatus(AIModelType.GROK_4_IMAGEGEN)
             if (!healthStatus.isHealthy || healthStatus.inCircuitBreaker) {
-                return@withContext null
+                return@withContext fallbackToPlaceholder(storyTitle, style)
             }
+            
+            // 获取API密钥
+            val apiKey = secureStorage.getGrokApiKey()
+                ?: return@withContext fallbackToPlaceholder(storyTitle, style)
             
             // 构建生成提示词
             val prompt = buildStoryImagePrompt(storyTitle, storyContent, style)
             
-            // TODO: 实际调用 grok-4-imageGen API
-            // 这里需要实现实际的API调用逻辑
-            // val imageUrl = callGrokImageGenAPI(config, prompt)
+            // 调用 grok-4-imageGen API
+            val request = ImageGenerationRequest.childFriendly(prompt)
+            val response = grokImageApi.generateImage("Bearer $apiKey", request)
             
-            // 暂时返回占位图片URL
-            return@withContext generatePlaceholderImage(storyTitle, style)
+            // 获取生成的图片URL
+            val imageUrl = response.data.firstOrNull()?.url
+            
+            if (imageUrl != null) {
+                // 更新健康状态为成功
+                configManager.updateHealthStatus(
+                    AIModelType.GROK_4_IMAGEGEN,
+                    isSuccess = true
+                )
+                return@withContext imageUrl
+            } else {
+                return@withContext fallbackToPlaceholder(storyTitle, style)
+            }
             
         } catch (e: Exception) {
             // 记录错误并更新健康状态
@@ -51,7 +71,8 @@ class ImageGenerationServiceImpl @Inject constructor(
                 isSuccess = false,
                 errorMessage = e.message
             )
-            return@withContext null
+            // 降级到占位图片
+            return@withContext fallbackToPlaceholder(storyTitle, style)
         }
     }
     
@@ -63,12 +84,22 @@ class ImageGenerationServiceImpl @Inject constructor(
             val config = configManager.getConfig(AIModelType.GROK_4_IMAGEGEN)
                 ?: return@withContext null
             
+            val apiKey = secureStorage.getGrokApiKey()
+                ?: return@withContext generatePlaceholderAchievement(achievementName)
+            
             val prompt = buildAchievementImagePrompt(achievementName, achievementDescription)
             
-            // TODO: 实际调用 grok-4-imageGen API
+            // 调用 grok-4-imageGen API
+            val request = ImageGenerationRequest(
+                prompt = prompt,
+                size = "512x512", // 成就图标使用较小尺寸
+                quality = "hd",
+                style = "vivid"
+            )
+            val response = grokImageApi.generateImage("Bearer $apiKey", request)
             
-            // 暂时返回占位图片URL
-            return@withContext generatePlaceholderAchievement(achievementName)
+            return@withContext response.data.firstOrNull()?.url
+                ?: generatePlaceholderAchievement(achievementName)
             
         } catch (e: Exception) {
             configManager.updateHealthStatus(
@@ -76,7 +107,7 @@ class ImageGenerationServiceImpl @Inject constructor(
                 isSuccess = false,
                 errorMessage = e.message
             )
-            return@withContext null
+            return@withContext generatePlaceholderAchievement(achievementName)
         }
     }
     
@@ -88,12 +119,22 @@ class ImageGenerationServiceImpl @Inject constructor(
             val config = configManager.getConfig(AIModelType.GROK_4_IMAGEGEN)
                 ?: return@withContext null
             
+            val apiKey = secureStorage.getGrokApiKey()
+                ?: return@withContext generatePlaceholderAvatar(characterName)
+            
             val prompt = buildCharacterAvatarPrompt(characterName, characterDescription)
             
-            // TODO: 实际调用 grok-4-imageGen API
+            // 调用 grok-4-imageGen API
+            val request = ImageGenerationRequest(
+                prompt = prompt,
+                size = "256x256", // 头像使用小尺寸
+                quality = "standard",
+                style = "vivid"
+            )
+            val response = grokImageApi.generateImage("Bearer $apiKey", request)
             
-            // 暂时返回占位图片URL
-            return@withContext generatePlaceholderAvatar(characterName)
+            return@withContext response.data.firstOrNull()?.url
+                ?: generatePlaceholderAvatar(characterName)
             
         } catch (e: Exception) {
             configManager.updateHealthStatus(
@@ -101,7 +142,7 @@ class ImageGenerationServiceImpl @Inject constructor(
                 isSuccess = false,
                 errorMessage = e.message
             )
-            return@withContext null
+            return@withContext generatePlaceholderAvatar(characterName)
         }
     }
     
@@ -166,18 +207,28 @@ class ImageGenerationServiceImpl @Inject constructor(
         """.trimMargin()
     }
     
-    // 临时占位图片生成方法
+    // 降级方法
+    private fun fallbackToPlaceholder(title: String, style: ImageStyle): String {
+        return generatePlaceholderImage(title, style)
+    }
+    
+    // 占位图片生成方法（用于降级场景）
     private fun generatePlaceholderImage(title: String, style: ImageStyle): String {
-        // 在实际实现中，这里应该返回真实的图片URL
-        // 可以使用预设的占位图片或者动态生成的SVG
-        return "https://placeholder.pics/svg/400x300/FF6B6B/FFFFFF/Story:${title.take(10)}"
+        // 使用本地资源或预设的占位图片
+        return when (style) {
+            ImageStyle.CHILDREN_BOOK -> "android.resource://com.enlightenment/drawable/placeholder_story_book"
+            ImageStyle.WATERCOLOR -> "android.resource://com.enlightenment/drawable/placeholder_watercolor"
+            ImageStyle.CARTOON -> "android.resource://com.enlightenment/drawable/placeholder_cartoon"
+            ImageStyle.PIXEL_ART -> "android.resource://com.enlightenment/drawable/placeholder_pixel"
+            ImageStyle.CUTE_ANIMAL -> "android.resource://com.enlightenment/drawable/placeholder_animal"
+        }
     }
     
     private fun generatePlaceholderAchievement(name: String): String {
-        return "https://placeholder.pics/svg/200x200/FFD93D/6B5B95/Achievement:${name.take(10)}"
+        return "android.resource://com.enlightenment/drawable/placeholder_achievement"
     }
     
     private fun generatePlaceholderAvatar(name: String): String {
-        return "https://placeholder.pics/svg/150x150/6B5B95/FFFFFF/Avatar:${name.take(10)}"
+        return "android.resource://com.enlightenment/drawable/placeholder_avatar"
     }
 }
