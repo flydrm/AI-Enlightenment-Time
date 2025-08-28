@@ -10,35 +10,38 @@ import javax.inject.Inject
 @HiltAndroidApp
 class EnlightenmentApp : Application() {
     
-    @Inject
-    lateinit var startupOptimizer: StartupOptimizer
+    // 暂时注释掉性能优化相关的依赖注入，先确保应用能够编译
+    // @Inject
+    // lateinit var startupOptimizer: StartupOptimizer
     
-    @Inject
-    lateinit var memoryOptimizer: MemoryOptimizer
+    // @Inject
+    // lateinit var memoryOptimizer: MemoryOptimizer
     
-    @Inject
-    lateinit var performanceMonitor: PerformanceMonitor
+    // @Inject
+    // lateinit var performanceMonitor: PerformanceMonitor
     
     override fun onCreate() {
         super.onCreate()
         
-        // 执行启动优化
-        startupOptimizer.optimize()
+        // 暂时禁用性能优化
+        // startupOptimizer.optimize()
         
-        // 开始性能监控（仅在调试模式）
-        if (BuildConfig.DEBUG) {
-            performanceMonitor.startMonitoring()
-        }
+        // 暂时禁用性能监控
+        // if (com.enlightenment.BuildConfig.DEBUG) {
+        //     performanceMonitor.startMonitoring()
+        // }
     }
     
     override fun onLowMemory() {
         super.onLowMemory()
-        startupOptimizer.onLowMemory()
-        memoryOptimizer.optimizeMemory()
+        // 暂时禁用
+        // startupOptimizer.onLowMemory()
+        // memoryOptimizer.optimizeMemory()
     }
     
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
-        memoryOptimizer.onTrimMemory(level)
+        // 暂时禁用
+        // memoryOptimizer.onTrimMemory(level)
     }
 }

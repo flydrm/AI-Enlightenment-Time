@@ -1,11 +1,12 @@
 package com.enlightenment.performance
 
-import android.app.Application
-import androidx.startup.Initializer
-import androidx.startup.StartupLogger
-import com.enlightenment.ai.config.AIConfigManager
-import com.enlightenment.data.local.database.AppDatabase
-import com.enlightenment.offline.OfflineManager
+import android.content.Context
+// import androidx.startup.Initializer
+// import androidx.startup.StartupLogger
+// import com.enlightenment.ai.config.AIConfigManager
+// import com.enlightenment.data.local.database.AppDatabase
+// import com.enlightenment.offline.OfflineManager
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -16,7 +17,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class StartupOptimizer @Inject constructor(
-    private val application: Application
+    @ApplicationContext private val context: Context
 ) {
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     

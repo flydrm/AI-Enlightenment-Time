@@ -29,7 +29,7 @@ class HttpClient @Inject constructor() {
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             // 添加日志拦截器（仅在调试模式）
-            if (BuildConfig.DEBUG) {
+            if (com.enlightenment.BuildConfig.DEBUG) {
                 addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 })

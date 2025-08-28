@@ -41,16 +41,17 @@ android {
         }
     }
     
-    flavorDimensions += "environment"
-    productFlavors {
-        create("dev") {
-            dimension = "environment"
-            applicationIdSuffix = ".dev"
-        }
-        create("prod") {
-            dimension = "environment"
-        }
-    }
+    // 暂时禁用产品风味以简化构建
+    // flavorDimensions += "environment"
+    // productFlavors {
+    //     create("dev") {
+    //         dimension = "environment"
+    //         applicationIdSuffix = ".dev"
+    //     }
+    //     create("prod") {
+    //         dimension = "environment"
+    //     }
+    // }
     
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -70,6 +71,15 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+}
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+    arguments {
+        arg("dagger.fastInit", "enabled")
+        arg("dagger.hilt.android.internal.disableAndroidSuperclassValidation", "true")
     }
 }
 
