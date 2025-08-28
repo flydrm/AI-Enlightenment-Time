@@ -56,6 +56,8 @@ AI-Enlightenment-Time
 - 模型调用层设计：
   - 抽象接口：IAIService，支持按模型配置 appKey + apiBaseUrl、本地缓存、优先本地（若支持）-> 家长授权云调用 -> 降级文本/本地规则。
   - 调用策略：按场景分配主模型与轻量替代模型（见第6节）。
+  - 备选策略：当首选模型出现异常（错误/超时/熔断中）时，按“相同能力池内的当前已配置模型”动态选择健康可用的备选模型重试一次；若备选仍异常，则进入降级路径（见第6节）。
+  - 能力池与健康：按能力类型（对话/文本生成、嵌入、重排、图像生成）维护模型能力池；运行时维护每个模型的健康状态（最近成功率、错误率与熔断窗口）。备选仅在健康模型中进行。
   - 运行时配置：支持热更新各模型 appKey 与 apiBaseUrl；更新后新建连接并对在途请求不打断；所有变更写入审计日志（不含明文）。
 - 存储与密钥管理：
   - 每个模型的 appKey 与 apiBaseUrl 存放于 Jetpack DataStore；appKey 使用 Android Keystore（AES-GCM）加密封装，apiBaseUrl 明文但需校验。
@@ -65,13 +67,14 @@ AI-Enlightenment-Time
 
 6. AI 模型调用策略、降级与隐私/成本评估概要
 - 首要原则：隐私优先、成本可控、响应可接受。
+ - 动态备选总则：任一主调用若发生异常或超时，系统先在对应能力池内对“当前已配置”的其他模型按优先级/健康状态动态选择并重试一次；若仍失败则执行降级路径并给出可读提示。
 - 调用优先级示例：
   - 对话/故事：主用 GEMINI-2.5-PRO，成本或延迟不可接受时退回 GPT-5-PRO（如果已购买低延迟计划）或本地模版化内容。
   - 图像识别：先尝试本地 vision 模型或轻量识别，复杂场景使用 Qwen3-Embedding-8B 向量化 + reranker。若无网络或未授权，则用离线标签建议或提示家长。
   - 图片生成功能：默认在云调用 grok-4-imageGen；家长可选择关闭生成功能以节省成本。
 - 降级策略：
   - 网络不可用：提供离线模版、播放预生成故事、提示稍后重试。
-  - 模型调用失败：切换到本地简短规则或缓存上次成功结果，并记录 Telemetry。
+  - 模型调用失败：先执行动态备选（相同能力池内的已配置模型）后再决定是否降级；若主/备均失败，则切换到本地简短规则或缓存上次成功结果，并记录 Telemetry。
 - 隐私评估要点：
   - 严禁在未经家长明确同意下上传儿童可识别信息。
   - 所有上传数据需最小化（仅发送必要裁剪/特征），并在文档中指明保留期与删除机制。
@@ -94,6 +97,7 @@ AI-Enlightenment-Time
 - 故事质量：生成故事包含主角、目标与两个简单问题，故事长度控制在 150-300 字（可被 TTS 清晰读出）。
 - 图像识别准确率（离线可测场景）：在标准数据集上达到预期阈值（需定义基线 N）。
 - 模型降级：在网络断开时能自动降级并给出可替代内容（Acceptance: 无崩溃并显示降级提示）。
+ - 动态备选：当主模型异常（故障/超时）时，系统自动尝试至少一个同能力池内已配置的备选模型；若备选成功则继续流程，若失败则降级（Acceptance: 备选尝试与结果在日志中可见，备选触发率=主失败次数，且用户体验无明显卡顿）。
 - 隐私合规：未经家长授权不上传可识别图像（验收通过检查上传日志）。
  - 配置可测：设置页可分别为各模型配置 appKey 与 apiBaseUrl；apiBaseUrl 必须为 https、通过白名单校验且无查询/片段；“测试连接”按钮成功率 ≥ 99%；更新后新发起请求使用新配置且不影响在途请求；误配时显示可读错误并自动降级。
  - 审计与安全：配置变更记录时间戳、模型、字段类型（Key/URL）与操作者；不记录 Key 明文，URL 仅记录 host。
@@ -183,18 +187,24 @@ AI-Enlightenment-Time
   - 图片向量化 → Qwen3-Embedding-8B（本地优先；若本地不可用且获得授权则云端调用）。  
   - Reranker → bge-reranker-v2-m3 仅在候选数 > N（默认 N=5）且初筛置信度 < 0.7 时调用。  
   - 图像生成 → grok-4-imageGen，异步提示并允许家长审批/计费确认。  
- - 配置模型（新增）
-   - Config 数据结构（示例）
-     - ModelConfig: { model: String, appKey: EncryptedString, apiBaseUrl: String, environment: Enum(dev/test/prod), updatedAt: Long }
-     - GlobalConfig: { activeEnv: Enum, domainWhitelist: List<String> }
-   - Config API（示例）
-     - updateConfig(model: String, appKey: CharArray?, apiBaseUrl: String?): Result
-     - testConnection(model: String): Result<Health>
-     - switchEnvironment(env: Enum): Result
-   - 校验与应用
-     - apiBaseUrl 必须 https、不得包含查询或片段；可选域名白名单校验。
-     - 成功更新后重建对应模型的 HTTP 客户端；在途请求不被中断。
-     - 失败时返回具体错误码（INVALID_URL / NOT_HTTPS / DOMAIN_NOT_ALLOWED / KEY_MISSING / NETWORK_FAIL）。
+ - 动态备选选择策略（新增）
+   - 能力池：按能力类型维护模型集合（对话/文本生成、嵌入、重排、图像生成），集合来源于“当前已配置”的模型。
+   - 健康状态：为每个模型维护滑动窗口成功率、错误率与熔断标记；当进入熔断窗口时跳过该模型一定时间（如 60s）。
+   - 选择顺序：按预设优先级（可基于成本/延迟/质量）与实时健康状态挑选下一备选，仅重试一次以保障响应时延。
+   - 失败处理：若主模型失败后备选成功，则记录“主失败-备选成功”事件并返回结果；若备选仍失败则触发降级路径并记录“主/备均失败”。
+  - 配置模型（新增）
+    - Config 数据结构（示例）
+      - ModelConfig: { model: String, appKey: EncryptedString, apiBaseUrl: String, environment: Enum(dev/test/prod), updatedAt: Long }
+      - GlobalConfig: { activeEnv: Enum, domainWhitelist: List<String> }
+    - Config API（示例）
+      - updateConfig(model: String, appKey: CharArray?, apiBaseUrl: String?): Result
+      - testConnection(model: String): Result<Health>
+      - switchEnvironment(env: Enum): Result
+    - 校验与应用
+      - apiBaseUrl 必须 https、不得包含查询或片段；可选域名白名单校验。
+      - 成功更新后重建对应模型的 HTTP 客户端；在途请求不被中断。
+      - 失败时返回具体错误码（INVALID_URL / NOT_HTTPS / DOMAIN_NOT_ALLOWED / KEY_MISSING / NETWORK_FAIL）。
+  - 动态备选依赖：能力池由当前配置自动生成；健康快照由 testConnection 与运行时调用结果共同维护；当没有可用备选时直接进入降级。
 
 4. 配置与密钥管理流程
 - 存储位置：每个模型维护 appKey（加密）与 apiBaseUrl（明文校验）；统一存放在 Jetpack DataStore。appKey 以 Android Keystore (AES-GCM) 封装存取。通过 KeyManager 封装读写与轮换，并提供审计接口（仅记录时间/模型/操作类型）。  
