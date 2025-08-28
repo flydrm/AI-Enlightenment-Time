@@ -1,4 +1,4 @@
-package com.enlightenment
+package com.enlightenment.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

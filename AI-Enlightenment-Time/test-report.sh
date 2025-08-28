@@ -53,7 +53,7 @@ echo "2. 代码质量检查"
 echo "================================================"
 # 检查源代码文件
 run_test "MainActivity 存在" "test -f app/src/main/java/com/enlightenment/presentation/MainActivity.kt"
-run_test "主题配置存在" "test -f app/src/main/java/com/enlightenment/presentation/theme/Theme.kt"
+run_test "主题配置存在" "test -f app/src/main/java/com/enlightenment/presentation/ui/theme/Theme.kt"
 run_test "导航配置存在" "test -f app/src/main/java/com/enlightenment/presentation/navigation/AppNavigation.kt"
 echo ""
 
