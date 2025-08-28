@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="sharedpref" path="api_keys.xml"/>
+        <exclude domain="database" path="enlightenment_database"/>
+    </cloud-backup>
+</data-extraction-rules>
