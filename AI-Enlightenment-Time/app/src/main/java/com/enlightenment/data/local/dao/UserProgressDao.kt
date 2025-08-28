@@ -27,8 +27,9 @@ interface UserProgressDao {
     @Query("UPDATE user_progress SET unlockedAchievements = unlockedAchievements || ',' || :achievementId WHERE userId = :userId")
     suspend fun unlockAchievement(userId: String, achievementId: String)
     
-    @Query("UPDATE user_progress SET totalPoints = totalPoints + :points WHERE userId = :userId")
-    suspend fun addPoints(userId: String, points: Int)
+    // TODO: Implement points system if needed
+    // @Query("UPDATE user_progress SET totalPoints = totalPoints + :points WHERE userId = :userId")
+    // suspend fun addPoints(userId: String, points: Int)
     
     @Query("UPDATE user_progress SET longestStreak = :streak WHERE userId = :userId")
     suspend fun updateLongestStreak(userId: String, streak: Int)

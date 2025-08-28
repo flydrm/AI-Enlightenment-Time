@@ -1,6 +1,9 @@
 package com.enlightenment.presentation.camera
 
 import android.Manifest
+import androidx.camera.core.CameraSelector
+import com.enlightenment.multimedia.camera.CaptureResult
+import com.enlightenment.multimedia.camera.FlashMode
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -576,8 +579,3 @@ private fun PhotoPreviewScreen(
         }
     }
 }
-
-// 需要添加的导入
-import androidx.camera.core.CameraSelector
-import com.enlightenment.multimedia.camera.CaptureResult
-import com.enlightenment.multimedia.camera.FlashMode
