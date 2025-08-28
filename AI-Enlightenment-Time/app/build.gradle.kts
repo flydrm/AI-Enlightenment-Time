@@ -115,6 +115,9 @@ dependencies {
     // Image loading
     implementation("io.coil-kt:coil-compose:2.5.0")
     
+    // Animation libraries
+    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+    
     // CameraX
     implementation("androidx.camera:camera-camera2:1.3.1")
     implementation("androidx.camera:camera-lifecycle:1.3.1")
