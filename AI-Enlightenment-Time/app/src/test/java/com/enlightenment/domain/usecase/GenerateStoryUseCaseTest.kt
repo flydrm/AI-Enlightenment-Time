@@ -1,7 +1,8 @@
 package com.enlightenment.domain.usecase
 
-import com.enlightenment.ai.model.AIModel
 import com.enlightenment.domain.model.Story
+import com.enlightenment.domain.model.AgeGroup
+import com.enlightenment.domain.model.StoryCategory
 import com.enlightenment.domain.repository.StoryRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -15,12 +16,6 @@ import kotlin.test.assertTrue
 class GenerateStoryUseCaseTest {
     
     @Mock
-    private lateinit var mockTextGenerationModel: AIModel.TextGeneration
-    
-    @Mock
-    private lateinit var mockImageGenerationModel: AIModel.ImageGeneration
-    
-    @Mock
     private lateinit var mockStoryRepository: StoryRepository
     
     private lateinit var useCase: GenerateStoryUseCase
@@ -29,8 +24,6 @@ class GenerateStoryUseCaseTest {
     fun setup() {
         MockitoAnnotations.openMocks(this)
         useCase = GenerateStoryUseCase(
-            textGenerationModel = mockTextGenerationModel,
-            imageGenerationModel = mockImageGenerationModel,
             storyRepository = mockStoryRepository
         )
     }
@@ -38,105 +31,121 @@ class GenerateStoryUseCaseTest {
     @Test
     fun `test invoke generates story successfully`() = runTest {
         // Given
-        val prompt = "一个关于勇敢的小兔子的故事"
-        val category = "冒险"
-        val ageGroup = 5
-        val expectedTitle = "勇敢的小兔子"
-        val expectedContent = "从前有一只小兔子..."
-        val expectedImageUrl = "https://example.com/rabbit.jpg"
+        val ageGroup = AgeGroup.PRESCHOOL
+        val category = StoryCategory.ADVENTURE
+        val interests = listOf("动物", "冒险")
+        val expectedStory = Story(
+            id = 1,
+            title = "勇敢的小兔子",
+            content = "从前有一只小兔子...",
+            imageUrl = "https://example.com/rabbit.jpg",
+            category = StoryCategory.ADVENTURE.displayName,
+            ageGroup = ageGroup.minAge,
+            createdAt = System.currentTimeMillis(),
+            isFavorite = false,
+            readCount = 0
+        )
         
-        `when`(mockTextGenerationModel.generateStory(prompt, category, ageGroup))
-            .thenReturn(Result.success("$expectedTitle\n\n$expectedContent"))
-        
-        `when`(mockImageGenerationModel.generateImage(any()))
-            .thenReturn(Result.success(expectedImageUrl))
-        
-        `when`(mockStoryRepository.saveStory(any()))
-            .thenReturn(Result.success(1L))
+        `when`(mockStoryRepository.generateStory(ageGroup, category, interests))
+            .thenReturn(Result.success(expectedStory))
         
         // When
-        val result = useCase(prompt, category, ageGroup)
+        val result = useCase(ageGroup, category, interests)
         
         // Then
         assertTrue(result.isSuccess)
         val story = result.getOrNull()!!
-        assertEquals(expectedTitle, story.title)
-        assertEquals(expectedContent, story.content)
-        assertEquals(expectedImageUrl, story.imageUrl)
-        assertEquals(category, story.category)
-        assertEquals(ageGroup, story.ageGroup)
+        assertEquals(expectedStory.title, story.title)
+        assertEquals(expectedStory.content, story.content)
+        assertEquals(expectedStory.imageUrl, story.imageUrl)
+        assertEquals(expectedStory.category, story.category)
+        assertEquals(expectedStory.ageGroup, story.ageGroup)
         
-        verify(mockStoryRepository).saveStory(any())
+        verify(mockStoryRepository).generateStory(ageGroup, category, interests)
     }
     
     @Test
-    fun `test invoke handles text generation failure`() = runTest {
+    fun `test invoke handles repository failure`() = runTest {
         // Given
-        val prompt = "故事提示"
+        val ageGroup = AgeGroup.KINDERGARTEN
+        val category = StoryCategory.SCIENCE
         val errorMessage = "AI服务暂时不可用"
         
-        `when`(mockTextGenerationModel.generateStory(any(), any(), any()))
+        `when`(mockStoryRepository.generateStory(any(), any(), any()))
             .thenReturn(Result.failure(Exception(errorMessage)))
         
         // When
-        val result = useCase(prompt, "冒险", 5)
+        val result = useCase(ageGroup, category)
         
         // Then
         assertTrue(result.isFailure)
         assertEquals(errorMessage, result.exceptionOrNull()?.message)
-        verify(mockImageGenerationModel, never()).generateImage(any())
-        verify(mockStoryRepository, never()).saveStory(any())
+        verify(mockStoryRepository).generateStory(ageGroup, category, emptyList())
     }
     
     @Test
-    fun `test invoke continues when image generation fails`() = runTest {
+    fun `test invoke with empty interests list`() = runTest {
         // Given
-        val prompt = "故事提示"
-        val storyText = "标题\n\n内容"
+        val ageGroup = AgeGroup.TODDLER
+        val category = StoryCategory.ANIMAL
+        val expectedStory = Story(
+            id = 2,
+            title = "小熊找妈妈",
+            content = "有一天，小熊在森林里...",
+            imageUrl = null,
+            category = category.displayName,
+            ageGroup = ageGroup.minAge,
+            createdAt = System.currentTimeMillis(),
+            isFavorite = false,
+            readCount = 0
+        )
         
-        `when`(mockTextGenerationModel.generateStory(any(), any(), any()))
-            .thenReturn(Result.success(storyText))
-        
-        `when`(mockImageGenerationModel.generateImage(any()))
-            .thenReturn(Result.failure(Exception("图像生成失败")))
-        
-        `when`(mockStoryRepository.saveStory(any()))
-            .thenReturn(Result.success(1L))
+        `when`(mockStoryRepository.generateStory(ageGroup, category, emptyList()))
+            .thenReturn(Result.success(expectedStory))
         
         // When
-        val result = useCase(prompt, "冒险", 5)
+        val result = useCase(ageGroup, category)
         
         // Then
         assertTrue(result.isSuccess)
         val story = result.getOrNull()!!
-        assertEquals("", story.imageUrl) // 图像生成失败时使用空URL
-        verify(mockStoryRepository).saveStory(any())
+        assertEquals(expectedStory.title, story.title)
+        assertEquals(expectedStory.content, story.content)
+        assertEquals(expectedStory.imageUrl, story.imageUrl)
+        verify(mockStoryRepository).generateStory(ageGroup, category, emptyList())
     }
     
     @Test
-    fun `test invoke extracts title from story content`() = runTest {
+    fun `test invoke with different age groups`() = runTest {
         // Given
-        val storyWithTitle = "神奇的森林冒险\n\n在一片神奇的森林里..."
-        val storyWithoutTitle = "从前有一个小朋友..."
+        val testCases = listOf(
+            AgeGroup.TODDLER to StoryCategory.DAILY_LIFE,
+            AgeGroup.PRESCHOOL to StoryCategory.FAIRY_TALE,
+            AgeGroup.KINDERGARTEN to StoryCategory.MORAL
+        )
         
-        `when`(mockTextGenerationModel.generateStory(any(), any(), any()))
-            .thenReturn(Result.success(storyWithTitle))
-            .thenReturn(Result.success(storyWithoutTitle))
-        
-        `when`(mockImageGenerationModel.generateImage(any()))
-            .thenReturn(Result.success(""))
-        
-        `when`(mockStoryRepository.saveStory(any()))
-            .thenReturn(Result.success(1L))
-        
-        // When - 有标题的情况
-        val result1 = useCase("prompt1", "冒险", 5)
-        assertTrue(result1.isSuccess)
-        assertEquals("神奇的森林冒险", result1.getOrNull()?.title)
-        
-        // When - 无标题的情况
-        val result2 = useCase("prompt2", "冒险", 5)
-        assertTrue(result2.isSuccess)
-        assertEquals("AI生成的故事", result2.getOrNull()?.title) // 使用默认标题
+        testCases.forEach { (ageGroup, category) ->
+            val expectedStory = Story(
+                id = 3,
+                title = "测试故事",
+                content = "内容",
+                imageUrl = null,
+                category = category.displayName,
+                ageGroup = ageGroup.minAge,
+                createdAt = System.currentTimeMillis(),
+                isFavorite = false,
+                readCount = 0
+            )
+            
+            `when`(mockStoryRepository.generateStory(ageGroup, category, emptyList()))
+                .thenReturn(Result.success(expectedStory))
+            
+            // When
+            val result = useCase(ageGroup, category)
+            
+            // Then
+            assertTrue(result.isSuccess)
+            assertEquals(ageGroup.minAge, result.getOrNull()?.ageGroup)
+        }
     }
 }

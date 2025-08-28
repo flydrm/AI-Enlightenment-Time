@@ -23,6 +23,27 @@ class DataMaskingService @Inject constructor() {
     }
     
     /**
+     * 脱敏中文姓名
+     */
+    fun maskName(name: String): String {
+        return when {
+            name.isEmpty() -> ""
+            name.length <= 2 -> "${name.first()}${"*".repeat(name.length - 1)}"
+            name.length == 3 -> "${name.first()}**"
+            else -> {
+                // 处理复姓
+                val commonCompoundSurnames = listOf("欧阳", "司马", "上官", "诸葛")
+                val surname = commonCompoundSurnames.find { name.startsWith(it) }
+                if (surname != null) {
+                    "$surname${"*".repeat(name.length - surname.length)}"
+                } else {
+                    "${name.first()}${"*".repeat(name.length - 1)}"
+                }
+            }
+        }
+    }
+    
+    /**
      * 脱敏家长信息
      */
     fun maskParentInfo(info: String): String {
@@ -134,6 +155,64 @@ class DataMaskingService @Inject constructor() {
             apiKey.length <= 8 -> "*".repeat(apiKey.length)
             else -> "${apiKey.take(4)}...${"*".repeat(4)}"
         }
+    }
+    
+    /**
+     * 脱敏身份证号
+     */
+    fun maskIdCard(idCard: String): String {
+        return when {
+            idCard.isEmpty() -> ""
+            idCard.length < 15 -> "*".repeat(idCard.length)
+            else -> "${idCard.take(6)}${"*".repeat(idCard.length - 10)}${idCard.takeLast(4)}"
+        }
+    }
+    
+    /**
+     * 脱敏综合文本（自动识别并脱敏多种敏感信息）
+     */
+    fun maskSensitiveText(text: String): String {
+        var maskedText = text
+        
+        // 脱敏邮箱
+        val emailRegex = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}".toRegex()
+        maskedText = emailRegex.replace(maskedText) { matchResult ->
+            maskEmail(matchResult.value)
+        }
+        
+        // 脱敏手机号
+        val phoneRegex = "(?:(?:\\+86)?1[3-9]\\d{9})".toRegex()
+        maskedText = phoneRegex.replace(maskedText) { matchResult ->
+            maskPhone(matchResult.value)
+        }
+        
+        // 脱敏身份证号
+        val idCardRegex = "\\d{15,18}".toRegex()
+        maskedText = idCardRegex.replace(maskedText) { matchResult ->
+            if (matchResult.value.length >= 15) {
+                maskIdCard(matchResult.value)
+            } else {
+                matchResult.value
+            }
+        }
+        
+        // 脱敏中文姓名（简单处理）
+        val nameRegex = "(?:姓名：|名字：|称呼：)([\\u4e00-\\u9fa5]{2,4})".toRegex()
+        maskedText = nameRegex.replace(maskedText) { matchResult ->
+            val prefix = matchResult.value.substringBefore("：") + "："
+            val name = matchResult.groups[1]?.value ?: ""
+            prefix + maskName(name)
+        }
+        
+        // 脱敏地址
+        val addressRegex = "(?:地址：|住址：)([^\\n]+)".toRegex()
+        maskedText = addressRegex.replace(maskedText) { matchResult ->
+            val prefix = matchResult.value.substringBefore("：") + "："
+            val address = matchResult.groups[1]?.value ?: ""
+            prefix + maskAddress(address)
+        }
+        
+        return maskedText
     }
     
     /**
