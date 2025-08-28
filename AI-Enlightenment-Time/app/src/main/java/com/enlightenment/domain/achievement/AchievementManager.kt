@@ -32,27 +32,27 @@ class AchievementManager @Inject constructor(
             name = "故事初探",
             description = "完成第一个故事",
             icon = "🌟",
-            points = 10,
+            requiredCount = 1,
             category = AchievementCategory.LEARNING,
-            requirement = AchievementRequirement.StoriesCompleted(1)
+            points = 10
         ),
         Achievement(
             id = "story_lover",
             name = "故事爱好者",
             description = "完成10个故事",
             icon = "📚",
-            points = 50,
+            requiredCount = 10,
             category = AchievementCategory.LEARNING,
-            requirement = AchievementRequirement.StoriesCompleted(10)
+            points = 50
         ),
         Achievement(
             id = "story_master",
             name = "故事大师",
             description = "完成50个故事",
             icon = "👑",
-            points = 200,
+            requiredCount = 50,
             category = AchievementCategory.LEARNING,
-            requirement = AchievementRequirement.StoriesCompleted(50)
+            points = 200
         ),
         
         // 连续学习成就
@@ -61,27 +61,27 @@ class AchievementManager @Inject constructor(
             name = "三天坚持",
             description = "连续学习3天",
             icon = "🔥",
-            points = 30,
+            requiredCount = 3,
             category = AchievementCategory.CONSISTENCY,
-            requirement = AchievementRequirement.DayStreak(3)
+            points = 30
         ),
         Achievement(
             id = "week_warrior",
             name = "一周勇士",
             description = "连续学习7天",
             icon = "⚔️",
-            points = 100,
+            requiredCount = 7,
             category = AchievementCategory.CONSISTENCY,
-            requirement = AchievementRequirement.DayStreak(7)
+            points = 100
         ),
         Achievement(
             id = "month_champion",
             name = "月度冠军",
             description = "连续学习30天",
             icon = "🏆",
-            points = 500,
+            requiredCount = 30,
             category = AchievementCategory.CONSISTENCY,
-            requirement = AchievementRequirement.DayStreak(30)
+            points = 500
         ),
         
         // 探索成就
@@ -90,18 +90,18 @@ class AchievementManager @Inject constructor(
             name = "小小摄影师",
             description = "使用相机拍照10次",
             icon = "📷",
-            points = 40,
+            requiredCount = 10,
             category = AchievementCategory.EXPLORATION,
-            requirement = AchievementRequirement.PhotosTaken(10)
+            points = 40
         ),
         Achievement(
             id = "voice_hero",
             name = "语音小达人",
             description = "使用语音功能20次",
             icon = "🎤",
-            points = 60,
+            requiredCount = 20,
             category = AchievementCategory.EXPLORATION,
-            requirement = AchievementRequirement.VoiceInteractions(20)
+            points = 60
         ),
         
         // 学习效果成就
@@ -110,18 +110,18 @@ class AchievementManager @Inject constructor(
             name = "快速学习者",
             description = "一天内完成3个故事",
             icon = "⚡",
-            points = 80,
-            category = AchievementCategory.PERFORMANCE,
-            requirement = AchievementRequirement.StoriesInDay(3)
+            requiredCount = 3,
+            category = AchievementCategory.CREATIVITY,
+            points = 80
         ),
         Achievement(
             id = "perfect_week",
             name = "完美一周",
             description = "一周内每天都完成学习",
             icon = "✨",
-            points = 150,
-            category = AchievementCategory.PERFORMANCE,
-            requirement = AchievementRequirement.PerfectWeek
+            requiredCount = 7,
+            category = AchievementCategory.CREATIVITY,
+            points = 150
         ),
         
         // 特殊成就
@@ -130,27 +130,27 @@ class AchievementManager @Inject constructor(
             name = "早起的小鸟",
             description = "在早上9点前开始学习",
             icon = "🐦",
-            points = 20,
-            category = AchievementCategory.SPECIAL,
-            requirement = AchievementRequirement.EarlyBird
+            requiredCount = 1,
+            category = AchievementCategory.CREATIVITY,
+            points = 20
         ),
         Achievement(
             id = "night_owl",
             name = "夜猫子",
             description = "在晚上8点后学习",
             icon = "🦉",
-            points = 20,
-            category = AchievementCategory.SPECIAL,
-            requirement = AchievementRequirement.NightOwl
+            requiredCount = 1,
+            category = AchievementCategory.CREATIVITY,
+            points = 20
         ),
         Achievement(
             id = "all_categories",
             name = "全能学习者",
             description = "体验所有故事类别",
             icon = "🌈",
-            points = 100,
-            category = AchievementCategory.SPECIAL,
-            requirement = AchievementRequirement.AllCategories
+            requiredCount = 5,
+            category = AchievementCategory.CREATIVITY,
+            points = 100
         )
     )
     
@@ -325,13 +325,7 @@ class AchievementManager @Inject constructor(
 /**
  * 成就类别
  */
-enum class AchievementCategory {
-    LEARNING,       // 学习相关
-    CONSISTENCY,    // 坚持相关
-    EXPLORATION,    // 探索相关
-    PERFORMANCE,    // 表现相关
-    SPECIAL        // 特殊成就
-}
+// 使用 com.enlightenment.domain.model.AchievementCategory
 
 /**
  * 成就要求

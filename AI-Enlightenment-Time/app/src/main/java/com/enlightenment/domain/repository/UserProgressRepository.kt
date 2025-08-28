@@ -25,4 +25,8 @@ interface UserProgressRepository {
     suspend fun updateStreak()
     
     suspend fun resetProgress()
+    
+    fun observeDailyProgress(date: Long): Flow<DailyProgress?>
+    
+    suspend fun addPoints(userId: String, points: Int)
 }

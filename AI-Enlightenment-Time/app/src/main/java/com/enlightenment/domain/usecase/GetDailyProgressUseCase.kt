@@ -10,10 +10,17 @@ class GetDailyProgressUseCase @Inject constructor(
     private val userProgressRepository: UserProgressRepository
 ) {
     suspend operator fun invoke(date: LocalDate): Result<DailyProgress> {
-        return userProgressRepository.getDailyProgress(date)
+        return try {
+            val dateMillis = date.toEpochDay() * 24 * 60 * 60 * 1000
+            val progress = userProgressRepository.getDailyProgress(dateMillis)
+            Result.success(progress ?: DailyProgress(dateMillis))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
     
     fun observeProgress(date: LocalDate): Flow<DailyProgress?> {
-        return userProgressRepository.observeDailyProgress(date)
+        val dateMillis = date.toEpochDay() * 24 * 60 * 60 * 1000
+        return userProgressRepository.observeDailyProgress(dateMillis)
     }
 }
