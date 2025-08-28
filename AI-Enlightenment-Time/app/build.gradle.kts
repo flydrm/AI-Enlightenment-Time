@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    // id("kotlin-kapt")
-    // id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -65,7 +65,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packaging {
         resources {
@@ -74,14 +74,15 @@ android {
     }
 }
 
-// kapt {
-//     correctErrorTypes = true
-//     useBuildCache = true
-//     arguments {
-//         arg("dagger.fastInit", "enabled")
-//         arg("dagger.hilt.android.internal.disableAndroidSuperclassValidation", "true")
-//     }
-// }
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+    arguments {
+        arg("dagger.fastInit", "enabled")
+        arg("dagger.hilt.android.internal.disableAndroidSuperclassValidation", "true")
+        arg("dagger.hilt.shareTestComponents", "true")
+    }
+}
 
 dependencies {
     // Core Android dependencies
@@ -99,20 +100,20 @@ dependencies {
     
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.6")
-    // implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     
     // ViewModel and Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
     
     // Hilt for dependency injection
-    // implementation("com.google.dagger:hilt-android:2.48")
-    // kapt("com.google.dagger:hilt-compiler:2.48")
+    implementation("com.google.dagger:hilt-android:2.47")
+    kapt("com.google.dagger:hilt-compiler:2.47")
     
     // Room for local database
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
-    // kapt("androidx.room:room-compiler:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
     
     // DataStore for preferences
     implementation("androidx.datastore:datastore-preferences:1.0.0")
@@ -156,7 +157,7 @@ dependencies {
     
     // WorkManager for scheduling
     implementation("androidx.work:work-runtime-ktx:2.9.0")
-    // implementation("androidx.hilt:hilt-work:1.1.0")
+    implementation("androidx.hilt:hilt-work:1.1.0")
     
     // Testing
     testImplementation("junit:junit:4.13.2")
