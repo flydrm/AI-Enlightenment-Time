@@ -1,13 +1,17 @@
 package com.enlightenment.multimedia.camera
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
+import java.io.File
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import java.io.File
+
+
 
 /**
  * 相机服务接口
@@ -63,7 +67,6 @@ interface CameraService {
      */
     fun release()
 }
-
 /**
  * 相机状态
  */
@@ -75,7 +78,6 @@ sealed class CameraState {
     object Capturing : CameraState()
     data class Error(val message: String) : CameraState()
 }
-
 /**
  * 拍照结果
  */
@@ -83,7 +85,6 @@ sealed class CaptureResult {
     data class Success(val imagePath: String, val imageData: ByteArray) : CaptureResult()
     data class Error(val exception: Exception) : CaptureResult()
 }
-
 /**
  * 闪光灯模式
  */

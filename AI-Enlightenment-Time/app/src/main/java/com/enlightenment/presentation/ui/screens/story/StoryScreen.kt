@@ -1,27 +1,34 @@
 package com.enlightenment.presentation.ui.screens.story
 
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
+import androidx.compose.material3.*
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.FilterChip
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.enlightenment.domain.model.AgeGroup
 import com.enlightenment.domain.model.Story
@@ -30,11 +37,17 @@ import com.enlightenment.presentation.navigation.Screen
 import com.enlightenment.presentation.ui.components.StoryCard
 import com.enlightenment.presentation.ui.theme.*
 
+
+
+
+
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoryScreen(
     navController: NavController,
-    viewModel: StoryViewModel = hiltViewModel()
+    viewModel: StoryViewModel = remember { HomeViewModel() }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
@@ -96,7 +109,7 @@ fun StoryScreen(
         )
     }
     
-    // Loading indicator
+    // "Loading" indicator
     if (uiState.isGenerating) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -123,7 +136,6 @@ fun StoryScreen(
         }
     }
 }
-
 @Composable
 private fun StoryContent(
     uiState: StoryUiState,
@@ -265,7 +277,6 @@ private fun StoryContent(
         }
     }
 }
-
 @Composable
 private fun GeneratedStoryDialog(
     story: Story,

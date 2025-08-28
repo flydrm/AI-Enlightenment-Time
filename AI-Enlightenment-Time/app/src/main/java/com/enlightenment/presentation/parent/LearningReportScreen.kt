@@ -1,37 +1,47 @@
 package com.enlightenment.presentation.parent
 
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.enlightenment.presentation.ui.theme.Typography
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.LocalDate
+
+
+
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LearningReportScreen(
     navController: NavController,
-    viewModel: LearningReportViewModel = hiltViewModel()
+    viewModel: LearningReportViewModel = remember { HomeViewModel() }
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var selectedTab by remember { mutableStateOf(0) }
@@ -42,7 +52,7 @@ fun LearningReportScreen(
                 title = { 
                     Text(
                         "学习报告",
-                        style = Typography.headlineMedium
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 },
                 navigationIcon = {
@@ -133,7 +143,7 @@ fun LearningReportScreen(
                 item {
                     Text(
                         "学习活动详情",
-                        style = Typography.titleLarge,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(vertical = 8.dp)
                     )
@@ -146,7 +156,6 @@ fun LearningReportScreen(
         }
     }
 }
-
 @Composable
 fun LearningTimeCard(
     totalMinutes: Int,
@@ -162,7 +171,7 @@ fun LearningTimeCard(
         ) {
             Text(
                 "学习时长统计",
-                style = Typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -193,7 +202,6 @@ fun LearningTimeCard(
         }
     }
 }
-
 @Composable
 fun TimeStatItem(
     value: String,
@@ -205,18 +213,17 @@ fun TimeStatItem(
     ) {
         Text(
             text = value,
-            style = Typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = color
         )
         Text(
             text = label,
-            style = Typography.bodySmall,
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
-
 @Composable
 fun LearningTrendCard(
     trendData: List<DailyLearningData>
@@ -230,7 +237,7 @@ fun LearningTrendCard(
         ) {
             Text(
                 "学习趋势",
-                style = Typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -254,21 +261,20 @@ fun LearningTrendCard(
                 ) {
                     Text(
                         text = "最近${trendData.size}天学习时长变化",
-                        style = Typography.bodySmall,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             } else {
                 Text(
                     "暂无数据",
-                    style = Typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
         }
     }
 }
-
 fun DrawScope.drawLearningTrendChart(data: List<DailyLearningData>) {
     if (data.isEmpty()) return
     
@@ -319,7 +325,6 @@ fun DrawScope.drawLearningTrendChart(data: List<DailyLearningData>) {
         )
     }
 }
-
 @Composable
 fun ContentDistributionCard(
     distribution: Map<String, Float>
@@ -333,7 +338,7 @@ fun ContentDistributionCard(
         ) {
             Text(
                 "内容分布",
-                style = Typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -349,7 +354,6 @@ fun ContentDistributionCard(
         }
     }
 }
-
 @Composable
 fun ContentCategoryItem(
     category: String,
@@ -362,11 +366,11 @@ fun ContentCategoryItem(
         ) {
             Text(
                 text = category,
-                style = Typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium
             )
             Text(
                 text = "${(percentage * 100).toInt()}%",
-                style = Typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -382,7 +386,6 @@ fun ContentCategoryItem(
         )
     }
 }
-
 @Composable
 fun SkillProgressCard(
     skills: List<SkillProgress>
@@ -396,7 +399,7 @@ fun SkillProgressCard(
         ) {
             Text(
                 "技能进展",
-                style = Typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             
@@ -409,7 +412,6 @@ fun SkillProgressCard(
         }
     }
 }
-
 @Composable
 fun SkillProgressItem(skill: SkillProgress) {
     Row(
@@ -438,11 +440,11 @@ fun SkillProgressItem(skill: SkillProgress) {
             ) {
                 Text(
                     text = skill.name,
-                    style = Typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
                     text = "Lv.${skill.level}",
-                    style = Typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -460,7 +462,6 @@ fun SkillProgressItem(skill: SkillProgress) {
         }
     }
 }
-
 @Composable
 fun DetailedActivityCard(activity: DetailedActivity) {
     Card(
@@ -490,18 +491,18 @@ fun DetailedActivityCard(activity: DetailedActivity) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = activity.title,
-                    style = Typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
                     text = activity.date.format(DateTimeFormatter.ofPattern("MM月dd日 HH:mm")),
-                    style = Typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 if (activity.description.isNotEmpty()) {
                     Text(
                         text = activity.description,
-                        style = Typography.bodySmall,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 2.dp)
                     )
@@ -513,13 +514,13 @@ fun DetailedActivityCard(activity: DetailedActivity) {
             ) {
                 Text(
                     text = "${activity.duration}分钟",
-                    style = Typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold
                 )
                 if (activity.score > 0) {
                     Text(
                         text = "+${activity.score}分",
-                        style = Typography.bodySmall,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -527,24 +528,13 @@ fun DetailedActivityCard(activity: DetailedActivity) {
         }
     }
 }
-
 // 数据类
 data class DailyLearningData(
     val date: LocalDate,
     val minutes: Int
 )
-
 data class SkillProgress(
     val name: String,
     val level: Int,
     val progress: Float // 0-1
-)
-
-data class DetailedActivity(
-    val title: String,
-    val type: String,
-    val date: LocalDate,
-    val duration: Int,
-    val score: Int,
-    val description: String
 )

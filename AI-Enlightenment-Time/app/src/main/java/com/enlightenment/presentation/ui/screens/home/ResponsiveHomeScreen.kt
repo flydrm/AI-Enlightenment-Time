@@ -1,21 +1,33 @@
 package com.enlightenment.presentation.ui.screens.home
 
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.enlightenment.presentation.components.AnimatedPanda
 import com.enlightenment.presentation.navigation.Screen
 import com.enlightenment.presentation.ui.responsive.*
+
+
+
+
+
+
 
 /**
  * 响应式主页
@@ -33,7 +45,6 @@ fun ResponsiveHomeScreen(
         WindowSizeClass.EXPANDED -> ExpandedHomeLayout(navController)
     }
 }
-
 /**
  * 紧凑布局（手机）
  */
@@ -80,7 +91,6 @@ private fun CompactHomeLayout(navController: NavController) {
         }
     }
 }
-
 /**
  * 中等布局（平板竖屏）
  */
@@ -143,7 +153,6 @@ private fun MediumHomeLayout(navController: NavController) {
         }
     }
 }
-
 /**
  * 展开布局（平板横屏/桌面）
  */
@@ -236,7 +245,6 @@ private fun ExpandedHomeLayout(navController: NavController) {
         }
     }
 }
-
 /**
  * 紧凑布局的菜单项
  */
@@ -279,7 +287,6 @@ private fun CompactMenuItem(
         }
     }
 }
-
 /**
  * 中等布局的菜单项
  */
@@ -323,7 +330,6 @@ private fun MediumMenuItem(
         }
     }
 }
-
 /**
  * 展开布局的菜单项
  */
@@ -376,7 +382,6 @@ private fun ExpandedMenuItem(
         }
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CompactTopBar() {
@@ -387,7 +392,6 @@ private fun CompactTopBar() {
         )
     )
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MediumTopBar() {
@@ -403,7 +407,6 @@ private fun MediumTopBar() {
         )
     )
 }
-
 /**
  * 菜单项数据
  */
@@ -415,7 +418,6 @@ private data class MenuItem(
     val iconColor: androidx.compose.ui.graphics.Color,
     val screen: Screen
 )
-
 /**
  * 获取菜单项列表
  */
@@ -460,7 +462,6 @@ private fun getMenuItems(): List<MenuItem> {
         )
     }
 }
-
 /**
  * 导航到指定界面
  */

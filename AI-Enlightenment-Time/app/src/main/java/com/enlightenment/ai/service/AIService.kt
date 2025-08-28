@@ -1,8 +1,12 @@
 package com.enlightenment.ai.service
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.ai.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+
+
 
 /**
  * AI服务接口，管理所有AI模型
@@ -43,7 +47,6 @@ interface AIService {
      */
     val isReady: StateFlow<Boolean>
 }
-
 /**
  * 故事生成服务
  */
@@ -70,9 +73,8 @@ interface StoryGenerationService {
     suspend fun continueStory(
         storyId: String,
         userChoice: String
-    ): StoryChapter
+    ): StoryStory
 }
-
 /**
  * 图像识别服务
  */
@@ -95,7 +97,6 @@ interface ImageRecognitionService {
         childAge: Int
     ): String
 }
-
 /**
  * 语音服务
  */
@@ -129,7 +130,6 @@ interface SpeechService {
      */
     fun stopRealtimeSpeechRecognition()
 }
-
 /**
  * 故事对象
  */
@@ -137,22 +137,20 @@ data class Story(
     val id: String,
     val title: String,
     val content: String,
-    val chapters: List<StoryChapter>,
+    val chapters: List<StoryStory>,
     val imageUrl: String? = null,
     val audioUrl: String? = null,
     val createdAt: Long = System.currentTimeMillis()
 )
-
 /**
  * 故事章节
  */
-data class StoryChapter(
+data class StoryStory(
     val id: String,
     val content: String,
     val choices: List<String> = emptyList(),
     val imageUrl: String? = null
 )
-
 /**
  * 故事偏好设置
  */
@@ -162,7 +160,6 @@ data class StoryPreferences(
     val includeEducationalContent: Boolean = true,
     val characterNames: List<String> = emptyList()
 )
-
 /**
  * 故事长度
  */
@@ -171,7 +168,6 @@ enum class StoryLength {
     MEDIUM,  // 5-10分钟
     LONG     // 10-15分钟
 }
-
 /**
  * 故事类型
  */

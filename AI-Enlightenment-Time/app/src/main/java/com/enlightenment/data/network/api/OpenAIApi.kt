@@ -1,6 +1,10 @@
 package com.enlightenment.data.network.api
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import retrofit2.http.*
+
+
 
 /**
  * OpenAI API接口（GPT-5-PRO）
@@ -55,7 +59,6 @@ interface OpenAIApi {
         @Part("temperature") temperature: Float? = null
     ): TranscriptionResponse
 }
-
 /**
  * 聊天完成请求
  */
@@ -72,7 +75,6 @@ data class ChatCompletionRequest(
     val frequencyPenalty: Float? = null,
     val user: String? = null
 )
-
 /**
  * 聊天消息
  */
@@ -91,7 +93,6 @@ data class ChatMessage(
         fun assistant(content: String) = ChatMessage(ROLE_ASSISTANT, content)
     }
 }
-
 /**
  * 聊天完成响应
  */
@@ -103,7 +104,6 @@ data class ChatCompletionResponse(
     val choices: List<ChatChoice>,
     val usage: Usage? = null
 )
-
 /**
  * 聊天选择
  */
@@ -112,7 +112,6 @@ data class ChatChoice(
     val message: ChatMessage,
     val finishReason: String? = null
 )
-
 /**
  * 使用统计
  */
@@ -121,7 +120,6 @@ data class Usage(
     val completionTokens: Int,
     val totalTokens: Int
 )
-
 /**
  * 嵌入请求
  */
@@ -130,7 +128,6 @@ data class EmbeddingRequest(
     val input: String,
     val user: String? = null
 )
-
 /**
  * 嵌入响应
  */
@@ -140,7 +137,6 @@ data class EmbeddingResponse(
     val model: String,
     val usage: Usage
 )
-
 /**
  * 嵌入数据
  */
@@ -149,7 +145,6 @@ data class EmbeddingData(
     val embedding: List<Float>,
     val index: Int
 )
-
 /**
  * 语音请求
  */
@@ -160,7 +155,6 @@ data class SpeechRequest(
     val responseFormat: String? = "mp3", // mp3, opus, aac, flac
     val speed: Float? = 1.0f // 0.25 to 4.0
 )
-
 /**
  * 转录响应
  */

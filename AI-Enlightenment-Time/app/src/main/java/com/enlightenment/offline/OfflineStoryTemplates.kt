@@ -1,6 +1,10 @@
 package com.enlightenment.offline
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.domain.model.StoryCategory
+
+
 
 /**
  * 离线故事模板
@@ -20,6 +24,9 @@ object OfflineStoryTemplates {
             StoryCategory.FRIENDSHIP -> friendshipTemplates
             StoryCategory.FANTASY -> fantasyTemplates
         }
+        StoryCategory.DAILY_LIFE -> listOf()
+        StoryCategory.MORAL -> listOf()
+        else -> listOf()
     }
     
     private val adventureTemplates = listOf(
@@ -213,7 +220,6 @@ object OfflineStoryTemplates {
         )
     )
 }
-
 /**
  * 故事模板
  */

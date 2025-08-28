@@ -1,0 +1,25 @@
+# 忽略构建产物
+build/
+app/build/
+.gradle/
+*.apk
+*.aab
+
+# 忽略本地配置
+local.properties
+*.iml
+.idea/
+.DS_Store
+
+# 忽略临时文件
+temp_backup/
+*.log
+*.tmp
+
+# 忽略版本控制
+.git/
+.gitignore
+
+# 忽略文档
+*.md
+docs/

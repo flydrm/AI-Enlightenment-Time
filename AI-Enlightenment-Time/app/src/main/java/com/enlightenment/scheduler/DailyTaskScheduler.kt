@@ -1,22 +1,22 @@
 package com.enlightenment.scheduler
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
 import androidx.work.*
 import com.enlightenment.security.AuditLogger
 import com.enlightenment.security.UserAction
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
+
+
 
 /**
  * 每日任务调度器
  * 负责安排和管理每日15分钟的学习任务
  */
-@Singleton
-class DailyTaskScheduler @Inject constructor(
-    @ApplicationContext private val context: Context,
+class DailyTaskScheduler(
+    private val context: Context,
     private val auditLogger: AuditLogger
 ) {
     

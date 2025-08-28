@@ -1,5 +1,7 @@
 package com.enlightenment.offline
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -9,20 +11,18 @@ import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.data.local.entity.StoryEntity
 import com.enlightenment.domain.model.Story
 import com.enlightenment.security.AuditLogger
-import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
+
+
 
 /**
  * 离线模式管理器
  * 负责管理应用的离线功能和网络状态监控
  */
-@Singleton
-class OfflineManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+class OfflineManager(
+    private val context: Context,
     private val database: AppDatabase,
     private val auditLogger: AuditLogger
 ) {
@@ -312,7 +312,6 @@ class OfflineManager @Inject constructor(
         )
     }
 }
-
 /**
  * 网络状态
  */
@@ -322,7 +321,6 @@ enum class NetworkState {
     DISCONNECTED, // 已断开
     LIMITED       // 受限（如仅连接但无互联网）
 }
-
 /**
  * 离线模式
  */
@@ -331,7 +329,6 @@ enum class OfflineMode {
     PARTIAL,   // 部分离线（优先缓存）
     FULL       // 完全离线
 }
-
 /**
  * 离线内容统计
  */

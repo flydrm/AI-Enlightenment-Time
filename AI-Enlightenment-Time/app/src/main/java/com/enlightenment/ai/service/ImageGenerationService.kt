@@ -1,5 +1,9 @@
 package com.enlightenment.ai.service
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
+
+
 /**
  * 图像生成服务接口
  */
@@ -40,7 +44,6 @@ interface ImageGenerationService {
         characterDescription: String
     ): String?
 }
-
 /**
  * 图像风格枚举
  */

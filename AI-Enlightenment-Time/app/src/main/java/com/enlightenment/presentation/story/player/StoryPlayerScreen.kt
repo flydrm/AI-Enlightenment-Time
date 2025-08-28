@@ -1,5 +1,9 @@
 package com.enlightenment.presentation.story.player
 
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -8,26 +12,33 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.enlightenment.presentation.components.AnimatedPanda
 import kotlinx.coroutines.delay
+
+
+
+
+
+
 
 /**
  * 故事播放器界面
@@ -36,11 +47,11 @@ import kotlinx.coroutines.delay
 fun StoryPlayerScreen(
     storyId: String,
     onNavigateBack: () -> Unit,
-    viewModel: StoryPlayerViewModel = hiltViewModel()
+    viewModel: StoryPlayerViewModel = remember { HomeViewModel() }
 ) {
     val story by viewModel.story.collectAsStateWithLifecycle()
     val playerState by viewModel.playerState.collectAsStateWithLifecycle()
-    val currentChapterIndex by viewModel.currentChapterIndex.collectAsStateWithLifecycle()
+    val currentStoryIndex by viewModel.currentStoryIndex.collectAsStateWithLifecycle()
     val playbackProgress by viewModel.playbackProgress.collectAsStateWithLifecycle()
     val isAutoPlay by viewModel.isAutoPlay.collectAsStateWithLifecycle()
     
@@ -80,7 +91,7 @@ fun StoryPlayerScreen(
                 ) {
                     StoryContent(
                         story = currentStory,
-                        currentChapterIndex = currentChapterIndex,
+                        currentStoryIndex = currentStoryIndex,
                         playerState = playerState
                     )
                     
@@ -90,10 +101,10 @@ fun StoryPlayerScreen(
                             .align(Alignment.TopEnd)
                             .padding(16.dp)
                             .size(80.dp),
-                        isActive = playerState is PlayerState.Playing,
+                        isActive = playerState == PlayerState.PLAYING,
                         speech = when (playerState) {
-                            is PlayerState.Playing -> "听我讲故事..."
-                            is PlayerState.Paused -> "暂停一下"
+                            == PlayerState.PLAYING -> "听我讲故事..."
+                            == PlayerState.PAUSED -> "暂停一下"
                             is PlayerState.Finished -> "故事讲完啦！"
                             else -> null
                         }
@@ -103,12 +114,12 @@ fun StoryPlayerScreen(
                 // 播放控制区
                 StoryPlayerControls(
                     story = currentStory,
-                    currentChapterIndex = currentChapterIndex,
+                    currentStoryIndex = currentStoryIndex,
                     playerState = playerState,
                     playbackProgress = playbackProgress,
                     onPlayPause = viewModel::togglePlayPause,
-                    onPrevious = viewModel::previousChapter,
-                    onNext = viewModel::nextChapter,
+                    onPrevious = viewModel::previousStory,
+                    onNext = viewModel::nextStory,
                     onSeek = viewModel::seekTo,
                     modifier = Modifier.padding(16.dp)
                 )
@@ -124,7 +135,6 @@ fun StoryPlayerScreen(
         }
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun StoryPlayerTopBar(
@@ -171,15 +181,14 @@ private fun StoryPlayerTopBar(
         )
     )
 }
-
 @Composable
 private fun StoryContent(
     story: Story,
-    currentChapterIndex: Int,
+    currentStoryIndex: Int,
     playerState: PlayerState
 ) {
     val scrollState = rememberScrollState()
-    val currentChapter = story.chapters.getOrNull(currentChapterIndex)
+    val currentStory = story.chapters.getOrNull(currentStoryIndex)
     
     Column(
         modifier = Modifier
@@ -189,7 +198,7 @@ private fun StoryContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // 故事插图
-        currentChapter?.imageUrl?.let { imageUrl ->
+        currentStory?.imageUrl?.let { imageUrl ->
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -208,9 +217,9 @@ private fun StoryContent(
         }
         
         // 章节标题
-        currentChapter?.let { chapter ->
+        currentStory?.let { chapter ->
             Text(
-                text = "第 ${currentChapterIndex + 1} 章",
+                text = "第 ${currentStoryIndex + 1} 章",
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -219,19 +228,19 @@ private fun StoryContent(
         
         // 故事文本
         AnimatedContent(
-            targetState = currentChapter?.content ?: "",
+            targetState = currentStory?.content ?: "",
             transitionSpec = {
                 fadeIn() with fadeOut()
             }
         ) { content ->
             StoryText(
                 text = content,
-                isPlaying = playerState is PlayerState.Playing
+                isPlaying = playerState == PlayerState.PLAYING
             )
         }
         
         // 选择按钮（如果有）
-        currentChapter?.choices?.takeIf { it.isNotEmpty() }?.let { choices ->
+        currentStory?.choices?.takeIf { it.isNotEmpty() }?.let { choices ->
             Spacer(modifier = Modifier.height(24.dp))
             
             Text(
@@ -247,7 +256,7 @@ private fun StoryContent(
                         .fillMaxWidth()
                         .padding(vertical = 4.dp),
                     shape = RoundedCornerShape(12.dp),
-                    enabled = playerState !is PlayerState.Loading
+                    enabled = playerState !is PlayerState."Loading"
                 ) {
                     Text(text = choice)
                 }
@@ -257,7 +266,6 @@ private fun StoryContent(
         Spacer(modifier = Modifier.height(100.dp))
     }
 }
-
 @Composable
 private fun StoryText(
     text: String,
@@ -288,11 +296,10 @@ private fun StoryText(
         modifier = Modifier.fillMaxWidth()
     )
 }
-
 @Composable
 private fun StoryPlayerControls(
     story: Story,
-    currentChapterIndex: Int,
+    currentStoryIndex: Int,
     playerState: PlayerState,
     playbackProgress: Float,
     onPlayPause: () -> Unit,
@@ -331,7 +338,7 @@ private fun StoryPlayerControls(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "章节 ${currentChapterIndex + 1}",
+                        text = "章节 ${currentStoryIndex + 1}",
                         style = MaterialTheme.typography.bodySmall
                     )
                     Text(
@@ -352,7 +359,7 @@ private fun StoryPlayerControls(
                 // 上一章按钮
                 IconButton(
                     onClick = onPrevious,
-                    enabled = currentChapterIndex > 0
+                    enabled = currentStoryIndex > 0
                 ) {
                     Icon(
                         imageVector = Icons.Default.SkipPrevious,
@@ -363,7 +370,7 @@ private fun StoryPlayerControls(
                 
                 // 播放/暂停按钮
                 val playPauseScale by animateFloatAsState(
-                    targetValue = if (playerState is PlayerState.Playing) 0.9f else 1f,
+                    targetValue = if (playerState == PlayerState.PLAYING) 0.9f else 1f,
                     animationSpec = spring(
                         dampingRatio = Spring.DampingRatioMediumBouncy,
                         stiffness = Spring.StiffnessLow
@@ -379,12 +386,12 @@ private fun StoryPlayerControls(
                         .background(MaterialTheme.colorScheme.primary)
                 ) {
                     Icon(
-                        imageVector = if (playerState is PlayerState.Playing) {
+                        imageVector = if (playerState == PlayerState.PLAYING) {
                             Icons.Default.Pause
                         } else {
                             Icons.Default.PlayArrow
                         },
-                        contentDescription = if (playerState is PlayerState.Playing) "暂停" else "播放",
+                        contentDescription = if (playerState == PlayerState.PLAYING) "暂停" else "播放",
                         tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.size(32.dp)
                     )
@@ -393,7 +400,7 @@ private fun StoryPlayerControls(
                 // 下一章按钮
                 IconButton(
                     onClick = onNext,
-                    enabled = currentChapterIndex < story.chapters.size - 1
+                    enabled = currentStoryIndex < story.chapters.size - 1
                 ) {
                     Icon(
                         imageVector = Icons.Default.SkipNext,
@@ -405,17 +412,15 @@ private fun StoryPlayerControls(
         }
     }
 }
-
 /**
  * 故事数据类（临时定义，应该从domain层获取）
  */
 data class Story(
     val id: String,
     val title: String,
-    val chapters: List<StoryChapter>
+    val chapters: List<StoryStory>
 )
-
-data class StoryChapter(
+data class StoryStory(
     val id: String,
     val content: String,
     val imageUrl: String? = null,

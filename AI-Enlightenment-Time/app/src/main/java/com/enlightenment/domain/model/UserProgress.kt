@@ -1,5 +1,9 @@
 package com.enlightenment.domain.model
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
+
+
 data class UserProgress(
     val userId: String,
     val totalStoriesCompleted: Int = 0,
@@ -13,7 +17,6 @@ data class UserProgress(
     val totalPoints: Int = 0,
     val totalReadingMinutes: Int = 0
 )
-
 data class DailyProgress(
     val date: Long,
     val storiesCompleted: Int = 0,
@@ -21,3 +24,6 @@ data class DailyProgress(
     val questionsAnswered: Int = 0,
     val correctAnswers: Int = 0
 )
+
+val UserProgress.storiesCompleted: Int
+    get() = achievementPoints / 10 // 简化计算

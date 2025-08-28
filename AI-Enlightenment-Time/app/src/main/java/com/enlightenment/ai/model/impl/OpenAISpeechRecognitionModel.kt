@@ -1,24 +1,25 @@
 package com.enlightenment.ai.model.impl
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.ai.model.SpeechRecognitionModel
 import com.enlightenment.data.network.api.OpenAIApi
 import com.enlightenment.security.SecureStorage
+import java.io.File
+import java.io.FileOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.File
-import java.io.FileOutputStream
-import javax.inject.Inject
-import javax.inject.Singleton
+
+
 
 /**
  * OpenAI语音识别模型实现
  * 使用Whisper模型进行高质量的语音转文本
  */
-@Singleton
-class OpenAISpeechRecognitionModel @Inject constructor(
+class OpenAISpeechRecognitionModel(
     private val openAIApi: OpenAIApi,
     private val secureStorage: SecureStorage
 ) : SpeechRecognitionModel {
@@ -226,7 +227,6 @@ class OpenAISpeechRecognitionModel @Inject constructor(
         return true
     }
 }
-
 /**
  * 自定义异常
  */

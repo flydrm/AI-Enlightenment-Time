@@ -1,5 +1,7 @@
 package com.enlightenment.ai.service.impl
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.ai.config.AIConfigManager
 import com.enlightenment.ai.config.AIModelType
 import com.enlightenment.ai.service.ImageGenerationService
@@ -9,15 +11,14 @@ import com.enlightenment.data.network.api.ImageGenerationRequest
 import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+
+
 
 /**
  * 图像生成服务实现
  * 使用 grok-4-imageGen 模型生成图像
  */
-@Singleton
-class ImageGenerationServiceImpl @Inject constructor(
+class ImageGenerationServiceImpl(
     private val configManager: AIConfigManager,
     private val grokImageApi: GrokImageApi,
     private val secureStorage: SecureStorage

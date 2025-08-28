@@ -1,22 +1,20 @@
 package com.enlightenment.performance
 
-import android.app.Application
-import androidx.startup.Initializer
-import androidx.startup.StartupLogger
-import com.enlightenment.ai.config.AIConfigManager
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
+import android.content.Context
 import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.offline.OfflineManager
 import kotlinx.coroutines.*
-import javax.inject.Inject
-import javax.inject.Singleton
+
+
 
 /**
  * 启动优化器
  * 使用 App Startup 库优化应用启动性能
  */
-@Singleton
-class StartupOptimizer @Inject constructor(
-    private val application: Application
+class StartupOptimizer(
+    private val context: Context
 ) {
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     
@@ -65,7 +63,7 @@ class StartupOptimizer @Inject constructor(
     private suspend fun preloadDatabase() {
         withContext(Dispatchers.IO) {
             // 触发数据库初始化
-            AppDatabase.getInstance(application).query("SELECT 1", null)
+            AppDatabase.getInstance(context).query("SELECT 1", null)
         }
     }
     
@@ -76,7 +74,7 @@ class StartupOptimizer @Inject constructor(
     
     private suspend fun preloadUserPreferences() {
         // 预加载用户设置
-        application.getSharedPreferences("settings", Application.MODE_PRIVATE)
+        context.getSharedPreferences("settings", Context.MODE_PRIVATE)
             .all // 触发加载
     }
     
@@ -95,13 +93,13 @@ class StartupOptimizer @Inject constructor(
     
     private suspend fun warmUpAIServices() {
         // 预热AI服务连接
-        AIConfigManager.getInstance().warmUp()
+        // TODO: 恢复AI配置管理器预热
     }
     
     private suspend fun cleanupExpiredCache() {
         withContext(Dispatchers.IO) {
             // 清理过期的缓存文件
-            val cacheDir = application.cacheDir
+            val cacheDir = context.cacheDir
             val expirationTime = System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000 // 7天
             
             cacheDir.listFiles()?.forEach { file ->
@@ -127,18 +125,4 @@ class StartupOptimizer @Inject constructor(
         // 清理各种内存缓存
     }
 }
-
-/**
- * App Startup 初始化器
- */
-class StartupInitializer : Initializer<StartupOptimizer> {
-    override fun create(context: android.content.Context): StartupOptimizer {
-        return StartupOptimizer(context.applicationContext as Application).apply {
-            optimize()
-        }
-    }
-    
-    override fun dependencies(): List<Class<out Initializer<*>>> {
-        return emptyList()
-    }
-}
+// StartupInitializer 已移除，因为使用Hilt进行依赖注入

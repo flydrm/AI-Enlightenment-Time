@@ -1,5 +1,7 @@
 package com.enlightenment.data.repository
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.data.local.dao.DailyProgressDao
 import com.enlightenment.data.local.dao.UserProgressDao
 import com.enlightenment.data.local.entity.DailyProgressEntity
@@ -9,16 +11,15 @@ import com.enlightenment.domain.model.AchievementCategory
 import com.enlightenment.domain.model.DailyProgress
 import com.enlightenment.domain.model.UserProgress
 import com.enlightenment.domain.repository.UserProgressRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-@Singleton
-class UserProgressRepositoryImpl @Inject constructor(
+
+
+class UserProgressRepositoryImpl(
     private val userProgressDao: UserProgressDao,
     private val dailyProgressDao: DailyProgressDao
 ) : UserProgressRepository {
@@ -27,7 +28,7 @@ class UserProgressRepositoryImpl @Inject constructor(
         private const val DEFAULT_USER_ID = "default_user"
     }
     
-    override suspend fun getUserProgress(): Flow<UserProgress> {
+    override suspend fun getUserProgress("default_user"): Flow<UserProgress> {
         return userProgressDao.getUserProgress(DEFAULT_USER_ID).map { entity ->
             entity?.toDomainModel() ?: createDefaultProgress()
         }

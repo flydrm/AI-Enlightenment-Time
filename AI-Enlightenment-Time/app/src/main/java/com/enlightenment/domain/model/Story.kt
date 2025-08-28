@@ -1,6 +1,10 @@
 package com.enlightenment.domain.model
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import java.util.UUID
+
+
 
 data class Story(
     val id: String = UUID.randomUUID().toString(),
@@ -14,9 +18,12 @@ data class Story(
     val questions: List<Question> = emptyList(),
     val createdAt: Long = System.currentTimeMillis(),
     val isCompleted: Boolean = false,
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
+    val coverImage: String? = null,
+    val genre: String = "",
+    val readTime: Int = 5 // in minutes
+    val chapters: List<Chapter> = emptyList()
 )
-
 data class Question(
     val id: String = UUID.randomUUID().toString(),
     val text: String,
@@ -24,13 +31,11 @@ data class Question(
     val correctAnswer: Int,
     val explanation: String
 )
-
 enum class AgeGroup(val minAge: Int, val maxAge: Int, val displayName: String) {
     TODDLER(3, 4, "3-4岁"),
     PRESCHOOL(4, 5, "4-5岁"),
     KINDERGARTEN(5, 6, "5-6岁")
 }
-
 enum class StoryCategory(val displayName: String, val icon: String) {
     ADVENTURE("冒险故事", "🏔️"),
     ANIMAL("动物朋友", "🐾"),

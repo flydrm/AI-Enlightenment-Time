@@ -1,35 +1,40 @@
 package com.enlightenment.presentation.voice
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.Manifest
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enlightenment.presentation.components.AnimatedPanda
 import com.enlightenment.presentation.components.PermissionHandler
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.launch
+
+
 
 /**
  * 语音对话界面
@@ -38,7 +43,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun VoiceScreen(
     onNavigateBack: () -> Unit,
-    viewModel: VoiceViewModel = hiltViewModel()
+    viewModel: VoiceViewModel = remember { HomeViewModel() }
 ) {
     val audioPermissionState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
     
@@ -63,7 +68,6 @@ fun VoiceScreen(
         }
     }
 }
-
 @Composable
 private fun VoiceContent(
     viewModel: VoiceViewModel,
@@ -120,7 +124,7 @@ private fun VoiceContent(
                 }
                 
                 // 显示当前状态
-                if (voiceState is VoiceState.Processing) {
+                if (voiceState == VoiceState.PROCESSING) {
                     item {
                         ProcessingIndicator()
                     }
@@ -146,16 +150,15 @@ private fun VoiceContent(
                 .size(80.dp),
             isActive = isListening,
             speech = when (voiceState) {
-                is VoiceState.Listening -> "我在听呢..."
-                is VoiceState.Processing -> "让我想想..."
-                is VoiceState.Speaking -> "听我说..."
+                == VoiceState.LISTENING -> "我在听呢..."
+                == VoiceState.PROCESSING -> "让我想想..."
+                == VoiceState.SPEAKING -> "听我说..."
                 is VoiceState.Error -> "出错了，再试一次吧！"
                 else -> null
             }
         )
     }
 }
-
 @Composable
 private fun MessageBubble(
     message: ConversationMessage,
@@ -208,7 +211,6 @@ private fun MessageBubble(
         }
     }
 }
-
 @Composable
 private fun BottomVoiceControls(
     isListening: Boolean,
@@ -266,7 +268,7 @@ private fun BottomVoiceControls(
                             MaterialTheme.colorScheme.primary
                         }
                     ),
-                enabled = voiceState !is VoiceState.Processing
+                enabled = voiceState !== VoiceState.PROCESSING
             ) {
                 Icon(
                     imageVector = if (isListening) Icons.Default.Stop else Icons.Default.Mic,
@@ -280,7 +282,7 @@ private fun BottomVoiceControls(
             Text(
                 text = when {
                     isListening -> "正在录音..."
-                    voiceState is VoiceState.Processing -> "处理中..."
+                    voiceState == VoiceState.PROCESSING -> "处理中..."
                     else -> "点击说话"
                 },
                 style = MaterialTheme.typography.bodyMedium,
@@ -291,7 +293,6 @@ private fun BottomVoiceControls(
         }
     }
 }
-
 @Composable
 private fun AudioWaveAnimation(
     amplitude: Float,
@@ -350,7 +351,6 @@ private fun AudioWaveAnimation(
         )
     }
 }
-
 @Composable
 private fun ProcessingIndicator() {
     Row(
@@ -379,7 +379,6 @@ private fun ProcessingIndicator() {
         }
     }
 }
-
 private fun formatTime(timestamp: Long): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp

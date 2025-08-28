@@ -1,14 +1,17 @@
 package com.enlightenment.domain.usecase
 
-import com.enlightenment.domain.model.WeeklyProgress
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.domain.model.DailyProgress
+import com.enlightenment.domain.model.WeeklyProgress
 import com.enlightenment.domain.repository.UserProgressRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 import java.util.Calendar
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.Flow
 
-class GetWeeklyProgressUseCase @Inject constructor(
+
+
+class GetWeeklyProgressUseCase(
     private val userProgressRepository: UserProgressRepository
 ) {
     suspend operator fun invoke(): Result<WeeklyProgress> {

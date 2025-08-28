@@ -1,15 +1,18 @@
 package com.enlightenment.ai.model.impl
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.ai.model.*
-import kotlinx.coroutines.delay
-import javax.inject.Inject
 import kotlin.random.Random
+import kotlinx.coroutines.delay
+
+
 
 /**
  * 模拟的文本生成模型
  * 在实际应用中，这里会接入真实的AI API（如OpenAI、通义千问等）
  */
-class MockTextGenerationModel @Inject constructor() : TextGenerationModel {
+class MockTextGenerationModel() : TextGenerationModel {
     override val name: String = "MockTextGenerator"
     override val version: String = "1.0.0"
     
@@ -87,11 +90,10 @@ class MockTextGenerationModel @Inject constructor() : TextGenerationModel {
         """.trimIndent()
     }
 }
-
 /**
  * 模拟的图像识别模型
  */
-class MockImageRecognitionModel @Inject constructor() : ImageRecognitionModel {
+class MockImageRecognitionModel() : ImageRecognitionModel {
     override val name: String = "MockImageRecognizer"
     override val version: String = "1.0.0"
     
@@ -138,11 +140,10 @@ class MockImageRecognitionModel @Inject constructor() : ImageRecognitionModel {
         return mockResults.random()
     }
 }
-
 /**
  * 模拟的语音识别模型
  */
-class MockSpeechRecognitionModel @Inject constructor() : SpeechRecognitionModel {
+class MockSpeechRecognitionModel() : SpeechRecognitionModel {
     override val name: String = "MockSpeechRecognizer"
     override val version: String = "1.0.0"
     
@@ -173,11 +174,10 @@ class MockSpeechRecognitionModel @Inject constructor() : SpeechRecognitionModel 
         return mockTexts.random()
     }
 }
-
 /**
  * 模拟的语音合成模型
  */
-class MockTextToSpeechModel @Inject constructor() : TextToSpeechModel {
+class MockTextToSpeechModel() : TextToSpeechModel {
     override val name: String = "MockTTS"
     override val version: String = "1.0.0"
     

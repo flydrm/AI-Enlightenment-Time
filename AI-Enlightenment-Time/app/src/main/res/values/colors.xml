@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors - Warm Red Panda Theme -->
+    <color name="primary">#FF6B6B</color>
+    <color name="primary_variant">#FF5252</color>
+    <color name="on_primary">#FFFFFF</color>
+    
+    <!-- Secondary Colors - Warm Orange -->
+    <color name="secondary">#FFA726</color>
+    <color name="secondary_variant">#FF9800</color>
+    <color name="on_secondary">#000000</color>
+    
+    <!-- Background Colors -->
+    <color name="background">#FFF5F5</color>
+    <color name="on_background">#1C1B1F</color>
+    
+    <!-- Surface Colors -->
+    <color name="surface">#FFFFFF</color>
+    <color name="on_surface">#1C1B1F</color>
+    
+    <!-- Error Colors -->
+    <color name="error">#BA1A1A</color>
+    <color name="on_error">#FFFFFF</color>
+    
+    <!-- Additional Theme Colors -->
+    <color name="warm_yellow">#FFD93D</color>
+    <color name="soft_green">#6BCB77</color>
+    <color name="sky_blue">#4D96FF</color>
+    <color name="light_purple">#B983FF</color>
+    
+    <!-- Neutral Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_light">#F5F5F5</color>
+    <color name="gray_medium">#9E9E9E</color>
+    <color name="gray_dark">#616161</color>
+    
+    <!-- Transparency -->
+    <color name="transparent">#00000000</color>
+    <color name="semi_transparent">#80000000</color>
+</resources>

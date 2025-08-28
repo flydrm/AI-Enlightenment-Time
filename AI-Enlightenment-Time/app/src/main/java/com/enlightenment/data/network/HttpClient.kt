@@ -1,19 +1,20 @@
 package com.enlightenment.data.network
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.BuildConfig
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
+import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.OkHttpClient
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Retrofit
+
+
 
 /**
  * HTTP客户端配置
  */
-@Singleton
-class HttpClient @Inject constructor() {
+class HttpClient() {
     
     companion object {
         private const val DEFAULT_TIMEOUT = 30L // 秒
@@ -29,7 +30,7 @@ class HttpClient @Inject constructor() {
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             // 添加日志拦截器（仅在调试模式）
-            if (BuildConfig.DEBUG) {
+            if (com.enlightenment.BuildConfig.DEBUG) {
                 addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 })

@@ -1,5 +1,7 @@
 package com.enlightenment.presentation.ui.screens.home
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -7,15 +9,16 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.enlightenment.presentation.navigation.Screen
 import com.enlightenment.presentation.ui.components.FeatureCard
@@ -23,10 +26,12 @@ import com.enlightenment.presentation.ui.components.PandaMascot
 import com.enlightenment.presentation.ui.components.StoryCard
 import com.enlightenment.presentation.ui.theme.*
 
+
+
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = remember { HomeViewModel() }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
@@ -45,7 +50,6 @@ fun HomeScreen(
         onFeatureClick = viewModel::onFeatureClick
     )
 }
-
 @Composable
 private fun HomeContent(
     uiState: HomeUiState,
@@ -133,8 +137,8 @@ private fun HomeContent(
             }
         }
         
-        // Loading indicator
-        if (uiState.isLoading) {
+        // "Loading" indicator
+        if (uiState.is"Loading") {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center),
                 color = PrimaryRed
@@ -142,7 +146,6 @@ private fun HomeContent(
         }
     }
 }
-
 @Composable
 private fun HomeHeader(
     greeting: String,
@@ -187,7 +190,6 @@ private fun HomeHeader(
         }
     }
 }
-
 @Composable
 private fun RecentStoriesSection(
     stories: List<Story>,

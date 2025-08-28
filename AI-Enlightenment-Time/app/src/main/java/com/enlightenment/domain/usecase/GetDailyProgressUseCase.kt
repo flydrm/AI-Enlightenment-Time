@@ -1,12 +1,15 @@
 package com.enlightenment.domain.usecase
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.domain.model.DailyProgress
 import com.enlightenment.domain.repository.UserProgressRepository
-import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
-import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-class GetDailyProgressUseCase @Inject constructor(
+
+
+class GetDailyProgressUseCase(
     private val userProgressRepository: UserProgressRepository
 ) {
     suspend operator fun invoke(date: LocalDate): Result<DailyProgress> {

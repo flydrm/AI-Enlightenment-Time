@@ -1,26 +1,31 @@
 package com.enlightenment.presentation.components.animations
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
+import androidx.compose.ui.unit.Dp
 import kotlin.math.*
 import kotlin.random.Random
+import kotlinx.coroutines.delay
+
+
 
 /**
  * 粒子效果组件
@@ -62,7 +67,6 @@ fun ParticleEffect(
         }
     }
 }
-
 private data class Particle(
     var x: Float,
     var y: Float,
@@ -71,7 +75,6 @@ private data class Particle(
     val size: Float,
     var alpha: Float
 )
-
 private fun updateParticle(particle: Particle, progress: Float) {
     particle.x += particle.vx
     particle.y += particle.vy
@@ -83,7 +86,6 @@ private fun updateParticle(particle: Particle, progress: Float) {
     // 更新透明度
     particle.alpha = (sin(progress * PI * 2).toFloat() + 1) / 2 * 0.5f + 0.5f
 }
-
 private fun DrawScope.drawParticle(
     particle: Particle,
     color: Color,
@@ -98,7 +100,6 @@ private fun DrawScope.drawParticle(
         )
     )
 }
-
 /**
  * 波浪动画效果
  */
@@ -143,7 +144,6 @@ fun WaveAnimation(
         )
     }
 }
-
 /**
  * 脉冲动画效果
  */
@@ -167,7 +167,6 @@ fun PulseAnimation(
         content = content
     )
 }
-
 /**
  * 摇摆动画效果
  */
@@ -200,7 +199,6 @@ fun ShakeAnimation(
         content = content
     )
 }
-
 /**
  * 彩虹渐变动画
  */
@@ -235,7 +233,6 @@ fun RainbowAnimation(
         )
     )
 }
-
 /**
  * 弹跳加载动画
  */
@@ -276,7 +273,6 @@ fun BouncingDotsAnimation(
         }
     }
 }
-
 /**
  * 打字机效果文本
  */
@@ -303,7 +299,6 @@ fun TypewriterText(
         modifier = modifier
     )
 }
-
 /**
  * 翻转卡片动画
  */
@@ -345,7 +340,6 @@ fun FlipCard(
         }
     }
 }
-
 /**
  * 涟漪扩散效果
  */
@@ -396,7 +390,6 @@ fun RippleEffect(
         }
     }
 }
-
 /**
  * 浮动气泡效果
  */
@@ -434,21 +427,18 @@ fun FloatingBubbles(
         }
     }
 }
-
 private data class Bubble(
     val x: Float,
     var y: Float,
     val size: Float,
     val speed: Float
 )
-
 private fun updateBubble(bubble: Bubble, progress: Float) {
     bubble.y -= bubble.speed
     if (bubble.y < -0.1f) {
         bubble.y = 1.1f
     }
 }
-
 private fun DrawScope.drawBubble(
     bubble: Bubble,
     color: Color,

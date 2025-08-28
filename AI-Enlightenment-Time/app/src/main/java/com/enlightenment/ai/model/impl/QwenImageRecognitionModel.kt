@@ -1,5 +1,7 @@
 package com.enlightenment.ai.model.impl
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
@@ -8,18 +10,17 @@ import com.enlightenment.ai.model.ImageRecognitionModel
 import com.enlightenment.ai.model.RecognitionResult
 import com.enlightenment.data.network.api.*
 import com.enlightenment.security.SecureStorage
+import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
-import javax.inject.Inject
-import javax.inject.Singleton
+
+
 
 /**
  * 通义千问图像识别模型实现
  * 使用Qwen3-Embedding-8B进行图像向量化和理解
  */
-@Singleton
-class QwenImageRecognitionModel @Inject constructor(
+class QwenImageRecognitionModel(
     private val qwenApi: QwenApi,
     private val secureStorage: SecureStorage
 ) : ImageRecognitionModel {
@@ -261,7 +262,6 @@ class QwenImageRecognitionModel @Inject constructor(
         return outputStream.toByteArray()
     }
 }
-
 /**
  * 自定义异常
  */

@@ -1,5 +1,9 @@
 package com.enlightenment.presentation.navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
+
+
 sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Story : Screen("story")

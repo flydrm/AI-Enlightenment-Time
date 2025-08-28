@@ -1,28 +1,40 @@
 package com.enlightenment.presentation.ui.screens.story
 
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
+import androidx.compose.material3.AssistChip
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.enlightenment.domain.model.Story
 import com.enlightenment.presentation.navigation.Screen
 import com.enlightenment.presentation.ui.responsive.*
+
+
+
+
+
+
 
 /**
  * 响应式故事列表界面
@@ -31,10 +43,10 @@ import com.enlightenment.presentation.ui.responsive.*
 @Composable
 fun ResponsiveStoryScreen(
     navController: NavController,
-    viewModel: StoryViewModel = hiltViewModel()
+    viewModel: StoryViewModel = remember { HomeViewModel() }
 ) {
     val stories by viewModel.stories.collectAsStateWithLifecycle()
-    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val is"Loading" by viewModel.is"Loading".collectAsStateWithLifecycle()
     val responsiveSizes = rememberResponsiveSizes()
     
     Scaffold(
@@ -61,7 +73,7 @@ fun ResponsiveStoryScreen(
                 .padding(paddingValues)
         ) {
             when {
-                isLoading -> {
+                is"Loading" -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -103,7 +115,6 @@ fun ResponsiveStoryScreen(
         }
     }
 }
-
 /**
  * 响应式顶部栏
  */
@@ -147,7 +158,6 @@ private fun ResponsiveStoryTopBar(
         }
     }
 }
-
 /**
  * 紧凑布局的故事列表
  */
@@ -168,7 +178,6 @@ private fun CompactStoryList(
         }
     }
 }
-
 /**
  * 中等布局的故事网格
  */
@@ -191,7 +200,6 @@ private fun MediumStoryGrid(
         }
     }
 }
-
 /**
  * 展开布局的故事布局
  */
@@ -247,7 +255,6 @@ private fun ExpandedStoryLayout(
         }
     }
 }
-
 /**
  * 紧凑布局的故事卡片
  */
@@ -335,7 +342,6 @@ private fun CompactStoryCard(
         }
     }
 }
-
 /**
  * 中等布局的故事卡片
  */
@@ -418,7 +424,6 @@ private fun MediumStoryCard(
         }
     }
 }
-
 /**
  * 展开布局的故事列表项
  */
@@ -485,7 +490,6 @@ private fun ExpandedStoryListItem(
         )
     }
 }
-
 /**
  * 展开布局的故事卡片
  */
@@ -547,7 +551,7 @@ private fun ExpandedStoryCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Chip(
+                    AssistChip(
                         onClick = { },
                         label = { Text(story.genre.name) }
                     )
@@ -571,7 +575,6 @@ private fun ExpandedStoryCard(
         }
     }
 }
-
 /**
  * 空状态
  */

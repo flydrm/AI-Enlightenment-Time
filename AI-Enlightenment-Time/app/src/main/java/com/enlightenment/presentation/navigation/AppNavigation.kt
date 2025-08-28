@@ -1,16 +1,21 @@
 package com.enlightenment.presentation.navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.composable
-import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
 import androidx.navigation.navArgument
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import com.enlightenment.presentation.camera.CameraScreen as NewCameraScreen
+import com.enlightenment.presentation.story.player.StoryPlayerScreen
 import com.enlightenment.presentation.ui.screens.home.HomeScreen
 import com.enlightenment.presentation.ui.screens.story.StoryScreen
-import com.enlightenment.presentation.camera.CameraScreen as NewCameraScreen
 import com.enlightenment.presentation.voice.VoiceScreen
-import com.enlightenment.presentation.story.player.StoryPlayerScreen
+
+
 
 @Composable
 fun AppNavigation(
@@ -47,7 +52,7 @@ fun AppNavigation(
                 navArgument("storyId") { type = NavType.StringType }
             )
         ) { backStackEntry ->
-            val storyId = backStackEntry.arguments?.getString("storyId") ?: ""
+            val storyId = backStackEntry.arguments?.getString("storyId") ?: "" ?: "" ?: ""
             StoryPlayerScreen(
                 storyId = storyId,
                 onNavigateBack = { navController.navigateUp() }

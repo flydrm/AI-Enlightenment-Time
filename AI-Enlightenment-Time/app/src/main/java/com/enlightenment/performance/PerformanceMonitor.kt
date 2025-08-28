@@ -1,23 +1,24 @@
 package com.enlightenment.performance
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.MainThread
+import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlin.system.measureTimeMillis
+
+
 
 /**
  * 性能监控器
  * 监控应用性能指标并提供优化建议
  */
-@Singleton
-class PerformanceMonitor @Inject constructor(
+class PerformanceMonitor(
     private val memoryOptimizer: MemoryOptimizer
 ) {
     companion object {
@@ -205,7 +206,6 @@ class PerformanceMonitor @Inject constructor(
         }
     }
 }
-
 /**
  * 性能指标数据类
  */
@@ -219,7 +219,6 @@ data class PerformanceMetrics(
     val isLowMemory: Boolean = false,
     val slowMethods: List<SlowMethod> = emptyList()
 )
-
 data class SlowMethod(
     val name: String,
     val duration: Long

@@ -1,30 +1,33 @@
 package com.enlightenment.presentation.camera
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.Manifest
 import androidx.camera.core.CameraSelector
-import com.enlightenment.multimedia.camera.CaptureResult
-import com.enlightenment.multimedia.camera.FlashMode
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
@@ -32,8 +35,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.enlightenment.multimedia.camera.CaptureResult
+import com.enlightenment.multimedia.camera.FlashMode
 import com.enlightenment.presentation.components.PermissionHandler
 import com.enlightenment.presentation.ui.components.PandaMascot
 import com.enlightenment.security.AuditLogger
@@ -42,6 +47,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.launch
+
+
 
 /**
  * 增强版相机界面
@@ -52,7 +59,7 @@ import kotlinx.coroutines.launch
 fun EnhancedCameraScreen(
     onPhotoTaken: (ByteArray) -> Unit,
     onBack: () -> Unit,
-    viewModel: CameraViewModel = hiltViewModel()
+    viewModel: CameraViewModel = remember { HomeViewModel() }
 ) {
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
     val context = LocalContext.current
@@ -120,7 +127,6 @@ fun EnhancedCameraScreen(
         }
     }
 }
-
 /**
  * 相机权限请求界面
  */
@@ -221,7 +227,6 @@ private fun CameraPermissionScreen(
         }
     }
 }
-
 /**
  * 相机预览界面
  */
@@ -234,7 +239,7 @@ private fun CameraPreviewScreen(
     onFlashModeChange: (FlashMode) -> Unit,
     isCapturing: Boolean
 ) {
-    val cameraViewModel: CameraViewModel = hiltViewModel()
+    val cameraViewModel: CameraViewModel = remember { HomeViewModel() }
     var cameraFacing by remember { mutableStateOf(CameraSelector.LENS_FACING_BACK) }
     
     Box(modifier = Modifier.fillMaxSize()) {
@@ -408,7 +413,6 @@ private fun CameraPreviewScreen(
         }
     }
 }
-
 /**
  * 拍照按钮
  */
@@ -459,7 +463,6 @@ private fun CaptureButton(
         }
     }
 }
-
 /**
  * 照片预览界面
  */

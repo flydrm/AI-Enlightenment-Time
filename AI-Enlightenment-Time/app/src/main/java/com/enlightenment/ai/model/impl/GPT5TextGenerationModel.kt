@@ -1,18 +1,19 @@
 package com.enlightenment.ai.model.impl
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.ai.model.TextGenerationModel
 import com.enlightenment.data.network.api.*
 import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+
+
 
 /**
  * GPT-5-PRO文本生成模型实现
  */
-@Singleton
-class GPT5TextGenerationModel @Inject constructor(
+class GPT5TextGenerationModel constructor(
     private val openAIApi: OpenAIApi,
     private val secureStorage: SecureStorage
 ) : TextGenerationModel {
@@ -205,7 +206,6 @@ class GPT5TextGenerationModel @Inject constructor(
         """.trimIndent()
     }
 }
-
 /**
  * 内容类型
  */

@@ -1,18 +1,19 @@
 package com.enlightenment.ai.model.impl
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.enlightenment.ai.model.TextGenerationModel
 import com.enlightenment.data.network.api.*
 import com.enlightenment.security.SecureStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+
+
 
 /**
  * Gemini文本生成模型实现
  */
-@Singleton
-class GeminiTextGenerationModel @Inject constructor(
+class GeminiTextGenerationModel(
     private val geminiApi: GeminiApi,
     private val secureStorage: SecureStorage
 ) : TextGenerationModel {
@@ -151,7 +152,6 @@ class GeminiTextGenerationModel @Inject constructor(
         return generateText(prompt, length, 0.8f)
     }
 }
-
 /**
  * 对话角色
  */
@@ -160,7 +160,6 @@ enum class ChatRole {
     MODEL,
     SYSTEM
 }
-
 /**
  * 对话轮次
  */
@@ -168,7 +167,6 @@ data class ChatTurn(
     val role: ChatRole,
     val message: String
 )
-
 /**
  * 自定义异常
  */

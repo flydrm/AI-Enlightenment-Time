@@ -1,29 +1,28 @@
 package com.enlightenment.presentation.ui.components
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.remember
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.enlightenment.presentation.components.PandaMood
 import com.enlightenment.presentation.ui.theme.PrimaryRed
 import com.enlightenment.presentation.ui.theme.SoftRed
 
-enum class PandaMood {
-    HAPPY,
-    EXCITED,
-    THINKING,
-    SLEEPING,
-    CHEERING
-}
 
+
+// 使用共享的PandaMood定义
 @Composable
 fun PandaMascot(
     mood: PandaMood = PandaMood.HAPPY,
@@ -63,7 +62,6 @@ fun PandaMascot(
         }
     }
 }
-
 private fun DrawScope.drawPanda(mood: PandaMood) {
     val centerX = size.width / 2
     val centerY = size.height / 2

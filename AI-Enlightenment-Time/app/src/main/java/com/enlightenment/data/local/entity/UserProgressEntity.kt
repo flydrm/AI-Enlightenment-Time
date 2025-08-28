@@ -1,11 +1,15 @@
 package com.enlightenment.data.local.entity
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.enlightenment.data.local.converter.Converters
 import com.enlightenment.domain.model.StoryCategory
 import com.enlightenment.domain.model.UserProgress
+
+
 
 @Entity(tableName = "user_progress")
 @TypeConverters(Converters::class)

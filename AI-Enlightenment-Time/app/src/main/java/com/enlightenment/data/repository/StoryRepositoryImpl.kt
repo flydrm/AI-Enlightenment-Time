@@ -1,19 +1,20 @@
 package com.enlightenment.data.repository
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
+import com.enlightenment.ai.service.AIService
 import com.enlightenment.data.local.dao.StoryDao
 import com.enlightenment.data.local.entity.StoryEntity
-import com.enlightenment.ai.service.AIService
 import com.enlightenment.domain.model.AgeGroup
 import com.enlightenment.domain.model.Story
 import com.enlightenment.domain.model.StoryCategory
 import com.enlightenment.domain.repository.StoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class StoryRepositoryImpl @Inject constructor(
+
+
+class StoryRepositoryImpl(
     private val storyDao: StoryDao,
     private val aiService: AIService
 ) : StoryRepository {
@@ -97,7 +98,7 @@ class StoryRepositoryImpl @Inject constructor(
                 "故事里的小熊猫叫什么名字？",
                 "你最喜欢故事的哪个部分？"
             ),
-            imageUrl = null // TODO: 使用 grok-4-imageGen 生成配图
+            imageUrl = generateStoryImage(title, content)
         )
     }
     
@@ -145,5 +146,17 @@ class StoryRepositoryImpl @Inject constructor(
     
     override suspend fun getRecentStories(limit: Int): List<Story> {
         return storyDao.getRecentStories(limit).map { it.toDomainModel() }
+    }
+    
+    /**
+     * 生成故事配图URL
+     * 在实际实现中，这里会调用图像生成AI服务
+     * 目前返回占位符URL
+     */
+    private fun generateStoryImage(title: String, content: String): String {
+        // 生成基于标题的唯一图片标识
+        val imageId = title.hashCode().toString()
+        // 返回占位符URL，实际应用中会调用Grok-4或其他图像生成服务
+        return "https://picsum.photos/seed/$imageId/800/600"
     }
 }

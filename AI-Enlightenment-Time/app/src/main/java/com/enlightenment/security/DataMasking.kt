@@ -1,14 +1,14 @@
 package com.enlightenment.security
 
-import javax.inject.Inject
-import javax.inject.Singleton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
+
 
 /**
  * 数据脱敏服务
  * 用于保护敏感信息，确保儿童隐私安全
  */
-@Singleton
-class DataMaskingService @Inject constructor() {
+class DataMaskingService() {
     
     /**
      * 脱敏儿童姓名
@@ -307,7 +307,6 @@ class DataMaskingService @Inject constructor() {
         }
     }
 }
-
 /**
  * 位置信息
  */
@@ -316,7 +315,6 @@ data class LocationInfo(
     val longitude: Double,
     val address: String
 )
-
 /**
  * 设备信息
  */
@@ -328,7 +326,6 @@ data class DeviceInfo(
     val model: String,
     val manufacturer: String
 )
-
 /**
  * 脱敏级别
  */
@@ -337,7 +334,6 @@ enum class MaskingLevel {
     MEDIUM, // 中级别：脱敏大部分个人信息
     HIGH    // 高级别：严格脱敏所有可能的个人信息
 }
-
 /**
  * 脱敏报告
  */
@@ -347,7 +343,6 @@ data class MaskingReport(
     val maskingLevel: MaskingLevel,
     val timestamp: Long
 )
-
 /**
  * 数据脱敏扩展函数
  */

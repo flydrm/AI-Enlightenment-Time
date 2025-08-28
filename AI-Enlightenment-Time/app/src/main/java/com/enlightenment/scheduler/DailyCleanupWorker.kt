@@ -1,23 +1,23 @@
 package com.enlightenment.scheduler
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.ExperimentalAnimationApi
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.enlightenment.data.local.database.AppDatabase
 import com.enlightenment.security.AuditLogger
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import java.io.File
+
+
 
 /**
  * 每日清理工作器
  * 负责清理临时文件、旧日志等
  */
-@HiltWorker
-class DailyCleanupWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
+class DailyCleanupWorker  constructor(
+    appContext: Context,
+    workerParams: WorkerParameters,
     private val database: AppDatabase,
     private val auditLogger: AuditLogger
 ) : CoroutineWorker(appContext, workerParams) {
