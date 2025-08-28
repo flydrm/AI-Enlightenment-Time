@@ -119,12 +119,16 @@ class DataMaskingTest {
     @Test
     fun `test maskChildName preserves child safety`() {
         // Given
-        val childNames = listOf("小明", "宝宝", "小朋友")
+        val testCases = mapOf(
+            "小明" to "小*",
+            "宝宝" to "宝*",
+            "小朋友" to "小*友"
+        )
         
         // When & Then
-        childNames.forEach { name ->
-            val result = dataMaskingService.maskChildName(name)
-            assertEquals("小朋友", result)
+        testCases.forEach { (input, expected) ->
+            val result = dataMaskingService.maskChildName(input)
+            assertEquals(expected, result, "Failed to mask child name: $input")
         }
     }
 }

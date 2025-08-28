@@ -2,9 +2,12 @@ package com.enlightenment.ai.model
 
 import com.enlightenment.ai.model.impl.GeminiTextGenerationModel
 import com.enlightenment.ai.service.GeminiService
-import com.enlightenment.data.remote.api.GeminiApi
-import com.enlightenment.data.remote.api.GeminiRequest
-import com.enlightenment.data.remote.api.GeminiResponse
+import com.enlightenment.data.network.api.GeminiApi
+import com.enlightenment.data.network.api.GeminiRequest
+import com.enlightenment.data.network.api.GeminiResponse
+import com.enlightenment.data.network.api.Content
+import com.enlightenment.data.network.api.Candidate
+import com.enlightenment.data.network.api.Part
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -36,13 +39,18 @@ class GeminiTextGenerationModelTest {
         val prompt = "创建一个关于小猫的故事"
         val expectedStory = "从前有一只可爱的小猫..."
         val mockResponse = GeminiResponse(
-            choices = listOf(
-                GeminiResponse.Choice(
-                    message = GeminiResponse.Message(
-                        content = expectedStory
-                    )
+            candidates = listOf(
+                Candidate(
+                    content = Content(
+                        role = "model",
+                        parts = listOf(Part.TextPart(expectedStory))
+                    ),
+                    finishReason = "STOP",
+                    index = 0,
+                    safetyRatings = emptyList()
                 )
-            )
+            ),
+            promptFeedback = null
         )
         
         `when`(mockGeminiService.generateContent(any())).thenReturn(Result.success(expectedStory))
